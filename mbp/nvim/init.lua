@@ -1,12 +1,7 @@
 -- ~/.config/nvim/init.lua
--- Updated: 2025-04-10 (Based on user request for modernization)
-
 --[[
 
-Modern Neovim Configuration in Lua
-
-Migrated from init.vim and updated with modern Lua plugins.
-Uses lazy.nvim, Telescope, nvim-cmp, LSP, etc.
+Migrated from init.vim and updated with Lua plugins.
 
 Sections:
 1. lazy.nvim Bootstrap
@@ -52,6 +47,10 @@ vim.g.tslime_always_current_session = 1
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.python3_host_prog='/usr/bin/python3' -- Adjust if your python path is different
+
+
+-- font 
+vim.o.guifont = "JetBrainsMono Nerd Font Mono" 
 
 -- -----------------------------------------------------------------------------
 -- 3. Neovim Options (vim.opt)
@@ -142,7 +141,106 @@ require("lazy").setup({
             map('n', '<leader>gs', builtin.git_status, { desc = 'Git Status' }) -- Example Git integration
         end
     },
+    -- == File Explorer (NvimTree) ==
+    {
+        'nvim-tree/nvim-tree.lua',
+        version = "*", -- Use the latest stable version
+        dependencies = {
+            'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+        },
+        config = function()
+            -- Disable netrw completely (redundant as you did it globally, but good practice)
+            vim.g.loaded_netrw = 1
+            vim.g.loaded_netrwPlugin = 1
 
+            -- Optional: Enable true color support earlier if not done already
+            vim.opt.termguicolors = true
+
+            require('nvim-tree').setup({
+                -- Recommended settings (customize to your liking):
+                sort_by = "case_sensitive",
+                view = {
+                    width = 35, -- Adjust width as needed
+                    side = 'left',
+                    -- Preserve window structure on close
+                    preserve_window_proportions = true,
+                },
+                renderer = {
+                    group_empty = true, -- Show ">" symbol for empty folders
+                    highlight_git = true,
+                    icons = {
+                        show = {
+                            file = true,
+                            folder = true,
+                            folder_arrow = true,
+                            git = true,
+                        },
+                        -- Requires nvim-web-devicons and a Nerd Font
+                        glyphs = {
+                            default = "󰈚", -- Default icon
+                            symlink = "",
+                            folder = {
+                                arrow_closed = "", -- Arrow when folder is closed
+                                arrow_open = "",   -- Arrow when folder is open
+                                default = "",     -- Default folder icon
+                                open = "",       -- Folder icon when open
+                                empty = "󰜌",     -- Empty folder icon
+                                empty_open = "󰜌",-- Empty folder icon when open
+                            },
+                            git = {
+                                staged = "✓",
+                                unstaged = "✗",
+                                untracked = "★",
+                                renamed = "➜",
+                                ignored = "◌",
+                            },
+                        },
+                    },
+                },
+                filters = {
+                    dotfiles = false, -- Show dotfiles (hidden files)
+                    custom = { ".git", "node_modules", ".cache", "__pycache__" }, -- Hide these folders/files
+                    exclude = {},
+                },
+                git = {
+                    enable = true,
+                    ignore = false, -- Show files listed in .gitignore
+                    timeout = 400,
+                },
+                -- Open files in the current window or horizontal split
+                actions = {
+                  open_file = {
+                    quit_on_open = false, -- Keep nvim-tree open after opening a file
+                    resize_window = true, -- Resize window after opening file
+                    -- Use default bindings for opening files (e.g., Enter opens in current window)
+                    -- <C-v> opens in vertical split, <C-x> opens in horizontal split
+                  }
+                },
+                -- Tell nvim-tree to take over when you try to open a directory
+                hijack_directories = {
+                  enable = true,
+                  auto_open = true, -- Automatically open nvim-tree when opening a directory
+                },
+                -- Update focus when changing buffers
+                update_focused_file = {
+                    enable = true,
+                    update_root = false, -- Don't change root directory based on file focus
+                },
+                -- Add other options from nvim-tree documentation if needed
+                -- :help nvim-tree.OPTION_NAME
+            })
+
+            -- Keymap to toggle NvimTree
+            local map = vim.keymap.set
+            local opts = { noremap = true, silent = true }
+            -- Use <leader>e (Space + e in your case) to toggle the tree
+            map('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle File Explorer (NvimTree)' })
+            -- Optional: Map to focus the tree and find the current file
+            map('n', '<leader>o', ':NvimTreeFindFileToggle<CR>', { desc = 'Toggle NvimTree Focus Current File'})
+
+            
+    end,
+    },
     -- == TreeSitter ==
     {
         "nvim-treesitter/nvim-treesitter",
@@ -518,5 +616,3 @@ if not status_ok then
   -- vim.cmd('colorscheme default')
 end
 
-
-print("Modern nvim config loaded! Current time: " .. os.date()) -- Confirmation message

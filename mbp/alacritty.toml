@@ -39,19 +39,19 @@ size = 12.0
 
 # Normal font face
 [font.normal]
-# Ensure "JetBrains Mono NL" is installed on your system.
-family = "JetBrains Mono NL"
+# Ensure "JetBrainsMono Nerd Font Mono" is installed on your system.
+family = "JetBrainsMono Nerd Font Mono"
 # Style can be omitted if the family name implies it, but "Regular" is explicit.
 style = "Regular"
 
 # Bold font face (can often use the same family if the font supports it)
 [font.bold]
-family = "JetBrains Mono NL"
+family = "JetBrainsMono Nerd Font Mono"
 style = "Bold" # Or let the system handle bolding if the specific style isn't needed/available
 
 # Italic font face (can often use the same family if the font supports it)
 [font.italic]
-family = "JetBrains Mono NL"
+family = "JetBrainsMono Nerd Font Mono"
 style = "Italic" # Or let the system handle italics if the specific style isn't needed/available
 
 # Offset adjusts vertical positioning (y) and horizontal spacing (x)
