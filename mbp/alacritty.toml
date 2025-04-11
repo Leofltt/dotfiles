@@ -1,0 +1,171 @@
+# Alacritty Configuration File (TOML format)
+# Location: ~/.config/alacritty/alacritty.toml
+
+# Environment settings (optional, useful for PATH adjustments if needed)
+[env]
+TERM = "xterm-256color"
+
+# Window configuration
+[window]
+dimensions = { columns = 88, lines = 28 }
+
+# Window padding (in pixels)
+padding = { x = 5, y = 0 }
+
+# Window decorations (options: "Full", "None", "Transparent", "Buttonless" on macOS)
+decorations = "Buttonless"
+
+# Startup mode (options: "Windowed", "Maximized", "Fullscreen")
+# startup_mode = "Windowed"
+
+dynamic_title= true
+
+# Background opacity (0.0 is fully transparent, 1.0 is fully opaque)
+opacity = 0.88
+
+# Blur effect for transparent windows (macOS only, can impact performance)
+# blur = true
+
+# Scrolling configuration
+[scrolling]
+# Number of lines to scroll back
+history = 10000
+# Lines scrolled per mouse wheel tick
+multiplier = 3
+
+# Font configuration
+[font]
+size = 12.0
+
+# Normal font face
+[font.normal]
+# Ensure "JetBrains Mono NL" is installed on your system.
+family = "JetBrains Mono NL"
+# Style can be omitted if the family name implies it, but "Regular" is explicit.
+style = "Regular"
+
+# Bold font face (can often use the same family if the font supports it)
+[font.bold]
+family = "JetBrains Mono NL"
+style = "Bold" # Or let the system handle bolding if the specific style isn't needed/available
+
+# Italic font face (can often use the same family if the font supports it)
+[font.italic]
+family = "JetBrains Mono NL"
+style = "Italic" # Or let the system handle italics if the specific style isn't needed/available
+
+# Offset adjusts vertical positioning (y) and horizontal spacing (x)
+# [font.offset]
+# x = 0
+# y = 0
+
+# Glyph offset adjusts specific character rendering positions
+# [font.glyph_offset]
+# x = 0
+# y = 0
+
+
+# Color scheme configuration (Greyscale)
+[colors]
+# Default colors
+[colors.primary]
+background = '#000000' # Black background
+foreground = '#d0d0d0' # Light grey text
+
+# Cursor colors
+[colors.cursor]
+text = '#1c1c1c'   # Dim black on cursor
+cursor = '#d0d0d0' # Light Grey cursor block
+
+# Selection colors
+[colors.selection]
+text = '#1c1c1c'       # Dim Black text when selected
+background = '#f0f0f0' # Off White selection background
+
+# Normal colors (ANSI escape codes 0-7)
+[colors.normal]
+black =   '#282828'
+red =     '#888888' # Grey shades instead of colors
+green =   '#989898'
+yellow =  '#a8a8a8'
+blue =    '#b8b8b8'
+magenta = '#c8c8c8'
+cyan =    '#d8d8d8'
+white =   '#e8e8e8'
+
+# Bright colors (ANSI escape codes 8-15)
+[colors.bright]
+black =   '#383838'
+red =     '#909090' # Slightly different grey shades
+green =   '#a0a0a0'
+yellow =  '#b0b0b0'
+blue =    '#c0c0c0'
+magenta = '#d0d0d0'
+cyan =    '#e0e0e0'
+white =   '#f0f0f0'
+
+# Dim colors (optional, usually derived from normal)
+[colors.dim]
+black =   '#1c1c1c'
+red =     '#787878'
+green =   '#888888'
+yellow =  '#989898'
+blue =    '#a8a8a8'
+magenta = '#b8b8b8'
+cyan =    '#c8c8c8'
+white =   '#d8d8d8'
+
+
+# Bell configuration
+[bell]
+duration = 0
+# Visual Bell color change
+# color = '#ffffff'
+# Bell command (e.g., play a sound)
+# command = { program = "osascript", args = ["-e", "beep"] }
+
+
+# Selection configuration
+[selection]
+# Characters that are considered part of a word
+semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+# Automatically copy selected text to clipboard
+save_to_clipboard = false
+
+
+# Cursor configuration
+[cursor]
+# Cursor style: "Block", "Underline", "Beam"
+style = { shape = "Block", blinking = "On" }
+# Thickness for Underline/Beam cursors (0.0 to 1.0 relative to cell width/height)
+# thickness = 0.15
+
+
+# Mouse configuration
+[mouse]
+hide_when_typing = true
+
+# Mouse bindings (examples, many more possible)
+# [mouse.bindings]
+# - { mouse = "Right", action = "Paste" }
+
+
+# Keyboard configuration
+[keyboard]
+
+[terminal]
+# [keyboard.bindings]
+# - { key = "V", mods = "Command", action = "Paste" }
+# - { key = "C", mods = "Command", action = "Copy" }
+# - { key = "N", mods = "Command", action = "SpawnNewInstance" }
+
+
+# Shell configuration (optional)
+# [terminal.shell]
+
+
+# Debugging options (rarely needed)
+# [debug]
+# persistent_logging = false
+# log_level = "Warn" # Options: Off, Error, Warn, Info, Debug, Trace
+# print_events = false
