@@ -143,13 +143,98 @@ require("lazy").setup({
         end
     },
 
-    -- Optional: Add a colorscheme plugin here if 'leofltt-monochrome' is one
-    -- Example: { 'folke/tokyonight.nvim', lazy = false, priority = 1000, config = function() vim.cmd('colorscheme tokyonight') end},
-    -- If 'leofltt-monochrome' is a plugin, find its repo and add it like the example above.
-    -- Replace 'folke/tokyonight.nvim' with the actual repo, e.g., 'leofltt/monochrome.nvim'
+    -- == TreeSitter ==
+    {
+        "nvim-treesitter/nvim-treesitter",
+        -- build = ":TSUpdateSync", -- Or use build = ":TSUpdate" for async update
+        build = function()
+            -- Install parsers synchronously if required, useful for first time setup
+            require("nvim-treesitter.install").update({ with_sync = true })()
+        end,
+        config = function()
+            require('nvim-treesitter.configs').setup({
+              -- A list of parser names, or "all" (may be slow)
+              -- Install parsers for languages you commonly use
+              ensure_installed = {
+              "lua", "vim", "vimdoc", "query", -- Base Neovim languages
+              "bash", "c", "cpp", "go", "html", "css", "javascript",
+              "typescript", "json", "yaml", "markdown", "markdown_inline",
+              "python", "rust", "java", "haskell",
+            -- Add others relevant to your work
+              },
+
+          -- Install parsers synchronously (only applies to `ensure_installed`)
+          sync_install = false, -- Set to true for synchronous first install if needed
+
+          -- Automatically install missing parsers when entering buffer
+          -- Recommendation: set to false if you manage `ensure_installed` manually
+          auto_install = true,
+
+          highlight = {
+            enable = true, -- Enable syntax highlighting based on Treesitter
+            -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+            -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+            -- Using this option may slow down your editor, and you may see some weird jumps.
+            -- NOTE: Disabled by default
+            -- additional_vim_regex_highlighting = false,
+          },
+          indent = { enable = true }, -- Enable indentation using treesitter
+          -- Add other Treesitter modules if you need them (e.g., textobjects, incremental_selection)
+          -- See :help nvim-treesitter-modules
+        })
+
+        -- Optional: Set keymaps for Treesitter features if desired
+        -- local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+        -- vim.keymap.set({"n", "x", "o"}, ";", ts_repeat_move.repeat_last_move)
+        -- vim.keymap.set({"n", "x", "o"}, ",", ts_repeat_move.repeat_last_move_opposite)
+        -- vim.keymap.set({"n", "x", "o"}, "f", ts_repeat_move.builtin_f)
+        -- vim.keymap.set({"n", "x", "o"}, "F", ts_repeat_move.builtin_F)
+        -- vim.keymap.set({"n", "x", "o"}, "t", ts_repeat_move.builtin_t)
+        -- vim.keymap.set({"n", "x", "o"}, "T", ts_repeat_move.builtin_T)
+      end,
+    },
 
     -- == Git ==
     { 'tpope/vim-fugitive' }, -- Git wrapper (still the best!)
+
+    -- == CodeCompanion ==
+    {
+      "olimorris/codecompanion.nvim",
+      -- Explicitly list dependencies (good practice, though lazy may find them)
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+      {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+      },
+      config = function()
+        require("codecompanion").setup({
+          -- Basic configuration for Ollama:
+          adapters = {
+            ollama = function()
+              -- Uses default Ollama settings (http://localhost:11434)
+              -- You can customize host, model, etc. here if needed
+              return require("codecompanion.adapters").ollama({
+                -- model = "codellama", -- Specify a default model if desired
+                -- host = "http://192.168.1.100:11434", -- If Ollama runs elsewhere
+              })
+          end,
+          },
+          -- Tell codecompanion to use the 'ollama' adapter for different tasks
+          strategies = {
+            chat = { adapter = "ollama" },
+            inline = { adapter = "ollama" },
+            agent = { adapter = "ollama" },
+          },
+
+          -- Add other configurations like keymaps, UI settings, etc.
+          -- CHECK THE PLUGIN DOCUMENTATION FOR ALL OPTIONS!
+          -- Example keymap (check docs for recommended mappings)
+          -- keymap = {
+          --   chat_toggle = "<leader>ac", -- Toggle chat window
+          --   inline_toggle = "<leader>ai", -- Toggle inline actions
+          -- },
+        })
+      end,
+    },
 
     -- == Completion (Replaces CoC) ==
     { -- Autocompletion Engine
@@ -276,27 +361,14 @@ require("lazy").setup({
                          },
                      }
                  end,
-                 -- Example: Python using pyright
+                 -- Python using pyright
                  ["pyright"] = function()
                      lspconfig.pyright.setup{
                         capabilities = capabilities,
                         -- Add pyright specific settings here if needed
                      }
                  end,
-                 -- Example: Go using gopls
-                 ["gopls"] = function()
-                    lspconfig.gopls.setup{
-                        capabilities = capabilities,
-                        settings = {
-                            gopls = {
-                                -- Example gopls setting
-                                -- analyses = { unusedparams = true },
-                                -- staticcheck = true,
-                            }
-                        }
-                    }
-                 end,
-               
+                -- Rust using rust_analyzer
                 ["rust_analyzer"] = function() 
                     lspconfig.rust_analyzer.setup {
                         capabilities = capabilities,
@@ -307,6 +379,7 @@ require("lazy").setup({
                         }
                     }
                 end,
+                -- Haskell using hls
                 ["hls"] = function() 
                     lspconfig.hls.setup {
                         capabilities = capabilities,
@@ -317,6 +390,7 @@ require("lazy").setup({
                         }
                     }
                 end,
+                -- C/CPP using clangd
                 ["clangd"] = function() 
                     lspconfig.clangd.setup {
                         capabilities = capabilities,
@@ -326,8 +400,7 @@ require("lazy").setup({
                             }
                         }
                     }
-                end,
-                
+                end,   
             }
 
             -- Keymaps for LSP actions (add these in on_attach or globally)
@@ -362,7 +435,7 @@ require("lazy").setup({
             -- Ensure Mason LSPs are installed
             -- Add list of servers you want Mason to ensure are installed
             mason_lspconfig.setup({
-                 ensure_installed = { "lua_ls", "pyright", "gopls", "bashls", "dockerls", "jsonls", "yamlls", "rust_analyzer", "hls", "clangd" }, -- Add your desired LSPs here!
+                 ensure_installed = { "lua_ls", "pyright", "bashls", "dockerls", "jsonls", "yamlls", "rust_analyzer", "hls", "clangd" }, -- Add your desired LSPs here!
             })
         end,
     },

@@ -1,4 +1,18 @@
-# PROMPT='leofltt > '
+autoload -U promptinit && promptinit
+
+# ---- Set Custom Prompt ----
+# %{%F{#c0c0c0}%} : Start foreground color #888888 (muted gray)
+# %n : Username
+# @ : Literal "@" symbol
+# %m : Short hostname
+# : : Literal ":" symbol
+# %~ : Current directory path (relative to home, shown as ~)
+# %# : Shows '#' if root, '%' otherwise
+# ' ' : A space before you start typing
+# %{%f%} : Reset foreground color to the default
+PROMPT='%{%F{#c0c0c0}%}%n@%m:%~%# %{%f%}'
+
+
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # AUTOJUMP
