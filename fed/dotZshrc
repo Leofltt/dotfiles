@@ -1,0 +1,40 @@
+# ~/.zshrc
+
+# Source global definitions (if any in a standard location)
+if [[ -f /etc/zsh/zshrc ]]; then
+    source /etc/zsh/zshrc
+elif [[ -f /etc/zshrc ]]; then
+    source /etc/zshrc
+fi
+
+# Also consider sourcing the bash global config for compatibility if needed
+# if [[ -f /etc/bashrc ]]; then
+#     source /etc/bashrc
+# fi
+
+# # User specific environment 
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* || ":$PATH:" != *":$HOME/bin:"* ]]; then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+if [[ -d ~/.bashrc.d ]]; then
+    for rc in ~/.bashrc.d/*; do
+        if [[ -f "$rc" ]]; then
+            source "$rc"
+        fi
+    done
+fi
+unset rc
+source "$HOME/.cargo/env"
+
+[[ -f "/home/leofltt/.ghcup/env" ]] && source "/home/leofltt/.ghcup/env" # ghcup-env
+
+# devkitpro (3ds stuff)
+export DEVKITPRO="/opt/devkitpro"
+export DEVKITARM="/opt/devkitpro/devkitARM"
+export DEVKITPPC="/opt/devkitpro/devkitPPC"
