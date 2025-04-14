@@ -155,12 +155,12 @@ call s:HL("Folded",      s:comment,     s:dark_gray1, "NONE")   " Folded text ma
 call s:HL("ModeMsg",     s:white,       s:black,      "BOLD")   " Mode messages (-- INSERT --)
 call s:HL("MoreMsg",     s:green,       s:black,      "BOLD")   " More prompt
 call s:HL("Question",    s:green,       s:black,      "BOLD")   " Question prompt
-call s:HL("WildMenu",    s:white,       s:blue,       "BOLD")   " Wildmenu completion selection (like PmenuSel)
+call s:HL("WildMenu",    s:white,       s:muted_lilac3,       "BOLD")   " Wildmenu completion selection (like PmenuSel)
 
 " Other
-call s:HL("Directory",   s:blue,        s:black)       " Directory names
+call s:HL("Directory",   s:lilac,        s:black)       " Directory names
 call s:HL("Title",       s:white,       s:black,      "BOLD")   " Titles (:set title)
-call s:HL("Underlined",  s:blue,        s:black,      "UNDERLINE") " Underlined text
+call s:HL("Underlined",  s:muted_lilac1,        s:black,      "UNDERLINE") " Underlined text
 call s:HL("Ignore",      s:comment,     s:black)       " Ignored text (e.g., some diffs)
 
 " Cleanup helper function {{{1
