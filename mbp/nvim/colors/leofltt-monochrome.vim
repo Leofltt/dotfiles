@@ -34,6 +34,12 @@ let s:green      = { "gui": "#60D060", "cterm": "71",    "ctermN": 71 }  " Succe
 let s:blue       = { "gui": "#5588CC", "cterm": "68",    "ctermN": 68 }  " Info / Functions?
 let s:magenta    = { "gui": "#CC55CC", "cterm": "176",   "ctermN": 176 } " Special / Types?
 let s:purple = { "gui": "#C060C8", "cterm": "175", "ctermN": 175 } " Purple (Slightly Muted)"
+let s:muted_purple = { "gui": "#A020F0", "cterm": "94", "ctermN": 94 }
+let s:lilac = { "gui": "#D3B1E6", "cterm": "175", "ctermN": 175 }
+let s:muted_lilac1 = { "gui": "#F0EBD2", "cterm": "228", "ctermN": 228 }
+let s:muted_lilac2 = { "gui": "#E6E2CC", "cterm": "235", "ctermN": 235 }
+let s:muted_lilac3 = { "gui": "#DEBFFF", "cterm": "226", "ctermN": 226 }
+let s:darker_purple = { "gui": "#7014A6", "cterm": "92", "ctermN": 92 }
 
 " Helper function to define highlights {{{1
 function! s:HL(group, fg, bg, ...)
@@ -66,25 +72,25 @@ endfunction
 " Basic Code Elements
 call s:HL("Normal",      s:light_gray2, s:black)       " Default text - light gray on black
 call s:HL("Comment",     s:comment,     s:black,      "ITALIC") " Comments - medium gray, italic
-call s:HL("Identifier",  s:light_gray2, s:black)       " Variable names, etc. - same as Normal
-call s:HL("Function",    s:purple,        s:black,      "BOLD")   " Function names - muted blue, bold
+call s:HL("Identifier",  s:muted_lilac1, s:black)       " Variable names, etc. - same as Normal
+call s:HL("Function",    s:muted_lilac2,        s:black,      "BOLD")   " Function names - muted blue, bold
 call s:HL("Statement",   s:white,       s:black,      "BOLD")   " Keywords like if, for, while - white, bold
 hi! link Keyword Statement                                     " Link Keyword to Statement
 hi! link Structure Statement                                   " Link Structure (struct, class) to Statement
 hi! link PreProc Statement                                     " Preprocessor directives (#include)
-call s:HL("Type",        s:magenta,     s:black,      "NONE")   " Data types (int, char, string) - muted magenta
+call s:HL("Type",        s:muted_lilac3,     s:black,      "NONE")   " Data types (int, char, string) - muted magenta
 hi! link StorageClass Type                                     " Link storage class (static, extern) to Type
 hi! link Label Type                                            " Labels
 
 " Literals
-call s:HL("Constant",    s:white,       s:black)       " Constants (true, false, NULL), Enums
+call s:HL("Constant",    s:purple,       s:black)       " Constants (true, false, NULL), Enums
 call s:HL("String",      s:light_gray1, s:black)       " String literals - slightly darker than white
 call s:HL("Character",   s:light_gray1, s:black)       " Character literals
 call s:HL("Number",      s:light_gray1, s:black)       " Numbers (integers, floats)
 call s:HL("Boolean",     s:white,       s:black,      "ITALIC") " true, false explicitly if needed
 
 " Special Syntax Elements
-call s:HL("Special",     s:magenta,     s:black,      "BOLD")   " Special symbols/syntax elements - magenta, bold
+call s:HL("Special",     s:lilac,     s:black,      "BOLD")   " Special symbols/syntax elements - magenta, bold
 call s:HL("SpecialKey",  s:comment,     s:black,      "ITALIC") " Unprintable chars in text - comment color, italic
 call s:HL("NonText",     s:comment,     s:black)       " Chars like trailing spaces, end-of-line markers
 call s:HL("Delimiter",   s:light_gray2, s:black)       " Parentheses, braces, brackets
