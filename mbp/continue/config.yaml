@@ -1,0 +1,46 @@
+name: leofltt-continue
+version: 0.5.0
+models:
+  - name: OlympicCoder7b
+    model: leofltt/OlympicCoder7b
+    provider: ollama
+    roles:
+      - chat
+      - edit
+      - apply
+  - name: Qwen2.5-Coder1.5B
+    provider: ollama
+    model: qwen2.5-coder:1.5b
+    roles:
+      - chat
+      - edit
+      - apply 
+      - autocomplete
+  - name: Qwen2.5-Coder 
+    provider: ollama
+    model: qwen2.5-coder
+    roles:
+      - chat
+      - edit
+      - apply 
+context:
+  - provider: file
+  - provider: code
+  - provider: diff
+  - provider: currentFile
+  - provider: terminal
+  - provider: docs
+  - provider: open
+    params:
+      onlyPinned: true
+  - provider: web
+    params:
+      n: 10
+  - provider: codebase
+  - provider: folder
+  - provider: search
+  - provider: tree
+  - provider: problems
+  - provider: debugger
+    params:
+      stackDepth: 3 

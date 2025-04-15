@@ -70,7 +70,7 @@ style = "Italic" # Or let the system handle italics if the specific style isn't 
 # Default colors
 [colors.primary]
 background = '#000000' # Black background
-foreground = '#d0d0d0' # Light grey text
+foreground = '#e0e0e0' # Off White text
 
 # Cursor colors
 [colors.cursor]
@@ -85,20 +85,20 @@ background = '#f0f0f0' # Off White selection background
 # Normal colors (ANSI escape codes 0-7)
 [colors.normal]
 black =   '#282828'
-red =     '#888888' # Grey shades instead of colors
-green =   '#989898'
-yellow =  '#a8a8a8'
-blue =    '#b8b8b8'
-magenta = '#c8c8c8'
+red =     '#cc5555' # '#888888' # Grey shades instead of colors
+green =   '#8FBC8F' # '#989898'
+yellow =  '#f0ebd2' # '#cccc55' previously '#a8a8a8'
+blue =    '#5588cc' # '#b8b8b8'
+magenta = '#debfff' # '#cc55cc' '#c8c8c8'
 cyan =    '#d8d8d8'
 white =   '#e8e8e8'
 
 # Bright colors (ANSI escape codes 8-15)
 [colors.bright]
 black =   '#383838'
-red =     '#909090' # Slightly different grey shades
-green =   '#a0a0a0'
-yellow =  '#b0b0b0'
+red =     '#cc5555' # '#909090' # Slightly different grey shades
+green =   '#60d060' # '#a0a0a0'
+yellow =  '#cccc55' # '#b0b0b0'
 blue =    '#c0c0c0'
 magenta = '#d0d0d0'
 cyan =    '#e0e0e0'

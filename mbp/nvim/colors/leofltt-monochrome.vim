@@ -40,6 +40,7 @@ let s:muted_lilac1 = { "gui": "#F0EBD2", "cterm": "228", "ctermN": 228 }
 let s:muted_lilac2 = { "gui": "#E6E2CC", "cterm": "235", "ctermN": 235 }
 let s:muted_lilac3 = { "gui": "#DEBFFF", "cterm": "226", "ctermN": 226 }
 let s:darker_purple = { "gui": "#7014A6", "cterm": "92", "ctermN": 92 }
+let s:muted_green = { "gui": "#8FBC8F", "cterm": "142", "ctermN": 142 }
 
 " Helper function to define highlights {{{1
 function! s:HL(group, fg, bg, ...)
@@ -153,8 +154,8 @@ call s:HL("Folded",      s:comment,     s:dark_gray1, "NONE")   " Folded text ma
 
 " Command line & Messages
 call s:HL("ModeMsg",     s:white,       s:black,      "BOLD")   " Mode messages (-- INSERT --)
-call s:HL("MoreMsg",     s:green,       s:black,      "BOLD")   " More prompt
-call s:HL("Question",    s:green,       s:black,      "BOLD")   " Question prompt
+call s:HL("MoreMsg",     s:muted_green,       s:black,      "BOLD")   " More prompt
+call s:HL("Question",    s:muted_green,       s:black,      "BOLD")   " Question prompt
 call s:HL("WildMenu",    s:white,       s:muted_lilac3,       "BOLD")   " Wildmenu completion selection (like PmenuSel)
 
 " Other
