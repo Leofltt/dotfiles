@@ -41,6 +41,7 @@ let s:muted_lilac2 = { "gui": "#E6E2CC", "cterm": "235", "ctermN": 235 }
 let s:muted_lilac3 = { "gui": "#DEBFFF", "cterm": "226", "ctermN": 226 }
 let s:darker_purple = { "gui": "#7014A6", "cterm": "92", "ctermN": 92 }
 let s:muted_green = { "gui": "#8FBC8F", "cterm": "142", "ctermN": 142 }
+let s:muted_blue = { "gui": "#6B88B3", "cterm": "67",    "ctermN": 67 }
 
 " Helper function to define highlights {{{1
 function! s:HL(group, fg, bg, ...)
