@@ -1,0 +1,48 @@
+- defaults:
+    link:
+      relink: true # Remove existing symlinks that point elsewhere
+      create: true # Create parent directories if needed
+
+- link:
+    # --- Application Configurations ---
+
+    # Ghostty config file
+    ~/.config/ghostty/config:
+      path: mbp/config/ghostty/config # Source path relative to repo root
+      if: '[ "$(uname)" = "Darwin" ] ' # Link on macOS 
+
+    # Continue config file
+    ~/.continue/config.yaml:
+      path: mbp/continue/config.yaml # Source path relative to repo root
+      if: '[ "$(uname)" = "Darwin" ]'  # Link on macOS 
+
+    # --- Shell/Terminal Configurations ---
+
+    # Tmux config file
+    ~/.tmux.conf:
+      path: mbp/tmux.conf # Source path relative to repo root
+      if: '[ "$(uname)" = "Darwin" ]' 
+
+    # Zsh config file
+    ~/.zshrc:
+      path: mbp/zshrc # Source path relative to repo root
+      if: '[ "$(uname)" = "Darwin" ]' 
+
+    # --- Neovim Configurations ---
+
+    # Neovim colors directory
+    # This will create a symlink at ~/.config/nvim/colors pointing to
+    # your repo's config/nvim/colors directory.
+    ~/.config/nvim/colors:
+      path: mbp/config/nvim/colors # Source path relative to repo root
+      if: '[ "$(uname)" = "Darwin" ]' # Link on macOS 
+
+    # Neovim init.lua file
+    ~/.config/nvim/init.lua:
+      path: mbp/config/nvim/init.lua # Source path relative to repo root
+      if: '[ "$(uname)" = "Darwin" ] ' # Link on macOS 
+
+# You can add other tasks below if needed, like 'shell' commands, 'clean', etc.
+# - shell:
+#     - command: echo "Linking done!"
+#       description: Final message

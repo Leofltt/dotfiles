@@ -1,0 +1,73 @@
+# ~/.config/ghostty/config
+
+# Environment
+term = "xterm-256color" 
+shell-integration = zsh
+shell-integration-features = cursor
+
+# Initial window size (columns × lines)
+window-width = 88                                
+window-height = 28                               
+
+# Padding (px)
+window-padding-x = 5                             
+window-padding-y = 0                             
+
+# Decorations
+window-decoration = auto  
+window-theme = ghostty
+macos-titlebar-style = tabs                    
+
+# Visual appearance
+background-opacity = 0.88                        
+scrollback-limit = 10000000                      
+
+# Font
+font-family = "JetBrainsMono Nerd Font Mono"     
+font-family-bold = "JetBrainsMono Nerd Font Mono" 
+font-family-italic = "JetBrainsMono Nerd Font Mono" 
+font-size = 12.0                                 
+
+# Cursor
+cursor-style = block                            
+cursor-style-blink = false                        
+
+# Colors
+background = "#000000"                           
+foreground = "#e0e0e0"                           
+selection-background = "#f0f0f0"                 
+selection-foreground = "#1c1c1c"                
+selection-invert-fg-bg = true                   
+
+# ANSI palette (0–15)
+palette = "0=#282828"                            
+palette = "1=#cc5555"                            
+palette = "2=#8FBC8F"                            
+palette = "3=#f0ebd2"                            
+palette = "4=#6b88b3"                            
+palette = "5=#debfff"                            
+palette = "6=#d8d8d8"                           
+palette = "7=#e8e8e8"                            
+palette = "8=#383838"                           
+palette = "9=#cc5555"                            
+palette = "10=#60d060"                           
+palette = "11=#cccc55"                           
+palette = "12=#c0c0c0"                           
+palette = "13=#d0d0d0"                           
+palette = "14=#e0e0e0"                           
+palette = "15=#f0f0f0"                           
+
+# Mouse & selection behavior
+copy-on-select = false   
+
+# MacOs Icon
+macos-icon = custom-style
+macos-icon-frame = plastic 
+macos-icon-ghost-color = "#C0C0C0"
+macos-icon-screen-color = "#333333"
+
+# Misc macOs stuff
+macos-non-native-fullscreen = false
+macos-window-shadow = true
+macos-option-as-alt = true
+

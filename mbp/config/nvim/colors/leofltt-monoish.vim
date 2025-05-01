@@ -1,6 +1,6 @@
 " vim: fdm=marker
 
-" Name:     leofltt-monochrome
+" Name:     leofltt-monoish
 " Author:   LeoFltt
 " License:  MIT
 " Version:  1.1
@@ -11,7 +11,7 @@ if exists("syntax_on")
   syntax reset
 endif
 
-let g:colors_name = "leofltt-monochrome"
+let g:colors_name = "leofltt-monoish"
 set background=dark
 
 " Palette {{{1
@@ -42,6 +42,15 @@ let s:muted_lilac3 = { "gui": "#DEBFFF", "cterm": "226", "ctermN": 226 }
 let s:darker_purple = { "gui": "#7014A6", "cterm": "92", "ctermN": 92 }
 let s:muted_green = { "gui": "#8FBC8F", "cterm": "142", "ctermN": 142 }
 let s:muted_blue = { "gui": "#6B88B3", "cterm": "67",    "ctermN": 67 }
+let s:muted_purp = { "gui": "#95619B", "cterm": "96", "ctermN": 96 }
+let s:dusky_violet = { "gui": "#79619B", "cterm": "60", "ctermN": 60 }
+let s:soft_indigo = { "gui": "#947FE0", "cterm": "104", "ctermN": 104 }
+let s:lilac_bloom = { "gui": "#C57FE0", "cterm": "177", "ctermN": 177 }
+let s:lavender_dream   = { "gui": "#AD9FDD", "cterm": "146", "ctermN": 146 }
+let s:cool_periwinkle  = { "gui": "#9FB1DD", "cterm": "110", "ctermN": 110 }
+let s:heather_mist     = { "gui": "#9899B7", "cterm": "103", "ctermN": 103 }
+let s:rosy_lavender    = { "gui": "#A698B7", "cterm": "139", "ctermN": 139 }
+
 
 " Helper function to define highlights {{{1
 function! s:HL(group, fg, bg, ...)
@@ -75,8 +84,8 @@ endfunction
 call s:HL("Normal",      s:light_gray2, s:black)       " Default text - light gray on black
 call s:HL("Comment",     s:comment,     s:black,      "ITALIC") " Comments - medium gray, italic
 call s:HL("Identifier",  s:muted_lilac1, s:black)       " Variable names, etc. - same as Normal
-call s:HL("Function",    s:muted_lilac2,        s:black,      "BOLD")   " Function names - muted blue, bold
-call s:HL("Statement",   s:white,       s:black,      "BOLD")   " Keywords like if, for, while - white, bold
+call s:HL("Function",    s:muted_lilac2, s:black,      "BOLD")   " Function names - muted blue, bold
+call s:HL("Statement",   s:heather_mist, s:black,      "BOLD")   " Keywords like if, for, while - white, bold
 hi! link Keyword Statement                                     " Link Keyword to Statement
 hi! link Structure Statement                                   " Link Structure (struct, class) to Statement
 hi! link PreProc Statement                                     " Preprocessor directives (#include)
@@ -85,18 +94,19 @@ hi! link StorageClass Type                                     " Link storage cl
 hi! link Label Type                                            " Labels
 
 " Literals
-call s:HL("Constant",    s:purple,       s:black)       " Constants (true, false, NULL), Enums
+call s:HL("Constant",    s:rosy_lavender,       s:black)       " Constants (true, false, NULL), Enums
 call s:HL("String",      s:light_gray1, s:black)       " String literals - slightly darker than white
 call s:HL("Character",   s:light_gray1, s:black)       " Character literals
 call s:HL("Number",      s:light_gray1, s:black)       " Numbers (integers, floats)
-call s:HL("Boolean",     s:white,       s:black,      "ITALIC") " true, false explicitly if needed
+call s:HL("Boolean",     s:light_gray1,       s:black,      "ITALIC") " true, false explicitly if needed
 
 " Special Syntax Elements
 call s:HL("Special",     s:lilac,     s:black,      "BOLD")   " Special symbols/syntax elements - magenta, bold
 call s:HL("SpecialKey",  s:comment,     s:black,      "ITALIC") " Unprintable chars in text - comment color, italic
 call s:HL("NonText",     s:comment,     s:black)       " Chars like trailing spaces, end-of-line markers
 call s:HL("Delimiter",   s:light_gray2, s:black)       " Parentheses, braces, brackets
-call s:HL("Operator",    s:white,       s:black)       " +, -, *, /, =, etc. - white
+call s:HL("Operator",    s:lilac_bloom, s:black)       " +, -, *, /, =, etc. - white
+
 
 " Specific Language Elements (Examples - Add more as needed)
 hi! link rubySymbol String                                     " Ruby symbols like strings
@@ -112,11 +122,11 @@ call s:HL("Todo",        s:yellow,      s:black,      "BOLD", "BOLD,UNDERLINE") 
 " CoC / LSP Diagnostics (Link to base Error/Warning or define explicitly)
 hi! link DiagnosticError Error
 hi! link DiagnosticWarn WarningMsg
-call s:HL("DiagnosticInfo", s:blue,     s:black)
+call s:HL("DiagnosticInfo", s:muted_blue,     s:black)
 call s:HL("DiagnosticHint", s:comment,  s:black, "ITALIC")
 
 " Diff Mode {{{1
-call s:HL("DiffAdd",     s:green,       s:black)       " Added lines - muted green text
+call s:HL("DiffAdd",     s:muted_green,       s:black)       " Added lines - muted green text
 call s:HL("DiffDelete",  s:red,         s:black)       " Deleted lines - muted red text
 call s:HL("DiffChange",  s:yellow,      s:black)       " Changed lines - muted yellow text
 call s:HL("DiffText",    s:white,       s:dark_gray2, "BOLD") " Text inside changed lines - white on dark gray, bold

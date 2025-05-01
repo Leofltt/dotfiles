@@ -63,11 +63,11 @@ export PATH="/opt/homebrew/opt/python@3.10/bin:$PATH"
 
 #alias python3 = /opt/homebrew/opt/python@3.10/bin/python3.10
 
-export CONAN_PYTHON_EXECUTABLE="/Users/leofltt/.pyenv/shims/python3"
+export CONAN_PYTHON_EXECUTABLE="$(which python3.10)"
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# export PYENV_ROOT="$HOME/.pyenv"
+# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/leofltt/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/leofltt/google-cloud-sdk/path.zsh.inc'; fi
@@ -75,6 +75,11 @@ if [ -f '/Users/leofltt/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/leofltt
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/leofltt/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/leofltt/google-cloud-sdk/completion.zsh.inc'; fi
 
+# dirEnv
+eval "$(direnv hook zsh)"
 
 # Added by Windsurf
 export PATH="/Users/leofltt/.codeium/windsurf/bin:$PATH"
+
+# disable cursor blinking
+echo -e '\e[?12l'
