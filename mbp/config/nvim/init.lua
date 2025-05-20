@@ -564,8 +564,8 @@ local map = vim.keymap.set
 local gopts = { noremap = true, silent = true } -- Global options
 
 -- Set leader key BEFORE mapping it. Default is '\'
-vim.g.mapleader = '`'      -- Set leader key to '`'
-vim.g.maplocalleader = '`' -- Set localleader key to '`' (often useful)
+vim.g.mapleader = ' '      -- Set leader key to '`'
+vim.g.maplocalleader = ' ' -- Set localleader key to '`' (often useful)
 
 -- Tslime Mappings (using leader now potentially)
 map('v', '<leader>cc', '<Plug>SendSelectionToTmux', gopts)  -- Leader c c (visual)

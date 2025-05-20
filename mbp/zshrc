@@ -61,6 +61,9 @@ export PATH="/usr/local/sbin:$PATH"
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export PATH="/opt/homebrew/opt/python@3.10/bin:$PATH"
 
+export PATH="$HOME/.npm-global/bin:$PATH"
+
+
 #alias python3 = /opt/homebrew/opt/python@3.10/bin/python3.10
 
 export CONAN_PYTHON_EXECUTABLE="$(which python3.10)"
