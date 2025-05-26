@@ -49,7 +49,9 @@ export ACLOCAL_PATH="$(brew --prefix pkg-config)/share/aclocal:$ACLOCAL_PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$PATH:/Users/leofltt/.local/bin"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-export DYLD_FRAMEWORK_PATH="$DYLD_FRAMEWORK_PATH:/opt/homebrew/Cellar/csound/6.18.1_5/Frameworks/CsoundLib64.framework"
+# export DYLD_FRAMEWORK_PATH="$DYLD_FRAMEWORK_PATH:/opt/homebrew/Cellar/csound/6.18.1_5/Frameworks/CsoundLib64.framework"
+export DYLD_FRAMEWORK_PATH="/Users/leofltt/Library/Frameworks:$DYLD_FRAMEWORK_PATH"
+
 export PATH="/usr/local/sbin:$PATH"
 
 # ghcup (Haskell)
