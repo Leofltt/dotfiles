@@ -416,125 +416,139 @@ require("lazy").setup({
   },
   { 'L3MON4D3/LuaSnip' },   -- Snippet engine dependency
 
-  -- == LSP (Language Server Protocol) ==
-  {   -- LSP Configuration Foundation
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      -- Automatically install LSPs and formatters
-      { 'williamboman/mason.nvim', config = true },       -- Adds the :Mason command
-      'williamboman/mason-lspconfig.nvim',
+ -- == LSP (Language Server Protocol) ==
+{
+  'neovim/nvim-lspconfig',
+  dependencies = {
+    { 'williamboman/mason.nvim', config = true }, -- Ensures Mason is set up
+    'williamboman/mason-lspconfig.nvim',
+    -- 'cmp_nvim_lsp' is already a dependency of 'nvim-cmp', so it's available
+  },
+  config = function()
+    local lspconfig = require('lspconfig')
+    local mason_lspconfig = require('mason-lspconfig')
+    local capabilities = require('cmp_nvim_lsp').default_capabilities() -- Get capabilities from nvim-cmp
 
-      -- Useful status updates for LSP
-      -- {'j-hui/fidget.nvim', tag = 'legacy', opts = {}},
-
-      -- Add other LSP related plugins here, like linters, formatters if needed
-      -- 'jose-elias-alvarez/null-ls.nvim', -- for formatters/linters (might be replaced by nvim-lint, conform.nvim)
-      -- 'jayp0521/mason-null-ls.nvim', -- Bridges mason and null-ls
-    },
-    config = function()
-      local lspconfig = require('lspconfig')
-      local mason_lspconfig = require('mason-lspconfig')
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()       -- Get capabilities from nvim-cmp
-
-      -- Setup language servers managed by Mason
-      mason_lspconfig.setup_handlers {
-        -- Default handler: Setup server with capabilities
+    -- Configure mason-lspconfig:
+    -- This single setup call will handle both ensuring LSPs are installed
+    -- and setting up their configurations with lspconfig.
+    mason_lspconfig.setup({
+      -- List of LSPs to ensure are installed by Mason.
+      ensure_installed = {
+        "lua_ls",
+        "pyright",
+        "bashls",
+        "dockerls",
+        "jsonls",
+        "yamlls",
+        "rust_analyzer",
+        "hls",
+        "clangd"
+        -- Add any other language servers you want Mason to manage here
+      },
+      -- Handlers for setting up each language server with nvim-lspconfig.
+      handlers = {
+        -- Default handler: This will be used for any server in 'ensure_installed'
+        -- that doesn't have a specific handler defined below.
         function(server_name)
           lspconfig[server_name].setup {
             capabilities = capabilities,
+            -- You can add a common on_attach here if needed, though your LspAttach autocmd is fine.
           }
         end,
+
         -- === Custom setups for specific servers ===
         ["lua_ls"] = function()
           lspconfig.lua_ls.setup {
             capabilities = capabilities,
-            settings = {              -- Custom settings for lua_ls
+            settings = {
               Lua = {
                 runtime = { version = 'LuaJIT' },
                 diagnostics = { globals = { 'vim' } },
                 workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+                telemetry = { enable = false }, -- Optional: disable telemetry
               },
             },
           }
         end,
-        -- Python using pyright
         ["pyright"] = function()
           lspconfig.pyright.setup {
             capabilities = capabilities,
-            -- Add pyright specific settings here if needed
+            -- Add pyright specific settings here if needed, e.g.:
+            -- settings = {
+            --   python = {
+            --     analysis = {
+            --       typeCheckingMode = "basic", -- or "strict"
+            --     }
+            --   }
+            -- }
           }
         end,
-        -- Rust using rust_analyzer
         ["rust_analyzer"] = function()
           lspconfig.rust_analyzer.setup {
             capabilities = capabilities,
             settings = {
-              rust_analyzer = {
-
+              -- Note: Settings for rust-analyzer are typically nested under "rust-analyzer"
+              ["rust-analyzer"] = {
+                -- Example: enable clippy
+                -- checkOnSave = { command = "clippy" }
               }
             }
+            -- If you have a rust-project.json or the server is in $PATH, it often works without extra settings.
           }
         end,
-        -- Haskell using hls
-        ["hls"] = function()
+        ["hls"] = function() -- Haskell Language Server
           lspconfig.hls.setup {
             capabilities = capabilities,
             settings = {
-              hls = {
-
+              -- Note: HLS settings are typically nested under "haskell"
+              haskell = {
+                -- Add HLS specific settings here if needed
               }
             }
           }
         end,
-        -- C/CPP using clangd
         ["clangd"] = function()
           lspconfig.clangd.setup {
             capabilities = capabilities,
-            settings = {
-              clangd = {
-
-              }
-            }
+            -- Add clangd specific settings here if needed
+            -- cmd = {"clangd", "--offset-encoding=utf-16"}, -- Example for specific encoding if issues arise
           }
         end,
+        -- Servers like bashls, dockerls, jsonls, yamlls from 'ensure_installed'
+        -- will use the default handler defined above as they don't have specific overrides here.
       }
+    })
 
-      -- Keymaps for LSP actions (add these in on_attach or globally)
-      -- These will be applied ONLY to buffers with an active LSP client
-      vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-        callback = function(ev)
-          -- Enable completion triggered by <c-x><c-o>
-          vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    -- Keymaps for LSP actions (LspAttach autocommand)
+    -- This part of your configuration is good and should remain as is.
+    vim.api.nvim_create_autocmd('LspAttach', {
+      group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }), -- Added clear = true
+      callback = function(ev)
+        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+        local map = vim.keymap.set
+        local opts = { buffer = ev.buf, noremap = true, silent = true }
 
-          local map = vim.keymap.set
-          local opts = { buffer = ev.buf, noremap = true, silent = true }       -- Map only in the current buffer
+        map('n', 'gD', vim.lsp.buf.declaration, opts)
+        map('n', 'gd', vim.lsp.buf.definition, opts)
+        map('n', 'K', vim.lsp.buf.hover, opts)
+        map('n', 'gi', vim.lsp.buf.implementation, opts)
+        map('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+        map('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+        map('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+        map('n', '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
+        map('n', '<leader>D', vim.lsp.buf.type_definition, opts)
+        map('n', '<leader>rn', vim.lsp.buf.rename, opts)
+        map({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
+        map('n', 'gr', vim.lsp.buf.references, opts)
+        map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, opts)
 
-          map('n', 'gD', vim.lsp.buf.declaration, opts)
-          map('n', 'gd', vim.lsp.buf.definition, opts)
-          map('n', 'K', vim.lsp.buf.hover, opts)
-          map('n', 'gi', vim.lsp.buf.implementation, opts)
-          map('n', '<C-k>', vim.lsp.buf.signature_help, opts)           -- Or map K if hover isn't used often
-          map('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
-          map('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
-          map('n', '<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
-          map('n', '<leader>D', vim.lsp.buf.type_definition, opts)
-          map('n', '<leader>rn', vim.lsp.buf.rename, opts)
-          map({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
-          map('n', 'gr', vim.lsp.buf.references, opts)
-          map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, opts)           -- Formatting
+        print("LSP attached to buffer:", ev.buf, "Client ID:", ev.data.client_id) -- More informative print
+      end
+    })
 
-          print("LSP attached to buffer:", ev.buf)
-        end
-      })
-
-      -- Ensure Mason LSPs are installed
-      -- Add list of servers you want Mason to ensure are installed
-      mason_lspconfig.setup({
-        ensure_installed = { "lua_ls", "pyright", "bashls", "dockerls", "jsonls", "yamlls", "rust_analyzer", "hls", "clangd" },          -- Add your desired LSPs here!
-      })
-    end,
-  },
+  end,
+}, 
 
   -- == Utility / Language Specific ==
   { 'junegunn/fzf',        build = './install --all' },        -- Core fzf (required by fzf.vim/telescope's fzf sorter)
