@@ -35,7 +35,12 @@
     # your repo's config/nvim/colors directory.
     ~/.config/nvim/colors:
       path: mbp/config/nvim/colors # Source path relative to repo root
-      if: '[ "$(uname)" = "Darwin" ]' # Link on macOS 
+      if: '[ "$(uname)" = "Darwin" ]' # Link on macOS
+
+    # Neovim lua directory 
+    ~/.config/nvim/lua:
+      path: mbp/config/nvim/lua 
+      if: '[ "$(uname)" = "Darwin" ]'
 
     # Neovim init.lua file
     ~/.config/nvim/init.lua:

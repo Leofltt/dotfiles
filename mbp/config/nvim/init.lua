@@ -548,8 +548,26 @@ require("lazy").setup({
     })
 
   end,
-}, 
-
+},
+    --- --- Csound Plugins ---
+  {
+    "luisjure/csound-vim",
+    ft = { "csound", "csd" }, -- Load only for Csound file types
+    -- If you ever need specific setup for csound-vim, add a config function here:
+    -- config = function()
+    --   -- Example: vim.cmd("autocmd Syntax csound setlocal foldmethod=manual")
+    -- end,
+  },
+  {
+    "kunstmusik/csound-repl",
+    ft = { "csound", "csd" }, -- Load only for Csound file types
+    -- IMPORTANT: Configure csound-repl. Check its GitHub README for options.
+    config = function()
+      vim.g.csound_repl_target = "tmux" -- Example: adjust as per your setup (tmux, terminal, etc.)
+      -- Add other csound-repl specific configurations here, like keymaps for sending code.
+      -- e.g., vim.keymap.set('n', '<leader>cs', '<Plug>CsoundReplSendParagraph')
+    end,
+  },
   -- == Utility / Language Specific ==
   { 'junegunn/fzf',        build = './install --all' },        -- Core fzf (required by fzf.vim/telescope's fzf sorter)
   { 'junegunn/fzf.vim',    dependencies = { 'junegunn/fzf' } }, -- Basic fzf commands (optional if using Telescope heavily)
