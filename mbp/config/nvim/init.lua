@@ -564,8 +564,33 @@ require("lazy").setup({
     -- IMPORTANT: Configure csound-repl. Check its GitHub README for options.
     config = function()
       vim.g.csound_repl_target = "tmux" -- Example: adjust as per your setup (tmux, terminal, etc.)
-      -- Add other csound-repl specific configurations here, like keymaps for sending code.
-      -- e.g., vim.keymap.set('n', '<leader>cs', '<Plug>CsoundReplSendParagraph')
+      -- Set Csound-repl port on load
+          -- Create an autocommand group to manage this specific autocmd
+    -- The 'clear = true' ensures that if this config runs multiple times (e.g., during reload),
+    -- the autocmd isn't duplicated.
+    vim.api.nvim_create_augroup("CsoundReplPortConfig", { clear = true })
+
+    -- Add an autocommand to set the port *after* a Csound file is read
+    -- This ensures Csound_set_port from csound-vim is available.
+    vim.api.nvim_create_autocmd("BufReadPost", {
+      group = "CsoundReplPortConfig",
+      pattern = "*.csd,*.csound", -- Target Csound file types
+      callback = function()
+        -- Ensure the Csound_set_port function exists before calling it, as an extra safeguard.
+        -- This check might not be strictly necessary if BufReadPost is late enough, but it doesn't hurt.
+        if vim.fn.exists("Csound_set_port") == 1 then
+          vim.cmd("call Csound_set_port(11000)")          
+          print("Csound-repl port set to 11000 via autocommand.")
+        else
+          -- This branch should ideally not be hit if the timing is correct.
+          print("Warning: Csound_set_port not found when trying to set port.")
+        end
+      end,
+      -- Set once to true if you only want it to run once per Neovim session for any Csound file
+      -- Otherwise, it will run every time you open a new Csound buffer.
+      -- For a port setting, "once = true" is probably appropriate, as the port is global.
+      once = true,
+    })
     end,
   },
   -- == Utility / Language Specific ==
