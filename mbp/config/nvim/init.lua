@@ -46,7 +46,7 @@ vim.g.tslime_always_current_session = 1
 -- Disable default providers loaded by Neovim (we might handle Python/Node via Mason)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-vim.g.python3_host_prog = '/usr/bin/python3' -- Adjust if your python path is different
+vim.g.python3_host_prog = '/opt/homebrew/bin/python3' 
 
 
 -- font
@@ -576,12 +576,6 @@ require("lazy").setup({
   { 'thoughtbot/vim-rspec' },                                  -- RSpec integration (kept from original)
 
   { 'mattn/emmet-vim' },                                       -- HTML/CSS abbreviation expansion (Replaces Sparkup)
-
-
-  -- == Deprecated / Replaced Plugins from original config ==
-  -- 'neoclide/coc.nvim' -- Replaced by nvim-cmp & nvim-lspconfig
-  -- 'wincent/command-t' -- Replaced by telescope.nvim
-  -- 'rstacruz/sparkup' -- Replaced by emmet-vim or LSP features
 
 }, {
   -- lazy.nvim options
