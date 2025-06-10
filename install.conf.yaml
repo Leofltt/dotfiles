@@ -52,6 +52,11 @@
       path: mbp/gitconfig
       if:  '[ "$(uname)" = "Darwin" ] '
 
+    # Aerospace
+    ~/.aerospace.toml:
+      path: mbp/aerospace.toml
+      if:  '[ "$(uname)" = "Darwin" ] '
+
 # You can add other tasks below if needed, like 'shell' commands, 'clean', etc.
 # - shell:
 #     - command: echo "Linking done!"
