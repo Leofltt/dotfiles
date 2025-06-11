@@ -1,6 +1,3 @@
-# Place a copy of this config to ~/.aerospace.toml
-# After that, you can edit ~/.aerospace.toml to your liking
-
 # You can use it to add commands that run after login to macOS user session.
 # 'start-at-login' needs to be 'true' for 'after-login-command' to work
 # Available commands: https://nikitabobko.github.io/AeroSpace/commands
@@ -47,6 +44,11 @@ automatically-unhide-macos-hidden-apps = false
 [[on-window-detected]]
 if.app-id = "com.mitchellh.ghostty"
 run = "layout floating"
+
+# floating finder, still undecided about it
+# [[on-window-detected]]
+# if.app-id = 'com.apple.finder'
+# run = 'layout floating'
 
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
@@ -106,6 +108,8 @@ run = "layout floating"
     alt-slash = 'layout horizontal vertical'
     alt-comma = 'layout tiles accordion'
 
+    alt-period = 'move-workspace-to-monitor focused'
+
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
     alt-h = 'focus left'
     alt-j = 'focus down'
@@ -136,7 +140,7 @@ run = "layout floating"
     alt-b = 'workspace B'
     alt-c = 'workspace C'
     alt-d = 'workspace D'
-    alt-e = 'workspace E'
+    
     alt-f = 'workspace F'
     alt-g = 'workspace G'
     alt-i = 'workspace I'
@@ -150,7 +154,7 @@ run = "layout floating"
     alt-t = 'workspace T'
     alt-u = 'workspace U'
     alt-v = 'workspace V'
-    alt-w = 'workspace W'
+        
     alt-x = 'workspace X'
     alt-y = 'workspace Y'
     alt-z = 'workspace Z'
@@ -169,7 +173,7 @@ run = "layout floating"
     alt-shift-b = 'move-node-to-workspace B'
     alt-shift-c = 'move-node-to-workspace C'
     alt-shift-d = 'move-node-to-workspace D'
-    alt-shift-e = 'move-node-to-workspace E'
+    
     alt-shift-f = 'move-node-to-workspace F'
     alt-shift-g = 'move-node-to-workspace G'
     alt-shift-i = 'move-node-to-workspace I'
@@ -183,7 +187,7 @@ run = "layout floating"
     alt-shift-t = 'move-node-to-workspace T'
     alt-shift-u = 'move-node-to-workspace U'
     alt-shift-v = 'move-node-to-workspace V'
-    alt-shift-w = 'move-node-to-workspace W'
+    
     alt-shift-x = 'move-node-to-workspace X'
     alt-shift-y = 'move-node-to-workspace Y'
     alt-shift-z = 'move-node-to-workspace Z'
@@ -192,6 +196,12 @@ run = "layout floating"
     alt-tab = 'workspace-back-and-forth'
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
     alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+    
+    # alt + e to focus external monitor
+    alt-e = 'focus-monitor "DELL S2421HS"'
+
+    # alt + r to focus your built-in Retina display
+    alt-r = 'focus-monitor "Built-in Retina Display"'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#mode
     alt-shift-s = 'mode service'
