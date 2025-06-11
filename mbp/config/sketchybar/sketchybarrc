@@ -1,0 +1,12 @@
+# Path to your custom script
+AEROSPACE_LAYOUT_SCRIPT="$HOME/.config/sketchybar/scripts/aerospace_layout.sh"
+
+# Define the item
+sketchybar --add item aerospace_layout right \
+           --set aerospace_layout script="$AEROSPACE_LAYOUT_SCRIPT" \
+                                  update_freq=1 \
+                                  label.font="SF Pro Display:Bold:12" \
+                                  label.color="0xffffffff" \
+                                  padding_left=5 \
+                                  padding_right=5 \
+           --subscribe aerospace_layout front_app_switched window_state_changed

@@ -46,9 +46,9 @@ if.app-id = "com.mitchellh.ghostty"
 run = "layout floating"
 
 # floating finder, still undecided about it
-# [[on-window-detected]]
-# if.app-id = 'com.apple.finder'
-# run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
 
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping

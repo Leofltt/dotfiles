@@ -1,8 +1,6 @@
 -- ~/.config/nvim/init.lua
 --[[
 
-Migrated from init.vim and updated with Lua plugins.
-
 Sections:
 1. lazy.nvim Bootstrap
 2. Global Settings (vim.g)
@@ -12,7 +10,7 @@ Sections:
    - Git (fugitive)
    - Completion (cmp, luasnip)
    - LSP (lspconfig, mason)
-   - Utility (fzf, tslime, rspec, emmet)
+   - Utility (fzf, tslime, rspec, emmet, Comment) -- Added Comment
 5. General Key Mappings
 6. Autocmds (if any needed later)
 7. Colorscheme Loading
@@ -46,7 +44,7 @@ vim.g.tslime_always_current_session = 1
 -- Disable default providers loaded by Neovim (we might handle Python/Node via Mason)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-vim.g.python3_host_prog = '/opt/homebrew/bin/python3' 
+vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
 
 
 -- font
@@ -54,11 +52,14 @@ vim.o.guifont = "JetBrainsMono Nerd Font Mono"
 
 -- -----------------------------------------------------------------------------
 -- 3. Neovim Options (vim.opt)
---    Set common Neovim options
+--   Set common Neovim options
 -- -----------------------------------------------------------------------------
 local opt = vim.opt -- Alias for vim.opt
 
--- opt.nocompatible = false        -- This line is unnecessary and causes an error in modern Neovim
+-- ADDED: Enable system clipboard
+opt.clipboard = "unnamedplus" -- Use system clipboard for all yank/paste operations
+
+-- opt.nocompatible = false      -- This line is unnecessary and causes an error in modern Neovim
 opt.number = true         -- Show line numbers
 opt.relativenumber = true -- Show relative line numbers
 opt.cursorline = true     -- Highlight the current line
@@ -81,16 +82,16 @@ opt.sidescrolloff = 8     -- Keep 8 columns visible left/right of cursor
 opt.wrap = false          -- Do not wrap long lines
 
 -- Persistent Undo Setup
-opt.undofile = true                                   -- Enable persistent undo
+opt.undofile = true                 -- Enable persistent undo
 local undo_dir = vim.fn.stdpath("data") .. "/undodir" -- Store the path in a variable
-opt.undodir = undo_dir                                -- Set the option using the variable
+opt.undodir = undo_dir                -- Set the option using the variable
 -- Check and create the directory using the variable directly
 if vim.fn.isdirectory(undo_dir) == 0 then
   vim.fn.mkdir(undo_dir, "p")   -- Create directory if it doesn't exist
 end
 
-opt.updatetime = 300                                -- Faster update time for CursorHold events (useful for LSP/git signs)
-opt.signcolumn = "yes"                              -- Always show the sign column to avoid layout shifts
+opt.updatetime = 300                -- Faster update time for CursorHold events (useful for LSP/git signs)
+opt.signcolumn = "yes"              -- Always show the sign column to avoid layout shifts
 
 opt.completeopt = { "menu", "menuone", "noselect" } -- Completion options
 
@@ -99,9 +100,9 @@ opt.completeopt = { "menu", "menuone", "noselect" } -- Completion options
 -- -----------------------------------------------------------------------------
 require("lazy").setup({
   -- == Core / UI ==
-  { "nvim-lua/plenary.nvim" },   -- Utility functions, required by Telescope etc.
+  { "nvim-lua/plenary.nvim" },    -- Utility functions, required by Telescope etc.
 
-  {                              -- Fuzzy Finder (Replaces Command-T)
+  {                     -- Fuzzy Finder (Replaces Command-T)
     'nvim-telescope/telescope.nvim',
     tag = '0.1.8',
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -138,15 +139,15 @@ require("lazy").setup({
       map('n', '<leader>fb', builtin.buffers, { desc = 'Find Buffers' })
       map('n', '<leader>fh', builtin.help_tags, { desc = 'Help Tags' })
       map('n', '<leader>fo', builtin.oldfiles, { desc = 'Find Old Files' })
-      map('n', '<leader>gs', builtin.git_status, { desc = 'Git Status' })       -- Example Git integration
+      map('n', '<leader>gs', builtin.git_status, { desc = 'Git Status' })        -- Example Git integration
     end
   },
   -- == File Explorer (NvimTree) ==
   {
     'nvim-tree/nvim-tree.lua',
-    version = "*",                         -- Use the latest stable version
+    version = "*",                -- Use the latest stable version
     dependencies = {
-      'nvim-tree/nvim-web-devicons',       -- OPTIONAL: for file icons
+      'nvim-tree/nvim-web-devicons',      -- OPTIONAL: for file icons
     },
     config = function()
       -- Disable netrw completely (redundant as you did it globally, but good practice)
@@ -160,13 +161,13 @@ require("lazy").setup({
         -- Recommended settings (customize to your liking):
         sort_by = "case_sensitive",
         view = {
-          width = 35,           -- Adjust width as needed
+          width = 35,         -- Adjust width as needed
           side = 'left',
           -- Preserve window structure on close
           preserve_window_proportions = true,
         },
         renderer = {
-          group_empty = true,           -- Show ">" symbol for empty folders
+          group_empty = true,         -- Show ">" symbol for empty folders
           highlight_git = true,
           icons = {
             show = {
@@ -177,7 +178,7 @@ require("lazy").setup({
             },
             -- Requires nvim-web-devicons and a Nerd Font
             glyphs = {
-              default = "󰈚", -- Default icon
+              default = "�", -- Default icon
               symlink = "",
               folder = {
                 arrow_closed = "", -- Arrow when folder is closed
@@ -198,20 +199,20 @@ require("lazy").setup({
           },
         },
         filters = {
-          dotfiles = false,                                                       -- Show dotfiles (hidden files)
-          custom = { ".git", "node_modules", ".cache", "__pycache__" },           -- Hide these folders/files
+          dotfiles = false,                                   -- Show dotfiles (hidden files)
+          custom = { ".git", "node_modules", ".cache", "__pycache__" },        -- Hide these folders/files
           exclude = {},
         },
         git = {
           enable = true,
-          ignore = false,           -- Show files listed in .gitignore
+          ignore = false,       -- Show files listed in .gitignore
           timeout = 400,
         },
         -- Open files in the current window or horizontal split
         actions = {
           open_file = {
-            quit_on_open = false,         -- Keep nvim-tree open after opening a file
-            resize_window = true,         -- Resize window after opening file
+            quit_on_open = false,       -- Keep nvim-tree open after opening a file
+            resize_window = true,       -- Resize window after opening file
             -- Use default bindings for opening files (e.g., Enter opens in current window)
             -- <C-v> opens in vertical split, <C-x> opens in horizontal split
           }
@@ -224,7 +225,7 @@ require("lazy").setup({
         -- Update focus when changing buffers
         update_focused_file = {
           enable = true,
-          update_root = false,           -- Don't change root directory based on file focus
+          update_root = false,        -- Don't change root directory based on file focus
         },
         -- Add other options from nvim-tree documentation if needed
         -- :help nvim-tree.OPTION_NAME
@@ -252,7 +253,7 @@ require("lazy").setup({
         -- A list of parser names, or "all" (may be slow)
         -- Install parsers for languages you commonly use
         ensure_installed = {
-          "lua", "vim", "vimdoc", "query",     -- Base Neovim languages
+          "lua", "vim", "vimdoc", "query",      -- Base Neovim languages
           "bash", "c", "cpp", "go", "html", "css", "javascript",
           "typescript", "json", "yaml", "markdown", "markdown_inline",
           "python", "rust", "java", "haskell",
@@ -267,14 +268,14 @@ require("lazy").setup({
         auto_install = true,
 
         highlight = {
-          enable = true,   -- Enable syntax highlighting based on Treesitter
+          enable = true,  -- Enable syntax highlighting based on Treesitter
           -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
           -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
           -- Using this option may slow down your editor, and you may see some weird jumps.
           -- NOTE: Disabled by default
           -- additional_vim_regex_highlighting = false,
         },
-        indent = { enable = true },   -- Enable indentation using treesitter
+        indent = { enable = true },  -- Enable indentation using treesitter
         -- Add other Treesitter modules if you need them (e.g., textobjects, incremental_selection)
         -- See :help nvim-treesitter-modules
       })
@@ -291,7 +292,7 @@ require("lazy").setup({
   },
 
   -- == Git ==
-  { 'tpope/vim-fugitive' },   -- Git wrapper (still the best!)
+  { 'tpope/vim-fugitive' },    -- Git wrapper (still the best!)
 
   -- == CodeCompanion ==
   {
@@ -336,13 +337,13 @@ require("lazy").setup({
   {   -- Autocompletion Engine
     'hrsh7th/nvim-cmp',
     dependencies = {
-      'hrsh7th/cmp-nvim-lsp',               -- LSP source
-      'hrsh7th/cmp-buffer',                 -- Buffer source
-      'hrsh7th/cmp-path',                   -- Path source
-      'hrsh7th/cmp-cmdline',                -- Command line source
-      'L3MON4D3/LuaSnip',                   -- Snippet Engine
-      'saadparwaiz1/cmp_luasnip',           -- Snippet source for nvim-cmp
-      'rafamadriz/friendly-snippets',       -- Optional: useful snippets
+      'hrsh7th/cmp-nvim-lsp',           -- LSP source
+      'hrsh7th/cmp-buffer',             -- Buffer source
+      'hrsh7th/cmp-path',               -- Path source
+      'hrsh7th/cmp-cmdline',            -- Command line source
+      'L3MON4D3/LuaSnip',               -- Snippet Engine
+      'saadparwaiz1/cmp_luasnip',       -- Snippet source for nvim-cmp
+      'rafamadriz/friendly-snippets',   -- Optional: useful snippets
     },
     config = function()
       local cmp = require('cmp')
@@ -360,9 +361,9 @@ require("lazy").setup({
         mapping = cmp.mapping.preset.insert({
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),                      -- Trigger completion
-          ['<C-e>'] = cmp.mapping.abort(),                             -- Close completion
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),           -- Confirm selection (select=true is often default)
+          ['<C-Space>'] = cmp.mapping.complete(),                 -- Trigger completion
+          ['<C-e>'] = cmp.mapping.abort(),                    -- Close completion
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),   -- Confirm selection (select=true is often default)
           -- Tab completion mapping:
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
@@ -370,16 +371,16 @@ require("lazy").setup({
             elseif luasnip.expand_or_jumpable() then
               luasnip.expand_or_jump()
             else
-              fallback()                -- Fallback to default <Tab> behavior
+              fallback()          -- Fallback to default <Tab> behavior
             end
-          end, { 'i', 's' }),           -- i: insert mode, s: select mode (for snippets)
+          end, { 'i', 's' }),      -- i: insert mode, s: select mode (for snippets)
           ['<S-Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
             elseif luasnip.jumpable(-1) then
               luasnip.jump(-1)
             else
-              fallback()               -- Fallback to default <S-Tab> behavior
+              fallback()          -- Fallback to default <S-Tab> behavior
             end
           end, { 'i', 's' }),
         }),
@@ -414,7 +415,7 @@ require("lazy").setup({
       })
     end
   },
-  { 'L3MON4D3/LuaSnip' },   -- Snippet engine dependency
+  { 'L3MON4D3/LuaSnip' },  -- Snippet engine dependency
 
  -- == LSP (Language Server Protocol) ==
 {
@@ -579,7 +580,7 @@ require("lazy").setup({
         -- Ensure the Csound_set_port function exists before calling it, as an extra safeguard.
         -- This check might not be strictly necessary if BufReadPost is late enough, but it doesn't hurt.
         if vim.fn.exists("Csound_set_port") == 1 then
-          vim.cmd("call Csound_set_port(11000)")          
+          vim.cmd("call Csound_set_port(11000)")
           print("Csound-repl port set to 11000 via autocommand.")
         else
           -- This branch should ideally not be hit if the timing is correct.
@@ -594,22 +595,31 @@ require("lazy").setup({
     end,
   },
   -- == Utility / Language Specific ==
-  { 'junegunn/fzf',        build = './install --all' },        -- Core fzf (required by fzf.vim/telescope's fzf sorter)
-  { 'junegunn/fzf.vim',    dependencies = { 'junegunn/fzf' } }, -- Basic fzf commands (optional if using Telescope heavily)
+  { 'junegunn/fzf',       build = './install --all' },       -- Core fzf (required by fzf.vim/telescope's fzf sorter)
+  { 'junegunn/fzf.vim',   dependencies = { 'junegunn/fzf' } }, -- Basic fzf commands (optional if using Telescope heavily)
 
-  { 'jgdavey/tslime.vim' },                                    -- Send code to tmux (kept from original)
+  { 'jgdavey/tslime.vim' },                                  -- Send code to tmux (kept from original)
   { 'thoughtbot/vim-rspec' },                                  -- RSpec integration (kept from original)
 
-  { 'mattn/emmet-vim' },                                       -- HTML/CSS abbreviation expansion (Replaces Sparkup)
+  { 'mattn/emmet-vim' },                                     -- HTML/CSS abbreviation expansion (Replaces Sparkup)
+
+  -- ADDED: Commenting plugin
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      -- Add any plugin options here
+    },
+    lazy = false, -- Load it right away
+  },
 
 }, {
   -- lazy.nvim options
-  checker = { enabled = true },   -- Check for plugin updates automatically
+  checker = { enabled = true },  -- Check for plugin updates automatically
 })
 
 -- -----------------------------------------------------------------------------
 -- 5. General Key Mappings
---    Mappings not tied to specific plugins loaded above
+--   Mappings not tied to specific plugins loaded above
 -- -----------------------------------------------------------------------------
 local map = vim.keymap.set
 local gopts = { noremap = true, silent = true } -- Global options
@@ -621,25 +631,34 @@ vim.g.maplocalleader = ' ' -- Set localleader key to '`' (often useful)
 -- Tslime Mappings (using leader now potentially)
 map('v', '<leader>cc', '<Plug>SendSelectionToTmux', gopts)  -- Leader c c (visual)
 map('n', '<leader>cc', '<Plug>NormalModeSendToTmux', gopts) -- Leader c c (normal)
-map('n', '<leader>cr', '<Plug>SetTmuxVars', gopts)          -- Leader c r
+map('n', '<leader>cr', '<Plug>SetTmuxVars', gopts)       -- Leader c r
 
 -- Basic Navigation and Window Management
-map('n', '<C-h>', '<C-w>h', gopts)      -- Navigate left window
-map('n', '<C-j>', '<C-w>j', gopts)      -- Navigate down window
-map('n', '<C-k>', '<C-w>k', gopts)      -- Navigate up window
-map('n', '<C-l>', '<C-w>l', gopts)      -- Navigate right window
+map('n', '<C-h>', '<C-w>h', gopts)     -- Navigate left window
+map('n', '<C-j>', '<C-w>j', gopts)     -- Navigate down window
+map('n', '<C-k>', '<C-w>k', gopts)     -- Navigate up window
+map('n', '<C-l>', '<C-w>l', gopts)     -- Navigate right window
 map('n', '<leader>wq', ':q<CR>', gopts) -- Quit window/nvim
 map('n', '<leader>ww', ':w<CR>', gopts) -- Write buffer
 
 -- Clear search highlight
 map('n', '<leader><space>', ':nohlsearch<CR>', gopts)
 
--- Example: Map Escape in terminal mode
--- map('t', '<Esc>', '<C-\\><C-n>', gopts) -- Map Esc in terminal mode
+-- ADDED: Keymaps for Select All, Copy, and Commenting
+map('n', '<D-a>', 'ggVG', { noremap = true, silent = true, desc = "Select All" })
+map('v', '<D-c>', '"+y', { noremap = true, silent = true, desc = "Copy selection to system clipboard" })
+
+-- Toggle comment (requires Comment.nvim)
+map('n', '<D-/>', function()
+  require('Comment.api').toggle.linewise.current()
+end, { noremap = true, silent = true, desc = "Toggle comment on current line" })
+
+map('v', '<D-/>', '<ESC><cmd>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>', { noremap = true, silent = true, desc = "Toggle comment on selection" })
+
 
 -- -----------------------------------------------------------------------------
 -- 6. Autocmds
---    Define autocommands if needed (e.g., for formatting on save)
+--   Define autocommands if needed (e.g., for formatting on save)
 -- -----------------------------------------------------------------------------
 -- Example: Format on save (requires a formatter configured via LSP or null-ls/conform)
 -- vim.api.nvim_create_autocmd("BufWritePre", {
