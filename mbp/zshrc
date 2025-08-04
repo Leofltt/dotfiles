@@ -59,6 +59,10 @@ export PATH="/usr/local/sbin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# Gemini CLI (secrets in local) 
+if [ -f ~/.local_env ]; then
+  source ~/.local_env
+fi 
 
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export PATH="/opt/homebrew/opt/python@3.10/bin:$PATH"
