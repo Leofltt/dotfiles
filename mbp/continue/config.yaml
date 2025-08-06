@@ -1,12 +1,12 @@
 name: leofltt-continue
 version: 0.5.0
 models:
-  - name: OlympicCoder7b
-    model: leofltt/OlympicCoder7b
+  - name: OlympicCoder
+    model: abedalswaity7/OlympicCoder:Q4_K_M 
     provider: ollama
     roles:
       - chat
-      - edit
+      - edit 
       - apply
   - name: Qwen2.5-Coder1.5B
     provider: ollama
@@ -22,6 +22,24 @@ models:
     roles:
       - chat
       - edit
+      - apply
+  - name: Magistral
+    provider: ollama
+    model: magistral:latest
+    roles:
+      - chat
+  - name: Devstral 
+    provider: ollama
+    model: devstral:latest
+    roles:
+      - chat
+      - edit
+  - name: Gemma3n 
+    provider: ollama
+    model: gemma3n:latest
+    roles:
+      - chat 
+      - edit 
       - apply 
 context:
   - provider: file

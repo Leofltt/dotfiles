@@ -152,6 +152,7 @@ require("lazy").setup({
   },
 
   -- == AI Plugins ==
+
   { -- Interactive AI Companion
     "olimorris/codecompanion.nvim",
     dependencies = {
@@ -160,11 +161,20 @@ require("lazy").setup({
     },
     config = function()
       require("codecompanion").setup({
+        -- CORRECTED: Set 'ollama' as the default adapter for all actions.
+        adapter = "ollama",
+        
         adapters = {
-          ollama = require("codecompanion.adapters").ollama({
-            model = "codellama:13b", -- CHANGE to your preferred model
-          }),
+          ollama = {
+            -- Options for the ollama adapter go directly here
+            model = "codellama:13b", -- IMPORTANT: Change to a model you have in Ollama
+            -- host = "http://192.168.1.100:11434", -- Uncomment if Ollama is not on localhost
+          },
         },
+
+        -- This section is now optional if you only use the default adapter,
+        -- but we'll leave it for clarity. It will use the 'ollama'
+        -- adapter defined above.
         strategies = {
           chat = { adapter = "ollama" },
           inline = { adapter = "ollama" },
@@ -174,7 +184,7 @@ require("lazy").setup({
     end,
   },
 
-  { -- CORRECTED: The new official Tabby plugin for Vim/Neovim
+  { 
     "TabbyML/vim-tabby"
   },
 
