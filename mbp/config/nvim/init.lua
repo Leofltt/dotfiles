@@ -78,7 +78,7 @@ opt.incsearch = true
 
 opt.scrolloff = 8
 opt.sidescrolloff = 8
-opt.wrap = false
+opt.wrap = true
 
 opt.undofile = true
 local undo_dir = vim.fn.stdpath("data") .. "/undodir"
@@ -165,10 +165,12 @@ require("lazy").setup({
         adapter = "ollama",
         
         adapters = {
-          ollama = {
-            -- Options for the ollama adapter go directly here
-            model = "codellama:13b", -- IMPORTANT: Change to a model you have in Ollama
-            -- host = "http://192.168.1.100:11434", -- Uncomment if Ollama is not on localhost
+          http = {
+            ollama = {
+              -- Options for the ollama adapter go directly here
+              model = "codellama:13b", -- IMPORTANT: Change to a model you have in Ollama
+              -- host = "http://192.168.1.100:11434", -- Uncomment if Ollama is not on localhost
+            },
           },
         },
 
