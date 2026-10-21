@@ -1,46 +1,25 @@
 name: leofltt-continue
 version: 0.5.0
+
 models:
-  - name: OlympicCoder
-    model: abedalswaity7/OlympicCoder:Q4_K_M 
-    provider: ollama
-    roles:
-      - chat
-      - edit 
-      - apply
-  - name: Qwen2.5-Coder1.5B
-    provider: ollama
-    model: qwen2.5-coder:1.5b
-    roles:
-      - chat
-      - edit
-      - apply 
-      - autocomplete
-  - name: Qwen2.5-Coder 
-    provider: ollama
-    model: qwen2.5-coder
+  - name: Qwen 3.8 27B (llama.cpp)
+    provider: openai
+    model: /Users/leofltt/models/Qwen3.8-27B-UD-Q4_K_M.gguf
+    apiBase: http://127.0.0.1:8088/v1
+    apiKey: none
+    contextLength: 32768
     roles:
       - chat
       - edit
       - apply
-  - name: Magistral
-    provider: ollama
-    model: magistral:latest
-    roles:
-      - chat
-  - name: Devstral 
-    provider: ollama
-    model: devstral:latest
-    roles:
-      - chat
-      - edit
-  - name: Gemma3n 
-    provider: ollama
-    model: gemma3n:latest
-    roles:
-      - chat 
-      - edit 
-      - apply 
+
+tabAutocompleteModel:
+  name: Qwen 3.8 27B Autocomplete
+  provider: openai
+  model: /Users/leofltt/models/Qwen3.8-27B-UD-Q4_K_M.gguf
+  apiBase: http://127.0.0.1:8088/v1
+  apiKey: none
+
 context:
   - provider: file
   - provider: code
@@ -61,4 +40,4 @@ context:
   - provider: problems
   - provider: debugger
     params:
-      stackDepth: 3 
+      stackDepth: 3

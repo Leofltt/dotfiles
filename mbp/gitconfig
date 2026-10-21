@@ -3,11 +3,6 @@
 	email = flttleonardo@gmail.com
 [credential "https://huggingface.co"]
 	provider = generic
-[credential]
-	helper = 
-	helper = /usr/local/share/gcm-core/git-credential-manager
-[credential "https://dev.azure.com"]
-	useHttpPath = true
 [core]
 	autocrlf = input
 [filter "lfs"]
@@ -15,3 +10,12 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[coderabbit]
+	machineId = cli/ae843bbfbccc49c294a54cb659c49559
+[init]
+	defaultBranch = main
+[credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true

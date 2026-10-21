@@ -151,36 +151,56 @@ require("lazy").setup({
     end,
   },
 
-  -- == AI Plugins ==
+ -- == AI Plugins ==
 
-  { -- Interactive AI Companion
+{ -- Interactive AI Companion
     "olimorris/codecompanion.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
       "nvim-telescope/telescope.nvim",
     },
     config = function()
       require("codecompanion").setup({
-        -- CORRECTED: Set 'ollama' as the default adapter for all actions.
-        adapter = "ollama",
-        
-        adapters = {
-          http = {
-            ollama = {
-              -- Options for the ollama adapter go directly here
-              model = "codellama:13b", -- IMPORTANT: Change to a model you have in Ollama
-              -- host = "http://192.168.1.100:11434", -- Uncomment if Ollama is not on localhost
+        strategies = {
+          chat = {
+            adapter = "llama_server",
+            roles = {
+              llm = "Qwen 3.8",
+              user = "Me",
             },
           },
+          inline = {
+            adapter = "llama_server",
+            layout = "vertical",
+          },
         },
-
-        -- This section is now optional if you only use the default adapter,
-        -- but we'll leave it for clarity. It will use the 'ollama'
-        -- adapter defined above.
-        strategies = {
-          chat = { adapter = "ollama" },
-          inline = { adapter = "ollama" },
-          agent = { adapter = "ollama" },
+        adapters = {
+          llama_server = function()
+            return require("codecompanion.adapters").extend("openai_compatible", {
+              name = "llama_server",
+              env = {
+                url = "http://127.0.0.1:8088",
+                api_key = "none",
+                chat_url = "/v1/chat/completions",
+              },
+              schema = {
+                model = {
+                  default = "/Users/leofltt/models/Qwen3.8-27B-UD-Q4_K_M.gguf",
+                },
+                num_ctx = {
+                  default = 32768,
+                },
+              },
+            })
+          end,
+        },
+        display = {
+          diff = {
+            enabled = true,
+            layout = "vertical",
+            opts = { "internal", "filler", "closeoff" },
+          },
         },
       })
     end,
@@ -189,7 +209,6 @@ require("lazy").setup({
   { 
     "TabbyML/vim-tabby"
   },
-
   -- == Git ==
   { 'tpope/vim-fugitive' },
 

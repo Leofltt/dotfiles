@@ -113,3 +113,14 @@ export PATH="/Users/leofltt/.codeium/windsurf/bin:$PATH"
 echo -e '\e[?12l'
 
 # alias conan="python3.10 -m conans.conan"
+
+# Added by Antigravity
+export PATH="/Users/leofltt/.antigravity/antigravity/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/leofltt/.local/bin:$PATH"
+
+# Added by Antigravity IDE
+export PATH="/Users/leofltt/.antigravity-ide/antigravity-ide/bin:$PATH"
+alias aureset='killall -9 AudioComponentRegistrar 2>/dev/null; rm -f ~/Library/Caches/AudioUnitCache/com.apple.audiounits.cache ~/Library/Preferences/com.apple.audio.InfoHelper.plist; echo "AU cache cleared. You can open Logic now."'
