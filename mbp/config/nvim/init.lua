@@ -151,9 +151,9 @@ require("lazy").setup({
     end,
   },
 
- -- == AI Plugins ==
+-- == AI Plugins ==
 
-{ -- Interactive AI Companion
+  { -- Interactive AI Companion
     "olimorris/codecompanion.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -174,11 +174,15 @@ require("lazy").setup({
             adapter = "llama_server",
             layout = "vertical",
           },
+          agent = {
+            adapter = "llama_server",
+          },
         },
         adapters = {
           llama_server = function()
             return require("codecompanion.adapters").extend("openai_compatible", {
               name = "llama_server",
+              formatted_name = "Qwen 3.8 27B (Stock)",
               env = {
                 url = "http://127.0.0.1:8088",
                 api_key = "none",
@@ -186,7 +190,26 @@ require("lazy").setup({
               },
               schema = {
                 model = {
-                  default = "/Users/leofltt/models/Qwen3.8-27B-UD-Q4_K_M.gguf",
+                  default = "qwen3.8-stock",
+                },
+                num_ctx = {
+                  default = 32768,
+                },
+              },
+            })
+          end,
+          llama_heretic = function()
+            return require("codecompanion.adapters").extend("openai_compatible", {
+              name = "llama_heretic",
+              formatted_name = "Qwen 3.8 27B (Heretic Uncensored)",
+              env = {
+                url = "http://127.0.0.1:8088",
+                api_key = "none",
+                chat_url = "/v1/chat/completions",
+              },
+              schema = {
+                model = {
+                  default = "qwen3.8-heretic",
                 },
                 num_ctx = {
                   default = 32768,
@@ -206,8 +229,8 @@ require("lazy").setup({
     end,
   },
 
-  { 
-    "TabbyML/vim-tabby"
+  {
+    "TabbyML/vim-tabby",
   },
   -- == Git ==
   { 'tpope/vim-fugitive' },

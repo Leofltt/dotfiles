@@ -2,12 +2,27 @@ name: leofltt-continue
 version: 0.5.0
 
 models:
-  - name: Qwen 3.8 27B (llama.cpp)
+  - name: Qwen 3.8 27B (Stock)
     provider: openai
-    model: /Users/leofltt/models/Qwen3.8-27B-UD-Q4_K_M.gguf
+    model: qwen3.8-stock 
     apiBase: http://127.0.0.1:8088/v1
     apiKey: none
-    contextLength: 32768
+    contextLength: 65536
+    capabilities:
+      - tool_use
+    roles:
+      - chat
+      - edit
+      - apply
+
+  - name: Qwen 3.8 27B (Heretic Uncensored)
+    provider: openai
+    model: qwen3.8-heretic
+    apiBase: http://127.0.0.1:8088/v1
+    apiKey: none
+    contextLength: 65536
+    capabilities:
+      - tool_use
     roles:
       - chat
       - edit
@@ -16,7 +31,7 @@ models:
 tabAutocompleteModel:
   name: Qwen 3.8 27B Autocomplete
   provider: openai
-  model: /Users/leofltt/models/Qwen3.8-27B-UD-Q4_K_M.gguf
+  model: qwen3.8-stock 
   apiBase: http://127.0.0.1:8088/v1
   apiKey: none
 
