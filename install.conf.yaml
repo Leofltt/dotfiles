@@ -62,6 +62,33 @@
       path: mbp/config/sketchybar
       if:  '[ "$(uname)" = "Darwin" ] '
 
+    # --- Local LLM / Agent Configurations ---
+
+    # llama-server model presets
+    ~/models/presets.ini:
+      path: mbp/models/presets.ini
+      if: '[ "$(uname)" = "Darwin" ]'
+
+    # OpenCode config
+    ~/.config/opencode/opencode.jsonc:
+      path: mbp/config/opencode/opencode.jsonc
+      if: '[ "$(uname)" = "Darwin" ]'
+
+    # Pi agent models config
+    ~/.pi/agent/models.json:
+      path: mbp/pi/agent/models.json
+      if: '[ "$(uname)" = "Darwin" ]'
+
+    # Hermes config
+    ~/.hermes/config.yaml:
+      path: mbp/hermes/config.yaml
+      if: '[ "$(uname)" = "Darwin" ]'
+
+    # llama-server LaunchAgent plist
+    ~/Library/LaunchAgents/com.user.llama-server.plist:
+      path: mbp/Library/LaunchAgents/com.user.llama-server.plist
+      if: '[ "$(uname)" = "Darwin" ]'
+
 
 # You can add other tasks below if needed, like 'shell' commands, 'clean', etc.
 # - shell:

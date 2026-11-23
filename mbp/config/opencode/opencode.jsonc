@@ -1,0 +1,37 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "llama-server/qwen3.8-stock",
+  "provider": {
+    "llama-server": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "llama.cpp (Local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:8088/v1",
+        "apiKey": "none"
+      },
+      "models": {
+        "qwen3.8-stock": {
+          "name": "Qwen 3.8 27B (Stock)",
+          "limit": {
+            "context": 65536,
+            "output": 8192
+          }
+        },
+        "qwen3.8-heretic": {
+          "name": "Qwen 3.8 27B (Heretic Uncensored)",
+          "limit": {
+            "context": 65536,
+            "output": 8192
+          }
+        },
+        "inkling-2-mini": {
+          "name": "Inkling 2 Mini (MoE)",
+          "limit": {
+            "context": 65536,
+            "output": 8192
+          }
+        }
+      }
+    }
+  }
+}

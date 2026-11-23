@@ -153,7 +153,7 @@ require("lazy").setup({
 
 -- == AI Plugins ==
 
-  { -- Interactive AI Companion
+{ -- Interactive AI Companion
     "olimorris/codecompanion.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -166,7 +166,7 @@ require("lazy").setup({
           chat = {
             adapter = "llama_server",
             roles = {
-              llm = "Qwen 3.8",
+              llm = "Local LLM",
               user = "Me",
             },
           },
@@ -193,7 +193,7 @@ require("lazy").setup({
                   default = "qwen3.8-stock",
                 },
                 num_ctx = {
-                  default = 32768,
+                  default = 65536,
                 },
               },
             })
@@ -212,7 +212,32 @@ require("lazy").setup({
                   default = "qwen3.8-heretic",
                 },
                 num_ctx = {
-                  default = 32768,
+                  default = 65536,
+                },
+              },
+            })
+          end,
+          llama_inkling = function()
+            return require("codecompanion.adapters").extend("openai_compatible", {
+              name = "llama_inkling",
+              formatted_name = "Inkling 2 Mini (MoE)",
+              env = {
+                url = "http://127.0.0.1:8088",
+                api_key = "none",
+                chat_url = "/v1/chat/completions",
+              },
+              schema = {
+                model = {
+                  default = "inkling-2-mini",
+                },
+                num_ctx = {
+                  default = 65536,
+                },
+                temperature = {
+                  default = 1.0,
+                },
+                top_p = {
+                  default = 1.0,
                 },
               },
             })
@@ -228,7 +253,6 @@ require("lazy").setup({
       })
     end,
   },
-
   {
     "TabbyML/vim-tabby",
   },
