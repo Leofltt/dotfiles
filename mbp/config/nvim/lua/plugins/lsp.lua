@@ -20,15 +20,15 @@ return {
         "basedpyright",
         "ruff",
         "clangd",
-        "cmake",
+        "neocmake",
         "bashls",
         "dockerls",
         "jsonls",
         "yamlls",
       },
-      -- rust_analyzer and hls are managed by rustaceanvim and haskell-tools.nvim
+      -- rust_analyzer/hls are managed by their plugins; cmake (pygls v2 broken) replaced by neocmake
       automatic_enable = {
-        exclude = { "rust_analyzer", "hls" },
+        exclude = { "rust_analyzer", "hls", "cmake" },
       },
     },
   },

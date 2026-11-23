@@ -3,7 +3,7 @@
 " Name:      leofltt-monoish
 " Author:    LeoFltt
 " License:   MIT
-" Version:   1.4 (Muted purple/grey/blue syntax + Treesitter & LSP semantic tokens)
+" Version:   1.5 (Smoky Amethyst muted purple/grey palette + Treesitter & LSP semantic tokens)
 
 " Initialization {{{1
 hi clear
@@ -39,18 +39,23 @@ let s:green            = { "gui": "#60D060", "cterm": "71",  "ctermN": 71 }  " S
 let s:muted_green      = { "gui": "#8FBC8F", "cterm": "142", "ctermN": 142 } " DiffAdd
 let s:blue             = { "gui": "#5588CC", "cterm": "68",  "ctermN": 68 }  " Info
 let s:muted_blue       = { "gui": "#6B88B3", "cterm": "67",  "ctermN": 67 }  " DiagnosticInfo
-let s:slate_blue       = { "gui": "#7F97C4", "cterm": "68",  "ctermN": 68 }  " Builtin functions
-let s:muted_periwinkle = { "gui": "#8FA6D4", "cterm": "110", "ctermN": 110 } " Function calls
-let s:cool_periwinkle  = { "gui": "#9FB1DD", "cterm": "110", "ctermN": 110 } " Function definitions
+let s:slate_blue       = { "gui": "#7F97C4", "cterm": "68",  "ctermN": 68 }
+let s:muted_periwinkle = { "gui": "#8FA6D4", "cterm": "110", "ctermN": 110 }
+let s:cool_periwinkle  = { "gui": "#9FB1DD", "cterm": "110", "ctermN": 110 }
+let s:dusky_plum       = { "gui": "#8A7FA8", "cterm": "103", "ctermN": 103 } " Builtin functions
+let s:muted_wisteria   = { "gui": "#9D91BD", "cterm": "146", "ctermN": 146 } " Function calls
+let s:smoky_amethyst   = { "gui": "#B0A4CF", "cterm": "146", "ctermN": 146 } " Function definitions
 let s:cool_mist        = { "gui": "#AEBBC2", "cterm": "152", "ctermN": 152 } " Strings
 let s:warm_stone       = { "gui": "#B5AEA0", "cterm": "144", "ctermN": 144 } " PreProc / Macros / Attributes
 let s:heather_mist     = { "gui": "#9899B7", "cterm": "103", "ctermN": 103 } " Keywords / Statements
 let s:rosy_lavender    = { "gui": "#A698B7", "cterm": "139", "ctermN": 139 } " Modules / Builtin vars
 let s:muted_lavender   = { "gui": "#9B8FB8", "cterm": "103", "ctermN": 103 } " Operators
-let s:muted_violet     = { "gui": "#B2A3C9", "cterm": "146", "ctermN": 146 } " Builtin types
+let s:muted_violet     = { "gui": "#B2A3C9", "cterm": "146", "ctermN": 146 }
+let s:muted_rose_lilac = { "gui": "#B89DB2", "cterm": "139", "ctermN": 139 } " Builtin types
+let s:rose_lilac       = { "gui": "#CFAFC6", "cterm": "182", "ctermN": 182 } " Types / Constructors
 let s:dusty_lilac      = { "gui": "#B5A6C9", "cterm": "146", "ctermN": 146 } " Numbers / Booleans
 let s:lavender_dream   = { "gui": "#AD9FDD", "cterm": "146", "ctermN": 146 } " Constants
-let s:soft_lilac       = { "gui": "#CBB8E6", "cterm": "183", "ctermN": 183 } " Types / Constructors
+let s:soft_lilac       = { "gui": "#CBB8E6", "cterm": "183", "ctermN": 183 }
 let s:lilac            = { "gui": "#D3B1E6", "cterm": "175", "ctermN": 175 } " Special / Escapes
 let s:lilac_bloom      = { "gui": "#C57FE0", "cterm": "177", "ctermN": 177 }
 let s:muted_lilac1     = { "gui": "#F0EBD2", "cterm": "228", "ctermN": 228 }
@@ -95,12 +100,12 @@ endfunction
 call s:HL("Normal",       s:light_gray2,     "NONE")
 call s:HL("Comment",      s:comment,         "NONE", "ITALIC")
 call s:HL("Identifier",   s:light_gray2,     "NONE")
-call s:HL("Function",     s:cool_periwinkle, "NONE", "BOLD")
+call s:HL("Function",     s:smoky_amethyst,  "NONE", "BOLD")
 call s:HL("Statement",    s:heather_mist,    "NONE", "BOLD")
 hi! link Keyword Statement
 hi! link Structure Statement
 call s:HL("PreProc",      s:warm_stone,      "NONE")
-call s:HL("Type",         s:soft_lilac,      "NONE")
+call s:HL("Type",         s:rose_lilac,      "NONE")
 hi! link StorageClass Type
 hi! link Label Type
 
@@ -131,16 +136,16 @@ call s:HL("@variable.parameter",     s:cool_silver,      "NONE", "ITALIC")
 call s:HL("@variable.member",        s:light_gray1,      "NONE")
 hi! link @property @variable.member
 
-call s:HL("@function",               s:cool_periwinkle,  "NONE", "BOLD")
-call s:HL("@function.method",        s:cool_periwinkle,  "NONE", "BOLD")
-call s:HL("@function.call",          s:muted_periwinkle, "NONE")
-call s:HL("@function.method.call",   s:muted_periwinkle, "NONE")
-call s:HL("@function.builtin",       s:slate_blue,       "NONE", "ITALIC")
+call s:HL("@function",               s:smoky_amethyst,   "NONE", "BOLD")
+call s:HL("@function.method",        s:smoky_amethyst,   "NONE", "BOLD")
+call s:HL("@function.call",          s:muted_wisteria,   "NONE")
+call s:HL("@function.method.call",   s:muted_wisteria,   "NONE")
+call s:HL("@function.builtin",       s:dusky_plum,       "NONE", "ITALIC")
 call s:HL("@function.macro",         s:warm_stone,       "NONE")
 
-call s:HL("@constructor",            s:soft_lilac,       "NONE")
-call s:HL("@type",                   s:soft_lilac,       "NONE")
-call s:HL("@type.builtin",           s:muted_violet,     "NONE")
+call s:HL("@constructor",            s:rose_lilac,       "NONE")
+call s:HL("@type",                   s:rose_lilac,       "NONE")
+call s:HL("@type.builtin",           s:muted_rose_lilac, "NONE")
 call s:HL("@type.qualifier",         s:heather_mist,     "NONE", "ITALIC")
 call s:HL("@module",                 s:rosy_lavender,    "NONE")
 hi! link @namespace @module
@@ -211,9 +216,9 @@ call s:HL("DiffDelete",  s:red,          "NONE")
 call s:HL("DiffChange",  s:yellow,       "NONE")
 call s:HL("DiffText",    s:white,        s:dark_gray2, "BOLD")
 
-call s:HL("GitSignsAdd",    s:muted_green,     "NONE")
-call s:HL("GitSignsChange", s:cool_periwinkle, "NONE")
-call s:HL("GitSignsDelete", s:red,             "NONE")
+call s:HL("GitSignsAdd",    s:muted_green,    "NONE")
+call s:HL("GitSignsChange", s:smoky_amethyst, "NONE")
+call s:HL("GitSignsDelete", s:red,            "NONE")
 
 " Interface Elements {{{1
 call s:HL("Cursor",       "NONE",        "NONE", "reverse", "reverse")
@@ -231,9 +236,9 @@ call s:HL("PmenuSel",     "NONE",        "NONE", "reverse", "reverse")
 call s:HL("PmenuSbar",    s:med_gray1,   s:dark_gray1)
 call s:HL("PmenuThumb",   s:comment,     s:med_gray1)
 
-call s:HL("NormalFloat",  s:light_gray2, s:float_bg)
-call s:HL("FloatBorder",  s:med_gray1,   "NONE")
-call s:HL("FloatTitle",   s:cool_periwinkle, "NONE", "BOLD")
+call s:HL("NormalFloat",  s:light_gray2,    s:float_bg)
+call s:HL("FloatBorder",  s:med_gray1,      "NONE")
+call s:HL("FloatTitle",   s:smoky_amethyst, "NONE", "BOLD")
 
 call s:HL("StatusLine",   "NONE",        "NONE", "reverse", "reverse")
 call s:HL("StatusLineNC", s:comment,     s:dark_gray1, "NONE")
@@ -252,11 +257,11 @@ call s:HL("Question",     s:muted_green, "NONE", "BOLD")
 call s:HL("WildMenu",     "NONE",        "NONE", "reverse", "reverse")
 
 " Plugin UI (Telescope, blink.cmp) {{{1
-call s:HL("TelescopeBorder",       s:med_gray1,       "NONE")
-call s:HL("TelescopePromptTitle",  s:cool_periwinkle, "NONE", "BOLD")
-call s:HL("TelescopeResultsTitle", s:cool_periwinkle, "NONE", "BOLD")
-call s:HL("TelescopePreviewTitle", s:cool_periwinkle, "NONE", "BOLD")
-call s:HL("TelescopeMatching",     s:lilac,           "NONE", "BOLD")
+call s:HL("TelescopeBorder",       s:med_gray1,      "NONE")
+call s:HL("TelescopePromptTitle",  s:smoky_amethyst, "NONE", "BOLD")
+call s:HL("TelescopeResultsTitle", s:smoky_amethyst, "NONE", "BOLD")
+call s:HL("TelescopePreviewTitle", s:smoky_amethyst, "NONE", "BOLD")
+call s:HL("TelescopeMatching",     s:lilac,          "NONE", "BOLD")
 
 call s:HL("BlinkCmpMenu",                s:light_gray2, s:float_bg)
 call s:HL("BlinkCmpMenuBorder",          s:med_gray1,   "NONE")
@@ -265,9 +270,9 @@ call s:HL("BlinkCmpSignatureHelpBorder", s:med_gray1,   "NONE")
 call s:HL("BlinkCmpGhostText",           s:subtle_gray, "NONE", "ITALIC")
 
 " Other {{{1
-call s:HL("Directory",   s:lilac,           "NONE")
-call s:HL("Title",       s:white,           "NONE", "BOLD")
-call s:HL("Underlined",  s:cool_periwinkle, "NONE", "UNDERLINE")
+call s:HL("Directory",   s:lilac,          "NONE")
+call s:HL("Title",       s:white,          "NONE", "BOLD")
+call s:HL("Underlined",  s:smoky_amethyst, "NONE", "UNDERLINE")
 call s:HL("Ignore",      s:comment,         "NONE")
 
 " Cleanup helper function {{{1
