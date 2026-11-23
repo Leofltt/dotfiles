@@ -3,7 +3,7 @@
 " Name:      leofltt-monoish
 " Author:    LeoFltt
 " License:   MIT
-" Version:   1.3 (Corrected for terminal background transparency)
+" Version:   1.4 (Muted purple/grey/blue syntax + Treesitter & LSP semantic tokens)
 
 " Initialization {{{1
 hi clear
@@ -13,56 +13,55 @@ endif
 
 let g:colors_name = "leofltt-monoish"
 set background=dark
-" Enable true colors in the terminal if supported, crucial for GUI colors
 set termguicolors
 
 " Palette {{{1
 " Grays / Whites (Dark to Light)
 let s:black       = { "gui": "#000000", "cterm": "black", "ctermN": 0 }
-let s:dark_gray1  = { "gui": "#222222", "cterm": "235",   "ctermN": 235 } " Backgrounds
-let s:dark_gray2  = { "gui": "#333333", "cterm": "236",   "ctermN": 236 } " Backgrounds
-let s:med_gray1   = { "gui": "#555555", "cterm": "240",   "ctermN": 240 } " Medium
-let s:med_gray2   = { "gui": "#888888", "cterm": "102",   "ctermN": 102 } " Comments Darker? UI?
-let s:comment     = { "gui": "#A0A0A0", "cterm": "grey",  "ctermN": 7 }   " Comments / Dim Text
-let s:light_gray1 = { "gui": "#C0C0C0", "cterm": "250",   "ctermN": 250 } " Silver / Code Gray
-let s:light_gray2 = { "gui": "#DCDCDC", "cterm": "252",   "ctermN": 252 } " Gainsboro / Normal Code
-let s:off_white   = { "gui": "#EAEAEA", "cterm": "254",   "ctermN": 254 } " Visual BG / Bright Gray
-let s:white       = { "gui": "#FFFFFF", "cterm": "white", "ctermN": 15 }  " Brightest Code / UI FG
+let s:float_bg    = { "gui": "#18181C", "cterm": "234",   "ctermN": 234 } " Floating window bg
+let s:dark_gray1  = { "gui": "#222222", "cterm": "235",   "ctermN": 235 } " Subtle bg
+let s:dark_gray2  = { "gui": "#333333", "cterm": "236",   "ctermN": 236 } " Borders / Pmenu bg
+let s:med_gray1   = { "gui": "#555555", "cterm": "240",   "ctermN": 240 } " Medium gray
+let s:subtle_gray = { "gui": "#686C78", "cterm": "242",   "ctermN": 242 } " Inlay hints / ghost text
+let s:comment     = { "gui": "#7C808C", "cterm": "grey",  "ctermN": 244 } " Cool muted comments
+let s:med_gray2   = { "gui": "#888888", "cterm": "102",   "ctermN": 102 } " LineNr
+let s:dim_silver  = { "gui": "#8F929E", "cterm": "103",   "ctermN": 103 } " Delimiters / punctuation
+let s:light_gray1 = { "gui": "#C0C0C0", "cterm": "250",   "ctermN": 250 } " Members / properties
+let s:cool_silver = { "gui": "#C6C8D6", "cterm": "251",   "ctermN": 251 } " Parameters
+let s:light_gray2 = { "gui": "#DCDCDC", "cterm": "252",   "ctermN": 252 } " Normal code / variables
+let s:off_white   = { "gui": "#EAEAEA", "cterm": "254",   "ctermN": 254 } " Bright gray
+let s:white       = { "gui": "#FFFFFF", "cterm": "white", "ctermN": 15 }  " Brightest UI fg
 
-" Muted Accent Colors
-let s:red         = { "gui": "#CC5555", "cterm": "167",   "ctermN": 167 } " Error / Deletion
-let s:yellow      = { "gui": "#CCCC55", "cterm": "179",   "ctermN": 179 } " Warning / Change
-let s:green       = { "gui": "#60D060", "cterm": "71",    "ctermN": 71 }  " Success / Addition
-let s:blue        = { "gui": "#5588CC", "cterm": "68",    "ctermN": 68 }  " Info / Functions?
-let s:magenta     = { "gui": "#CC55CC", "cterm": "176",   "ctermN": 176 } " Special / Types?
-let s:purple = { "gui": "#C060C8", "cterm": "175", "ctermN": 175 } " Purple (Slightly Muted)"
-let s:muted_purple = { "gui": "#A020F0", "cterm": "94", "ctermN": 94 }
-let s:lilac = { "gui": "#D3B1E6", "cterm": "175", "ctermN": 175 }
-let s:muted_lilac1 = { "gui": "#F0EBD2", "cterm": "228", "ctermN": 228 }
-let s:muted_lilac2 = { "gui": "#E6E2CC", "cterm": "235", "ctermN": 235 }
-let s:muted_lilac3 = { "gui": "#DEBFFF", "cterm": "226", "ctermN": 226 }
-let s:darker_purple = { "gui": "#7014A6", "cterm": "92", "ctermN": 92 }
-let s:muted_green = { "gui": "#8FBC8F", "cterm": "142", "ctermN": 142 }
-let s:muted_blue = { "gui": "#6B88B3", "cterm": "67",    "ctermN": 67 }
-let s:muted_purp = { "gui": "#95619B", "cterm": "96", "ctermN": 96 }
-let s:dusky_violet = { "gui": "#79619B", "cterm": "60", "ctermN": 60 }
-let s:soft_indigo = { "gui": "#947FE0", "cterm": "104", "ctermN": 104 }
-let s:lilac_bloom = { "gui": "#C57FE0", "cterm": "177", "ctermN": 177 }
-let s:lavender_dream    = { "gui": "#AD9FDD", "cterm": "146", "ctermN": 146 }
-let s:cool_periwinkle  = { "gui": "#9FB1DD", "cterm": "110", "ctermN": 110 }
-let s:heather_mist      = { "gui": "#9899B7", "cterm": "103", "ctermN": 103 }
-let s:rosy_lavender    = { "gui": "#A698B7", "cterm": "139", "ctermN": 139 }
-
+" Muted Accent Colors (Greys / Blues / Purples)
+let s:red              = { "gui": "#CC5555", "cterm": "167", "ctermN": 167 } " Error / Deletion
+let s:yellow           = { "gui": "#C9BE6B", "cterm": "179", "ctermN": 179 } " Warning / Change
+let s:green            = { "gui": "#60D060", "cterm": "71",  "ctermN": 71 }  " Success
+let s:muted_green      = { "gui": "#8FBC8F", "cterm": "142", "ctermN": 142 } " DiffAdd
+let s:blue             = { "gui": "#5588CC", "cterm": "68",  "ctermN": 68 }  " Info
+let s:muted_blue       = { "gui": "#6B88B3", "cterm": "67",  "ctermN": 67 }  " DiagnosticInfo
+let s:slate_blue       = { "gui": "#7F97C4", "cterm": "68",  "ctermN": 68 }  " Builtin functions
+let s:muted_periwinkle = { "gui": "#8FA6D4", "cterm": "110", "ctermN": 110 } " Function calls
+let s:cool_periwinkle  = { "gui": "#9FB1DD", "cterm": "110", "ctermN": 110 } " Function definitions
+let s:cool_mist        = { "gui": "#AEBBC2", "cterm": "152", "ctermN": 152 } " Strings
+let s:warm_stone       = { "gui": "#B5AEA0", "cterm": "144", "ctermN": 144 } " PreProc / Macros / Attributes
+let s:heather_mist     = { "gui": "#9899B7", "cterm": "103", "ctermN": 103 } " Keywords / Statements
+let s:rosy_lavender    = { "gui": "#A698B7", "cterm": "139", "ctermN": 139 } " Modules / Builtin vars
+let s:muted_lavender   = { "gui": "#9B8FB8", "cterm": "103", "ctermN": 103 } " Operators
+let s:muted_violet     = { "gui": "#B2A3C9", "cterm": "146", "ctermN": 146 } " Builtin types
+let s:dusty_lilac      = { "gui": "#B5A6C9", "cterm": "146", "ctermN": 146 } " Numbers / Booleans
+let s:lavender_dream   = { "gui": "#AD9FDD", "cterm": "146", "ctermN": 146 } " Constants
+let s:soft_lilac       = { "gui": "#CBB8E6", "cterm": "183", "ctermN": 183 } " Types / Constructors
+let s:lilac            = { "gui": "#D3B1E6", "cterm": "175", "ctermN": 175 } " Special / Escapes
+let s:lilac_bloom      = { "gui": "#C57FE0", "cterm": "177", "ctermN": 177 }
+let s:muted_lilac1     = { "gui": "#F0EBD2", "cterm": "228", "ctermN": 228 }
+let s:muted_lilac2     = { "gui": "#E6E2CC", "cterm": "235", "ctermN": 235 }
+let s:muted_lilac3     = { "gui": "#DEBFFF", "cterm": "226", "ctermN": 226 }
 
 " Helper function to define highlights {{{1
-" This function is modified to handle 'reverse' attribute.
-" If 'reverse' is present in gui_attr or cterm_attr,
-" it will override explicit fg/bg colors and set them to NONE.
 function! s:HL(group, fg, bg, ...)
   let gui_attr_input = get(a:, 1, "NONE")
   let cterm_attr_input = get(a:, 2, "NONE")
 
-  " Check if 'reverse' attribute is requested (case-insensitive)
   let is_reverse = (stridx(tolower(gui_attr_input), 'reverse') != -1 || stridx(tolower(cterm_attr_input), 'reverse') != -1)
 
   let fg_gui = "NONE"
@@ -73,9 +72,6 @@ function! s:HL(group, fg, bg, ...)
   let cterm_attr_final = cterm_attr_input
 
   if !is_reverse
-    " Only apply explicit fg/bg if not reversing
-    " If a:fg or a:bg is the string "NONE", use that directly.
-    " Otherwise, extract from the dictionary.
     let fg_gui = type(a:fg) == type({}) ? a:fg.gui : a:fg
     let fg_cterm = type(a:fg) == type({}) ? a:fg.ctermN : a:fg
     let bg_gui = type(a:bg) == type({}) ? a:bg.gui : a:bg
@@ -95,116 +91,186 @@ endfunction
 
 " Syntax Highlighting {{{1
 
-" Basic Code Elements
-" *** IMPORTANT CHANGE HERE ***
-" Set Normal background to "NONE" to allow terminal transparency.
-" This tells Neovim not to draw a background color for the main editor.
-call s:HL("Normal",      s:light_gray2, "NONE")        " Default text - light gray, transparent background
-
-call s:HL("Comment",     s:comment,     "NONE",       "ITALIC") " Comments - medium gray, italic
-call s:HL("Identifier",  s:muted_lilac1, "NONE")        " Variable names, etc. - same as Normal
-call s:HL("Function",    s:muted_lilac2, "NONE",       "BOLD")    " Function names - muted blue, bold
-call s:HL("Statement",   s:heather_mist, "NONE",       "BOLD")    " Keywords like if, for, while - white, bold
-hi! link Keyword Statement                                          " Link Keyword to Statement
-hi! link Structure Statement                                        " Link Structure (struct, class) to Statement
-hi! link PreProc Statement                                          " Preprocessor directives (#include)
-call s:HL("Type",        s:muted_lilac3,      "NONE",       "NONE")    " Data types (int, char, string) - muted magenta
-hi! link StorageClass Type                                          " Link storage class (static, extern) to Type
-hi! link Label Type                                                 " Labels
+" Basic Code Elements (Normal bg NONE for terminal transparency)
+call s:HL("Normal",       s:light_gray2,     "NONE")
+call s:HL("Comment",      s:comment,         "NONE", "ITALIC")
+call s:HL("Identifier",   s:light_gray2,     "NONE")
+call s:HL("Function",     s:cool_periwinkle, "NONE", "BOLD")
+call s:HL("Statement",    s:heather_mist,    "NONE", "BOLD")
+hi! link Keyword Statement
+hi! link Structure Statement
+call s:HL("PreProc",      s:warm_stone,      "NONE")
+call s:HL("Type",         s:soft_lilac,      "NONE")
+hi! link StorageClass Type
+hi! link Label Type
 
 " Literals
-call s:HL("Constant",    s:rosy_lavender,       "NONE")        " Constants (true, false, NULL), Enums
-call s:HL("String",      s:light_gray1, "NONE")        " String literals - slightly darker than white
-call s:HL("Character",   s:light_gray1, "NONE")        " Character literals
-call s:HL("Number",      s:light_gray1, "NONE")        " Numbers (integers, floats)
-call s:HL("Boolean",     s:light_gray1,         "NONE",       "ITALIC") " true, false explicitly if needed
+call s:HL("Constant",     s:lavender_dream,  "NONE")
+call s:HL("String",       s:cool_mist,       "NONE")
+call s:HL("Character",    s:cool_mist,       "NONE")
+call s:HL("Number",       s:dusty_lilac,     "NONE")
+call s:HL("Float",        s:dusty_lilac,     "NONE")
+call s:HL("Boolean",      s:dusty_lilac,     "NONE", "ITALIC")
 
 " Special Syntax Elements
-call s:HL("Special",     s:lilac,       "NONE",       "BOLD")    " Special symbols/syntax elements - magenta, bold
-call s:HL("SpecialKey",  s:comment,     "NONE",       "ITALIC") " Unprintable chars in text - comment color, italic
-call s:HL("NonText",     s:comment,     "NONE")        " Chars like trailing spaces, end-of-line markers
-call s:HL("Delimiter",   s:light_gray2, "NONE")        " Parentheses, braces, brackets
-call s:HL("Operator",    s:lilac_bloom, "NONE")        " +, -, *, /, =, etc. - white
+call s:HL("Special",      s:lilac,           "NONE", "BOLD")
+call s:HL("SpecialKey",   s:comment,         "NONE", "ITALIC")
+call s:HL("NonText",      s:comment,         "NONE")
+call s:HL("Delimiter",    s:dim_silver,      "NONE")
+call s:HL("Operator",     s:muted_lavender,  "NONE")
 
+" Specific Language Elements
+hi! link rubySymbol String
+hi! link htmlTagN Normal
+hi! link cucumberTags Statement
 
-" Specific Language Elements (Examples - Add more as needed)
-hi! link rubySymbol String                                          " Ruby symbols like strings
-hi! link htmlTagN Normal                                            " HTML tag names - use Normal
-hi! link cucumberTags Statement                                     " Cucumber tags like statements
+" Treesitter Highlight Groups {{{1
+call s:HL("@variable",               s:light_gray2,      "NONE")
+call s:HL("@variable.builtin",       s:rosy_lavender,    "NONE", "ITALIC")
+call s:HL("@variable.parameter",     s:cool_silver,      "NONE", "ITALIC")
+call s:HL("@variable.member",        s:light_gray1,      "NONE")
+hi! link @property @variable.member
+
+call s:HL("@function",               s:cool_periwinkle,  "NONE", "BOLD")
+call s:HL("@function.method",        s:cool_periwinkle,  "NONE", "BOLD")
+call s:HL("@function.call",          s:muted_periwinkle, "NONE")
+call s:HL("@function.method.call",   s:muted_periwinkle, "NONE")
+call s:HL("@function.builtin",       s:slate_blue,       "NONE", "ITALIC")
+call s:HL("@function.macro",         s:warm_stone,       "NONE")
+
+call s:HL("@constructor",            s:soft_lilac,       "NONE")
+call s:HL("@type",                   s:soft_lilac,       "NONE")
+call s:HL("@type.builtin",           s:muted_violet,     "NONE")
+call s:HL("@type.qualifier",         s:heather_mist,     "NONE", "ITALIC")
+call s:HL("@module",                 s:rosy_lavender,    "NONE")
+hi! link @namespace @module
+
+call s:HL("@keyword",                s:heather_mist,     "NONE", "BOLD")
+hi! link @keyword.function @keyword
+hi! link @keyword.return @keyword
+hi! link @keyword.conditional @keyword
+hi! link @keyword.repeat @keyword
+call s:HL("@keyword.modifier",       s:heather_mist,     "NONE", "ITALIC")
+call s:HL("@keyword.operator",       s:muted_lavender,   "NONE")
+call s:HL("@keyword.import",         s:warm_stone,       "NONE")
+call s:HL("@keyword.directive",      s:warm_stone,       "NONE")
+call s:HL("@attribute",              s:warm_stone,       "NONE", "ITALIC")
+
+call s:HL("@constant",               s:lavender_dream,   "NONE")
+hi! link @constant.builtin @constant
+call s:HL("@string",                 s:cool_mist,        "NONE")
+call s:HL("@string.escape",          s:lilac,            "NONE")
+hi! link @string.special @string.escape
+call s:HL("@number",                 s:dusty_lilac,      "NONE")
+hi! link @number.float @number
+call s:HL("@boolean",                s:dusty_lilac,      "NONE", "ITALIC")
+call s:HL("@operator",               s:muted_lavender,   "NONE")
+call s:HL("@punctuation.delimiter",  s:dim_silver,       "NONE")
+call s:HL("@punctuation.bracket",    s:dim_silver,       "NONE")
+call s:HL("@punctuation.special",    s:rosy_lavender,    "NONE")
+call s:HL("@comment",                s:comment,          "NONE", "ITALIC")
+
+" LSP Semantic Tokens {{{1
+hi! link @lsp.type.variable @variable
+hi! link @lsp.type.parameter @variable.parameter
+hi! link @lsp.type.property @variable.member
+hi! link @lsp.type.function @function.call
+hi! link @lsp.type.method @function.method.call
+hi! link @lsp.typemod.function.declaration @function
+hi! link @lsp.typemod.function.definition @function
+hi! link @lsp.typemod.method.declaration @function.method
+hi! link @lsp.typemod.method.definition @function.method
+hi! link @lsp.type.macro @function.macro
+hi! link @lsp.type.type @type
+hi! link @lsp.type.class @type
+hi! link @lsp.type.struct @type
+hi! link @lsp.type.enum @type
+hi! link @lsp.type.interface @type
+hi! link @lsp.type.typeParameter @type
+hi! link @lsp.type.enumMember @constant
+hi! link @lsp.type.namespace @module
+hi! link @lsp.type.keyword @keyword
+hi! link @lsp.type.operator @operator
+hi! link @lsp.type.decorator @attribute
+call s:HL("LspInlayHint",            s:subtle_gray,      "NONE", "ITALIC")
 
 " Diagnostics & Todos {{{1
-call s:HL("Error",       s:red,         "NONE",       "BOLD")    " Errors - muted red, bold
-call s:HL("ErrorMsg",    s:white,       s:red,         "BOLD")    " Error messages (often in cmdline) - white text on red bg
-call s:HL("WarningMsg",  s:yellow,      "NONE",       "BOLD")    " Warnings - muted yellow, bold
-call s:HL("Todo",        s:yellow,      "NONE",       "BOLD", "BOLD,UNDERLINE") " TODO, FIXME - yellow, bold, underline
+call s:HL("Error",       s:red,          "NONE", "BOLD")
+call s:HL("ErrorMsg",    s:white,        s:red,  "BOLD")
+call s:HL("WarningMsg",  s:yellow,       "NONE", "BOLD")
+call s:HL("Todo",        s:yellow,       "NONE", "BOLD", "BOLD,UNDERLINE")
 
-" CoC / LSP Diagnostics (Link to base Error/Warning or define explicitly)
 hi! link DiagnosticError Error
 hi! link DiagnosticWarn WarningMsg
-call s:HL("DiagnosticInfo", s:muted_blue,      "NONE")
-call s:HL("DiagnosticHint", s:comment,  "NONE", "ITALIC")
+call s:HL("DiagnosticInfo", s:muted_blue, "NONE")
+call s:HL("DiagnosticHint", s:comment,    "NONE", "ITALIC")
 
-" Diff Mode {{{1
-call s:HL("DiffAdd",     s:muted_green,         "NONE")        " Added lines - muted green text
-call s:HL("DiffDelete",  s:red,         "NONE")        " Deleted lines - muted red text
-call s:HL("DiffChange",  s:yellow,      "NONE")        " Changed lines - muted yellow text
-call s:HL("DiffText",    s:white,       s:dark_gray2, "BOLD") " Text inside changed lines - white on dark gray, bold
+" Diff & GitSigns {{{1
+call s:HL("DiffAdd",     s:muted_green,  "NONE")
+call s:HL("DiffDelete",  s:red,          "NONE")
+call s:HL("DiffChange",  s:yellow,       "NONE")
+call s:HL("DiffText",    s:white,        s:dark_gray2, "BOLD")
+
+call s:HL("GitSignsAdd",    s:muted_green,     "NONE")
+call s:HL("GitSignsChange", s:cool_periwinkle, "NONE")
+call s:HL("GitSignsDelete", s:red,             "NONE")
 
 " Interface Elements {{{1
+call s:HL("Cursor",       "NONE",        "NONE", "reverse", "reverse")
+call s:HL("CursorLine",   s:light_gray2, s:dark_gray1, "NONE")
+hi! link CursorColumn CursorLine
+call s:HL("Visual",       "NONE",        "NONE", "reverse", "reverse")
+hi! link VisualNOS Visual
 
-" Cursor & Selection
-" Changed to use 'reverse' for inverted highlighting
-call s:HL("Cursor",      "NONE",        "NONE",        "reverse", "reverse") " Block cursor - inverted
-call s:HL("CursorLine",  s:light_gray2, s:dark_gray1, "NONE")    " Background of cursor line - subtle dark gray
-hi! link CursorColumn CursorLine                                   " Highlight cursor column same as line
-" Changed to use 'reverse' for inverted highlighting
-call s:HL("Visual",      "NONE",        "NONE",        "reverse", "reverse") " Visual selection - inverted
-hi! link VisualNOS Visual                                           " Non-owned visual selection
+call s:HL("IncSearch",    "NONE",        "NONE", "reverse", "reverse")
+call s:HL("Search",       "NONE",        "NONE", "reverse", "reverse")
+call s:HL("MatchParen",   "NONE",        "NONE", "reverse", "reverse")
 
-" Search & Matching
-" Changed to use 'reverse' for inverted highlighting
-call s:HL("IncSearch",   "NONE",        "NONE",        "reverse", "reverse") " Incremental search highlight - inverted
-" Changed to use 'reverse' for inverted highlighting
-call s:HL("Search",      "NONE",        "NONE",        "reverse", "reverse") " Regular search highlight - inverted
-" Changed to use 'reverse' for inverted highlighting
-call s:HL("MatchParen",  "NONE",        "NONE",        "reverse", "reverse") " Matching parenthesis - inverted
+call s:HL("Pmenu",        s:light_gray2, s:dark_gray2)
+call s:HL("PmenuSel",     "NONE",        "NONE", "reverse", "reverse")
+call s:HL("PmenuSbar",    s:med_gray1,   s:dark_gray1)
+call s:HL("PmenuThumb",   s:comment,     s:med_gray1)
 
-" Pop-up Menu (Completion Menu)
-call s:HL("Pmenu",       s:light_gray2, s:dark_gray2)  " Normal item - light gray text on dark gray bg
-" Changed to use 'reverse' for inverted highlighting
-call s:HL("PmenuSel",    "NONE",        "NONE",        "reverse", "reverse") " Selected item - inverted
-call s:HL("PmenuSbar",   s:med_gray1,   s:dark_gray1)  " Scrollbar background
-call s:HL("PmenuThumb",  s:comment,     s:med_gray1)   " Scrollbar thumb
+call s:HL("NormalFloat",  s:light_gray2, s:float_bg)
+call s:HL("FloatBorder",  s:med_gray1,   "NONE")
+call s:HL("FloatTitle",   s:cool_periwinkle, "NONE", "BOLD")
 
-" Status Line & Tab Line
-" Changed to use 'reverse' for inverted highlighting
-call s:HL("StatusLine",  "NONE",        "NONE",        "reverse", "reverse") " Status line, current window - inverted
-call s:HL("StatusLineNC",s:comment,     s:dark_gray1, "NONE")    " Status line, non-current window - comment gray on darker gray
-call s:HL("TabLine",     s:comment,     s:dark_gray1)  " Tab labels, non-selected
-call s:HL("TabLineFill", s:comment,     s:dark_gray1)  " Tab line empty space
-" Changed to use 'reverse' for inverted highlighting
-call s:HL("TabLineSel",  "NONE",        "NONE",        "reverse", "reverse") " Selected tab label (same as StatusLine)
+call s:HL("StatusLine",   "NONE",        "NONE", "reverse", "reverse")
+call s:HL("StatusLineNC", s:comment,     s:dark_gray1, "NONE")
+call s:HL("TabLine",      s:comment,     s:dark_gray1)
+call s:HL("TabLineFill",  s:comment,     s:dark_gray1)
+call s:HL("TabLineSel",   "NONE",        "NONE", "reverse", "reverse")
 
-" Borders & separators
-call s:HL("VertSplit",   s:dark_gray2,  "NONE")        " Vertical window separator - dark gray on transparent
-call s:HL("LineNr",      s:med_gray2,   "NONE")        " Line numbers - medium dark gray on transparent
-call s:HL("Folded",      s:comment,     s:dark_gray1, "NONE")    " Folded text marker - comment color on dark gray bg
+call s:HL("VertSplit",    s:dark_gray2,  "NONE")
+call s:HL("WinSeparator", s:dark_gray2,  "NONE")
+call s:HL("LineNr",       s:med_gray2,   "NONE")
+call s:HL("Folded",       s:comment,     s:dark_gray1, "NONE")
 
-" Command line & Messages
-call s:HL("ModeMsg",     s:white,       "NONE",       "BOLD")    " Mode messages (-- INSERT --)
-call s:HL("MoreMsg",     s:muted_green,         "NONE",       "BOLD")    " More prompt
-call s:HL("Question",    s:muted_green,         "NONE",       "BOLD")    " Question prompt
-" Changed to use 'reverse' for inverted highlighting
-call s:HL("WildMenu",    "NONE",        "NONE",        "reverse", "reverse") " Wildmenu completion selection (like PmenuSel)
+call s:HL("ModeMsg",      s:white,       "NONE", "BOLD")
+call s:HL("MoreMsg",      s:muted_green, "NONE", "BOLD")
+call s:HL("Question",     s:muted_green, "NONE", "BOLD")
+call s:HL("WildMenu",     "NONE",        "NONE", "reverse", "reverse")
 
-" Other
-call s:HL("Directory",   s:lilac,         "NONE")        " Directory names
-call s:HL("Title",       s:white,       "NONE",       "BOLD")    " Titles (:set title)
-call s:HL("Underlined",  s:muted_lilac1,          "NONE",       "UNDERLINE") " Underlined text
-call s:HL("Ignore",      s:comment,     "NONE")        " Ignored text (e.g., some diffs)
+" Plugin UI (Telescope, blink.cmp) {{{1
+call s:HL("TelescopeBorder",       s:med_gray1,       "NONE")
+call s:HL("TelescopePromptTitle",  s:cool_periwinkle, "NONE", "BOLD")
+call s:HL("TelescopeResultsTitle", s:cool_periwinkle, "NONE", "BOLD")
+call s:HL("TelescopePreviewTitle", s:cool_periwinkle, "NONE", "BOLD")
+call s:HL("TelescopeMatching",     s:lilac,           "NONE", "BOLD")
+
+call s:HL("BlinkCmpMenu",                s:light_gray2, s:float_bg)
+call s:HL("BlinkCmpMenuBorder",          s:med_gray1,   "NONE")
+call s:HL("BlinkCmpDocBorder",           s:med_gray1,   "NONE")
+call s:HL("BlinkCmpSignatureHelpBorder", s:med_gray1,   "NONE")
+call s:HL("BlinkCmpGhostText",           s:subtle_gray, "NONE", "ITALIC")
+
+" Other {{{1
+call s:HL("Directory",   s:lilac,           "NONE")
+call s:HL("Title",       s:white,           "NONE", "BOLD")
+call s:HL("Underlined",  s:cool_periwinkle, "NONE", "UNDERLINE")
+call s:HL("Ignore",      s:comment,         "NONE")
 
 " Cleanup helper function {{{1
 delfunction s:HL
 
 " vim: fdm=marker
-
