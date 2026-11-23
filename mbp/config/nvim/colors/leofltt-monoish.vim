@@ -33,8 +33,8 @@ let s:off_white   = { "gui": "#EAEAEA", "cterm": "254",   "ctermN": 254 } " Brig
 let s:white       = { "gui": "#FFFFFF", "cterm": "white", "ctermN": 15 }  " Brightest UI fg
 
 " Muted Accent Colors (Greys / Blues / Purples)
-let s:red              = { "gui": "#CC5555", "cterm": "167", "ctermN": 167 } " Error / Deletion
-let s:yellow           = { "gui": "#C9BE6B", "cterm": "179", "ctermN": 179 } " Warning / Change
+let s:red              = { "gui": "#CC5555", "cterm": "167", "ctermN": 167 } " Error / Deletion (Ghostty 1/9)
+let s:yellow           = { "gui": "#CCCC55", "cterm": "179", "ctermN": 179 } " Warning / Change (Ghostty 11)
 let s:green            = { "gui": "#60D060", "cterm": "71",  "ctermN": 71 }  " Success
 let s:muted_green      = { "gui": "#8FBC8F", "cterm": "142", "ctermN": 142 } " DiffAdd
 let s:blue             = { "gui": "#5588CC", "cterm": "68",  "ctermN": 68 }  " Info
@@ -51,8 +51,8 @@ let s:heather_mist     = { "gui": "#9899B7", "cterm": "103", "ctermN": 103 } " K
 let s:rosy_lavender    = { "gui": "#A698B7", "cterm": "139", "ctermN": 139 } " Modules / Builtin vars
 let s:muted_lavender   = { "gui": "#9B8FB8", "cterm": "103", "ctermN": 103 } " Operators
 let s:muted_violet     = { "gui": "#B2A3C9", "cterm": "146", "ctermN": 146 }
-let s:muted_rose_lilac = { "gui": "#B89DB2", "cterm": "139", "ctermN": 139 } " Builtin types
-let s:rose_lilac       = { "gui": "#CFAFC6", "cterm": "182", "ctermN": 182 } " Types / Constructors
+let s:muted_wisteria_orchid = { "gui": "#B19AC2", "cterm": "146", "ctermN": 146 } " Builtin types
+let s:wisteria_orchid       = { "gui": "#CBB1DF", "cterm": "183", "ctermN": 183 } " Types / Constructors
 let s:dusty_lilac      = { "gui": "#B5A6C9", "cterm": "146", "ctermN": 146 } " Numbers / Booleans
 let s:lavender_dream   = { "gui": "#AD9FDD", "cterm": "146", "ctermN": 146 } " Constants
 let s:soft_lilac       = { "gui": "#CBB8E6", "cterm": "183", "ctermN": 183 }
@@ -105,7 +105,7 @@ call s:HL("Statement",    s:heather_mist,    "NONE", "BOLD")
 hi! link Keyword Statement
 hi! link Structure Statement
 call s:HL("PreProc",      s:warm_stone,      "NONE")
-call s:HL("Type",         s:rose_lilac,      "NONE")
+call s:HL("Type",         s:wisteria_orchid, "NONE")
 hi! link StorageClass Type
 hi! link Label Type
 
@@ -143,9 +143,9 @@ call s:HL("@function.method.call",   s:muted_wisteria,   "NONE")
 call s:HL("@function.builtin",       s:dusky_plum,       "NONE", "ITALIC")
 call s:HL("@function.macro",         s:warm_stone,       "NONE")
 
-call s:HL("@constructor",            s:rose_lilac,       "NONE")
-call s:HL("@type",                   s:rose_lilac,       "NONE")
-call s:HL("@type.builtin",           s:muted_rose_lilac, "NONE")
+call s:HL("@constructor",            s:wisteria_orchid,       "NONE")
+call s:HL("@type",                   s:wisteria_orchid,       "NONE")
+call s:HL("@type.builtin",           s:muted_wisteria_orchid, "NONE")
 call s:HL("@type.qualifier",         s:heather_mist,     "NONE", "ITALIC")
 call s:HL("@module",                 s:rosy_lavender,    "NONE")
 hi! link @namespace @module
@@ -205,16 +205,39 @@ call s:HL("ErrorMsg",    s:white,        s:red,  "BOLD")
 call s:HL("WarningMsg",  s:yellow,       "NONE", "BOLD")
 call s:HL("Todo",        s:yellow,       "NONE", "BOLD", "BOLD,UNDERLINE")
 
-hi! link DiagnosticError Error
-hi! link DiagnosticWarn WarningMsg
-call s:HL("DiagnosticInfo", s:muted_blue, "NONE")
-call s:HL("DiagnosticHint", s:comment,    "NONE", "ITALIC")
+call s:HL("DiagnosticError", s:red,         "NONE", "BOLD")
+call s:HL("DiagnosticWarn",  s:yellow,      "NONE", "BOLD")
+call s:HL("DiagnosticInfo",  s:muted_blue,  "NONE")
+call s:HL("DiagnosticHint",  s:comment,     "NONE", "ITALIC")
+call s:HL("DiagnosticOk",    s:muted_green, "NONE")
+call s:HL("OkMsg",           s:muted_green, "NONE")
 
-" Diff & GitSigns {{{1
-call s:HL("DiffAdd",     s:muted_green,  "NONE")
-call s:HL("DiffDelete",  s:red,          "NONE")
-call s:HL("DiffChange",  s:yellow,       "NONE")
-call s:HL("DiffText",    s:white,        s:dark_gray2, "BOLD")
+highlight DiagnosticUnderlineError gui=undercurl guisp=#CC5555 cterm=underline
+highlight DiagnosticUnderlineWarn  gui=undercurl guisp=#CCCC55 cterm=underline
+highlight DiagnosticUnderlineInfo  gui=undercurl guisp=#6B88B3 cterm=underline
+highlight DiagnosticUnderlineHint  gui=undercurl guisp=#7C808C cterm=underline
+highlight DiagnosticUnderlineOk    gui=undercurl guisp=#8FBC8F cterm=underline
+highlight DiagnosticDeprecated     gui=strikethrough guisp=#CC5555
+
+highlight SpellBad   gui=undercurl guisp=#CC5555 cterm=underline
+highlight SpellCap   gui=undercurl guisp=#CCCC55 cterm=underline
+highlight SpellRare  gui=undercurl guisp=#6B88B3 cterm=underline
+highlight SpellLocal gui=undercurl guisp=#8FBC8F cterm=underline
+
+" Diff, QuickFix & GitSigns {{{1
+call s:HL("DiffAdd",      s:muted_green,    "NONE")
+call s:HL("DiffDelete",   s:red,            "NONE")
+call s:HL("DiffChange",   s:yellow,         "NONE")
+call s:HL("DiffText",     s:white,          s:dark_gray2, "BOLD")
+
+call s:HL("Added",        s:muted_green,    "NONE")
+call s:HL("Removed",      s:red,            "NONE")
+call s:HL("Changed",      s:muted_blue,     "NONE")
+hi! link @diff.plus  Added
+hi! link @diff.minus Removed
+hi! link @diff.delta Changed
+
+call s:HL("QuickFixLine", s:smoky_amethyst, s:dark_gray1, "BOLD")
 
 call s:HL("GitSignsAdd",    s:muted_green,    "NONE")
 call s:HL("GitSignsChange", s:smoky_amethyst, "NONE")
@@ -268,6 +291,36 @@ call s:HL("BlinkCmpMenuBorder",          s:med_gray1,   "NONE")
 call s:HL("BlinkCmpDocBorder",           s:med_gray1,   "NONE")
 call s:HL("BlinkCmpSignatureHelpBorder", s:med_gray1,   "NONE")
 call s:HL("BlinkCmpGhostText",           s:subtle_gray, "NONE", "ITALIC")
+
+call s:HL("NvimTreeGitNewIcon",     s:muted_green, "NONE")
+call s:HL("NvimTreeGitStagedIcon",  s:muted_green, "NONE")
+call s:HL("NvimTreeGitDeletedIcon", s:red,         "NONE")
+call s:HL("NvimTreeGitMergeIcon",   s:red,         "NONE")
+call s:HL("NvimTreeGitDirtyIcon",   s:yellow,      "NONE")
+call s:HL("NvimTreeGitRenamedIcon", s:yellow,      "NONE")
+
+call s:HL("NeotestPassed",  s:muted_green, "NONE")
+call s:HL("NeotestFailed",  s:red,         "NONE")
+call s:HL("NeotestRunning", s:yellow,      "NONE")
+call s:HL("NeotestSkipped", s:muted_blue,  "NONE")
+
+" Embedded Terminal Palette (Ghostty match) {{{1
+let g:terminal_color_0  = "#282828"
+let g:terminal_color_1  = "#cc5555"
+let g:terminal_color_2  = "#8fbc8f"
+let g:terminal_color_3  = "#f0ebd2"
+let g:terminal_color_4  = "#6b88b3"
+let g:terminal_color_5  = "#debfff"
+let g:terminal_color_6  = "#d8d8d8"
+let g:terminal_color_7  = "#e8e8e8"
+let g:terminal_color_8  = "#383838"
+let g:terminal_color_9  = "#cc5555"
+let g:terminal_color_10 = "#60d060"
+let g:terminal_color_11 = "#cccc55"
+let g:terminal_color_12 = "#c0c0c0"
+let g:terminal_color_13 = "#d0d0d0"
+let g:terminal_color_14 = "#e0e0e0"
+let g:terminal_color_15 = "#f0f0f0"
 
 " Other {{{1
 call s:HL("Directory",   s:lilac,          "NONE")
