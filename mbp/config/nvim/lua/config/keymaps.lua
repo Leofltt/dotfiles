@@ -3,12 +3,6 @@
 local map = vim.keymap.set
 local gopts = { noremap = true, silent = true }
 
--- Window navigation
-map("n", "<C-h>", "<C-w>h", vim.tbl_extend("force", gopts, { desc = "Focus left window" }))
-map("n", "<C-j>", "<C-w>j", vim.tbl_extend("force", gopts, { desc = "Focus lower window" }))
-map("n", "<C-k>", "<C-w>k", vim.tbl_extend("force", gopts, { desc = "Focus upper window" }))
-map("n", "<C-l>", "<C-w>l", vim.tbl_extend("force", gopts, { desc = "Focus right window" }))
-
 -- File & search convenience
 map("n", "<leader>wq", ":q<CR>", vim.tbl_extend("force", gopts, { desc = "Quit window" }))
 map("n", "<leader>ww", ":w<CR>", vim.tbl_extend("force", gopts, { desc = "Write buffer" }))

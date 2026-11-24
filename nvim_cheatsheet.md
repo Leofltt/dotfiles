@@ -132,7 +132,9 @@
 
 | Key           | Mode          | Action                                     |
 | :------------ | :------------ | :----------------------------------------- |
-| `Ctrl+h/j/k/l`| Normal        | Focus window Left / Down / Up / Right      |
+| `Ctrl+h/j/k/l`| Normal        | Focus Neovim split / tmux pane (L/D/U/R)   |
+| `Ctrl+\`      | Normal        | Focus previous Neovim split / tmux pane    |
+| `Ctrl+a Ctrl+l` | Tmux        | Clear terminal screen (`C-l` passthrough)  |
 | `Space w w`   | Normal        | Write/Save buffer (`:w`)                   |
 | `Space w q`   | Normal        | Quit window (`:q`)                         |
 | `Space Space` | Normal        | Clear search highlight (`:nohlsearch`)     |
@@ -180,7 +182,7 @@ Signature help popup opens automatically while typing arguments.
 | `Space D`         | Normal        | Go to Type Definition                      |
 | `gr`              | Normal        | Find References across project             |
 | `K`               | Normal        | Show Hover Documentation                   |
-| `Ctrl+k`          | Normal        | Show Signature Help                        |
+| `Space k` / `Ctrl+k` | Normal / Insert | Show Signature Help                     |
 | `Space d s`       | Normal        | Search Document Symbols (Telescope)        |
 | `Space w s`       | Normal        | Search Workspace Symbols (Telescope)       |
 | `Space r n`       | Normal        | Rename Symbol                              |

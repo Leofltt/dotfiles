@@ -134,4 +134,22 @@ return {
   },
 
   { "jgdavey/tslime.vim" },
+
+  {
+    "christoomey/vim-tmux-navigator",
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
+    },
+    keys = {
+      { "<C-h>", "<cmd><C-U>TmuxNavigateLeft<cr>", desc = "Focus left split / tmux pane" },
+      { "<C-j>", "<cmd><C-U>TmuxNavigateDown<cr>", desc = "Focus lower split / tmux pane" },
+      { "<C-k>", "<cmd><C-U>TmuxNavigateUp<cr>", desc = "Focus upper split / tmux pane" },
+      { "<C-l>", "<cmd><C-U>TmuxNavigateRight<cr>", desc = "Focus right split / tmux pane" },
+      { "<C-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>", desc = "Focus previous split / tmux pane" },
+    },
+  },
 }

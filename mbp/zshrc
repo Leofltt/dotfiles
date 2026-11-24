@@ -57,7 +57,7 @@ export PATH="/usr/local/sbin:$PATH"
 # ghcup (Haskell)
 [ -f "/Users/leofltt/.ghcup/env" ] && source "/Users/leofltt/.ghcup/env" # ghcup-env
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 
 # Gemini CLI (secrets in local) 
 if [ -f ~/.local_env ]; then
