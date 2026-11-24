@@ -64,6 +64,7 @@ return {
         { "<leader>h", group = "Git Hunks" },
         { "<leader>l", group = "Haskell / Language" },
         { "<leader>r", group = "Rust / Rename" },
+        { "<leader>s", group = "SQL / Database" },
         { "<leader>t", group = "Test" },
         { "<leader>u", group = "UI Toggles" },
         { "<leader>w", group = "Workspace / Window" },
@@ -79,7 +80,7 @@ return {
     keys = {
       { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Workspace diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location list (Trouble)" },
       { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix list (Trouble)" },
     },
@@ -128,5 +129,11 @@ return {
     },
   },
 
-  { "tpope/vim-fugitive", cmd = { "Git", "G", "Gdiffsplit", "Gvdiffsplit", "Gread", "Gwrite" } },
+  {
+    "tpope/vim-fugitive",
+    cmd = { "Git", "G", "Gdiffsplit", "Gvdiffsplit", "Gread", "Gwrite" },
+    keys = {
+      { "<leader>gg", "<cmd>Git<cr>", desc = "Fugitive Git status" },
+    },
+  },
 }

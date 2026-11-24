@@ -42,6 +42,8 @@ return {
       map("n", "<leader>fh", builtin.help_tags, { desc = "Help Tags" })
       map("n", "<leader>fo", builtin.oldfiles, { desc = "Find Old Files" })
       map("n", "<leader>gs", builtin.git_status, { desc = "Git Status" })
+      map("n", "<leader>gb", builtin.git_branches, { desc = "Git Branches" })
+      map("n", "<leader>gc", builtin.git_commits, { desc = "Git Commits" })
       map("n", "<leader>fd", builtin.diagnostics, { desc = "Diagnostics" })
     end,
   },
@@ -101,6 +103,7 @@ return {
           "vimdoc",
           "query",
           "bash",
+          "sql",
           "json",
           "yaml",
           "markdown",

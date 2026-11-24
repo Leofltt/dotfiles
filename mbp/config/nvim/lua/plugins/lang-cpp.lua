@@ -27,11 +27,27 @@ return {
       },
     },
     keys = {
-      { "<leader>cg", "<cmd>CMakeGenerate<cr>", desc = "CMake Generate" },
-      { "<leader>cb", "<cmd>CMakeBuild<cr>", desc = "CMake Build" },
-      { "<leader>cx", "<cmd>CMakeRun<cr>", desc = "CMake Run" },
-      { "<leader>cd", "<cmd>CMakeDebug<cr>", desc = "CMake Debug (LLDB)" },
-      { "<leader>cT", "<cmd>CMakeSelectBuildTarget<cr>", desc = "CMake Select Target" },
+      { "<leader>cg", "<cmd>CMakeGenerate<cr>", ft = { "c", "cpp", "cmake" }, desc = "CMake Generate" },
+      { "<leader>cb", "<cmd>CMakeBuild<cr>", ft = { "c", "cpp", "cmake" }, desc = "CMake Build" },
+      { "<leader>cx", "<cmd>CMakeRun<cr>", ft = { "c", "cpp", "cmake" }, desc = "CMake Run" },
+      { "<leader>cd", "<cmd>CMakeDebug<cr>", ft = { "c", "cpp", "cmake" }, desc = "CMake Debug (LLDB)" },
+      {
+        "<leader>cs",
+        function()
+          if vim.fn.exists(":CMakeStopRunner") == 2 then
+            vim.cmd("CMakeStopRunner")
+          end
+          if vim.fn.exists(":CMakeStopExecutor") == 2 then
+            vim.cmd("CMakeStopExecutor")
+          end
+          if vim.fn.exists(":CMakeStop") == 2 then
+            vim.cmd("CMakeStop")
+          end
+        end,
+        ft = { "c", "cpp", "cmake" },
+        desc = "CMake Stop",
+      },
+      { "<leader>cT", "<cmd>CMakeSelectBuildTarget<cr>", ft = { "c", "cpp", "cmake" }, desc = "CMake Select Target" },
     },
   },
 }

@@ -18,22 +18,39 @@ vim.api.nvim_create_autocmd("VimResized", {
   end,
 })
 
--- Native Neovim 0.12 Treesitter highlighting (falls back to Vim syntax when queries are missing)
+-- Native Neovim 0.12 Treesitter highlighting & folding (falls back to Vim syntax / indent folding when queries are missing)
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("UserTreesitterStart", { clear = true }),
   callback = function(ev)
     local lang = vim.treesitter.language.get_lang(ev.match)
     if lang and vim.treesitter.query.get(lang, "highlights") then
-      pcall(vim.treesitter.start, ev.buf, lang)
+      local ok_ts = pcall(vim.treesitter.start, ev.buf, lang)
+      if ok_ts and vim.treesitter.query.get(lang, "folds") then
+        for _, win in ipairs(vim.fn.win_findbuf(ev.buf)) do
+          vim.wo[win].foldmethod = "expr"
+          vim.wo[win].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        end
+      end
     end
   end,
 })
 
--- Buffer-local LSP keymaps on attach
+-- Buffer-local LSP keymaps & folding fallback on attach
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
   callback = function(ev)
     vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client and client:supports_method("textDocument/foldingRange") then
+      for _, win in ipairs(vim.fn.win_findbuf(ev.buf)) do
+        if vim.wo[win].foldmethod ~= "expr" then
+          vim.wo[win].foldmethod = "expr"
+          vim.wo[win].foldexpr = "v:lua.vim.lsp.foldexpr()"
+        end
+      end
+    end
+
     local map = vim.keymap.set
     local function bopts(desc)
       return { buffer = ev.buf, noremap = true, silent = true, desc = desc }
@@ -44,7 +61,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "K", vim.lsp.buf.hover, bopts("Hover documentation"))
     map("n", "gi", vim.lsp.buf.implementation, bopts("Goto implementation"))
     map("n", "<leader>k", vim.lsp.buf.signature_help, bopts("Signature help"))
-    map("i", "<C-k>", vim.lsp.buf.signature_help, bopts("Signature help"))
     map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, bopts("Add workspace folder"))
     map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, bopts("Remove workspace folder"))
     map("n", "<leader>wl", function()
@@ -53,16 +69,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "<leader>D", vim.lsp.buf.type_definition, bopts("Goto type definition"))
     map("n", "<leader>rn", vim.lsp.buf.rename, bopts("Rename symbol"))
     map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, bopts("Code action"))
-    map("n", "gr", vim.lsp.buf.references, bopts("Goto references"))
-
-    map({ "n", "v" }, "<leader>f", function()
-      local ok, conform = pcall(require, "conform")
+    map("n", "gr", function()
+      local ok, builtin = pcall(require, "telescope.builtin")
       if ok then
-        conform.format({ bufnr = ev.buf, async = true, lsp_format = "fallback" })
+        builtin.lsp_references()
       else
-        vim.lsp.buf.format({ async = true })
+        vim.lsp.buf.references()
       end
-    end, bopts("Format buffer"))
+    end, bopts("Goto references"))
 
     map("n", "<leader>uh", function()
       local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf })

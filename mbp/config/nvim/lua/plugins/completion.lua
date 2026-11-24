@@ -18,6 +18,7 @@ return {
         ["<C-f>"] = { "scroll_documentation_down", "fallback" },
         ["<C-n>"] = { "select_next", "fallback_to_mappings" },
         ["<C-p>"] = { "select_prev", "fallback_to_mappings" },
+        ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
       },
       appearance = {
         nerd_font_variant = "mono",
@@ -38,6 +39,12 @@ return {
         default = { "lsp", "path", "snippets", "buffer" },
         per_filetype = {
           codecompanion = { "codecompanion" },
+          sql = { "snippets", "dadbod", "buffer" },
+          mysql = { "snippets", "dadbod", "buffer" },
+          plsql = { "snippets", "dadbod", "buffer" },
+        },
+        providers = {
+          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
       },
       fuzzy = {

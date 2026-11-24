@@ -83,15 +83,18 @@
 
 ### Searching
 
-| Key       | Action                                        |
-| :-------- | :-------------------------------------------- |
-| `/pattern`| Search forward for `pattern`                  |
-| `?pattern`| Search backward for `pattern`                 |
-| `n`       | Repeat search in the same direction           |
-| `N`       | Repeat search in the opposite direction       |
-| `*`       | Search forward for word under cursor          |
-| `#`       | Search backward for word under cursor         |
-| `:noh` or `Space Space` | Clear search highlighting       |
+| Key / Command | Action                                        |
+| :------------ | :-------------------------------------------- |
+| `/pattern`    | Search forward for `pattern`                  |
+| `?pattern`    | Search backward for `pattern`                 |
+| `n`           | Repeat search in the same direction           |
+| `N`           | Repeat search in the opposite direction       |
+| `*`           | Search forward for word under cursor          |
+| `#`           | Search backward for word under cursor         |
+| `:noh` or `Space Space` | Clear search highlighting           |
+| `:%s/\<old\>/new/gc` | Replace whole word in current file (with confirm) |
+| `*` then `:%s//new/gc` | Replace word under cursor in current file   |
+| `Space f g` -> `Ctrl+q` -> `:cfdo %s/\<old\>/new/gc \| update` | Project-wide search & replace across quickfix matches |
 
 ### Window & Buffer Management
 
@@ -108,7 +111,9 @@
 | `Ctrl+w </>`    | Increase/Decrease width                 |
 | `:ls`           | List open buffers                       |
 | `:b [N]` / `:b [name]` | Switch to buffer                 |
-| `:bn` / `:bp`   | Next / previous buffer                  |
+| `[b` / `]b`     | Previous / next buffer *(or `:bp` / `:bn`)* |
+| `[q` / `]q`     | Previous / next quickfix item           |
+| `[l` / `]l`     | Previous / next location list item      |
 | `:bd [N]`       | Delete buffer (close file)              |
 | `:e file`       | Open `file` for editing                 |
 | `:w` / `:q` / `:wq` / `:q!` | Write / Quit / Write & Quit / Force quit |
@@ -123,6 +128,18 @@
 | `'{a-z}` | Jump to beginning of line of mark `{a}`|
 | `` `` `` or `''` | Jump to position before last jump  |
 | `` `. `` or `'.` | Jump to position of last change    |
+
+### Code Folding
+
+Treesitter folding is used when available (falling back to LSP `foldingRange`, then indent); files open unfolded (`foldlevel=99`).
+
+| Key       | Action                                 |
+| :-------- | :------------------------------------- |
+| `za`      | Toggle fold under cursor               |
+| `zc` / `zo` | Close / open fold under cursor       |
+| `zC` / `zO` | Recursively close / open folds under cursor |
+| `zM` / `zR` | Close all / open all folds in file   |
+| `zj` / `zk` | Jump to next / previous fold         |
 
 ---
 
@@ -157,6 +174,8 @@
 | `Space f d`   | Search diagnostics                          |
 | `Space f h`   | Help tags                                   |
 | `Space g s`   | Git status                                  |
+| `Space g b`   | Git branches (checkout / create / delete / rebase / merge) |
+| `Space g c`   | Git commits                                 |
 | `Space e`     | Toggle NvimTree file explorer               |
 | `Space o`     | Toggle NvimTree & locate current file       |
 
@@ -167,6 +186,7 @@ Signature help popup opens automatically while typing arguments.
 | Key              | Action                                         |
 | :--------------- | :--------------------------------------------- |
 | `Ctrl+Space`     | Show completion / toggle documentation         |
+| `Ctrl+k`         | Toggle signature help popup                    |
 | `Ctrl+e`         | Close completion menu                          |
 | `Enter` (`<CR>`) | Accept selected completion item                |
 | `Tab`            | Next item / jump forward in snippet            |
@@ -184,14 +204,14 @@ After `gd`: use `Ctrl+6` / `Ctrl+^` to toggle between the two files, `Ctrl+o` / 
 | `gD`              | Normal        | Go to Declaration                          |
 | `gi`              | Normal        | Go to Implementation                       |
 | `Space D`         | Normal        | Go to Type Definition                      |
-| `gr`              | Normal        | Find References across project             |
+| `gr`              | Normal        | Find References across project (Telescope) |
 | `K`               | Normal        | Show Hover Documentation                   |
-| `Space k` / `Ctrl+k` | Normal / Insert | Show Signature Help                     |
+| `Space k`         | Normal        | Show Signature Help                        |
 | `Space d s`       | Normal        | Search Document Symbols (Telescope)        |
 | `Space w s`       | Normal        | Search Workspace Symbols (Telescope)       |
-| `Space r n`       | Normal        | Rename Symbol                              |
+| `Space r n`       | Normal        | Rename Symbol across project (run `:wa` to save all modified buffers) |
 | `Space c a`       | Normal/Visual | Code Actions                               |
-| `Space f`         | Normal/Visual | Format buffer (`conform.nvim` / LSP)       |
+| `Space c f`       | Normal/Visual | Format buffer / selection (`conform.nvim` / LSP) |
 | `Space u f`       | Normal        | Toggle format-on-save                      |
 | `Space u h`       | Normal        | Toggle LSP inlay hints (per buffer)        |
 | `Space d d` / `gl` / `Ctrl+w d` | Normal | Open line diagnostics float (press again to focus float) |
@@ -206,7 +226,7 @@ After `gd`: use `Ctrl+6` / `Ctrl+^` to toggle between the two files, `Ctrl+o` / 
 | :------------ | :-------------------------------------- |
 | `Space x x`   | Toggle workspace diagnostics            |
 | `Space x X`   | Toggle current-buffer diagnostics       |
-| `Space c s`   | Toggle document symbols outline         |
+| `Space x s`   | Toggle document symbols outline         |
 | `Space x L`   | Toggle location list                    |
 | `Space x Q`   | Toggle quickfix list                    |
 
@@ -222,7 +242,7 @@ After `gd`: use `Ctrl+6` / `Ctrl+^` to toggle between the two files, `Ctrl+o` / 
 | `Space h p`     | Normal        | Preview hunk diff                      |
 | `Space h b`     | Normal        | Blame line (full commit)               |
 | `Space h d`     | Normal        | Diff current file against index        |
-| `:Git` / `:G`   | Command       | Open Fugitive Git status (`-`/`s`/`u`/`cc`/`P`/`F`) |
+| `Space g g` / `:Git` / `:G` | Normal / Command | Open Fugitive Git status (`-`/`s`/`u`/`=`/`cc`/`ca`/`cz`) |
 | `:Gdiffsplit` / `:Gvdiffsplit` | Command | Horizontal / vertical Git diff split |
 | `:Gwrite` / `:Gread` | Command  | Stage (`git add %`) / Revert (`git checkout %`) |
 | `:G fetch` / `:G fetch --all --prune` | Command | Fetch from remotes |
@@ -235,14 +255,22 @@ After `gd`: use `Ctrl+6` / `Ctrl+^` to toggle between the two files, `Ctrl+o` / 
 
 ### Debugging / LLDB (`plugins/dap.lua`: `codelldb`, Apple `lldb-dap`, `debugpy`)
 
+Inside `dapui` panels: `Enter` jumps to stack frame/breakpoint, `o` expands, `e` edits value/watch, `d` deletes watch/breakpoint, `t` toggles breakpoint. The UI stays open on exit so you can read Console/REPL output — close with `Space d u`.
+
 | Key                  | Action                                      |
 | :------------------- | :------------------------------------------ |
 | `F5` / `Space d c`   | Start / Continue debugging                  |
+| `Space d C`          | Run to cursor                               |
 | `F10` / `Space d o`  | Step Over                                   |
 | `F11` / `Space d i`  | Step Into                                   |
 | `F12` / `Space d O`  | Step Out                                    |
+| `Space d k` / `Space d j` | Stack frame up / down                  |
 | `Space d b`          | Toggle Breakpoint                           |
 | `Space d B`          | Set Conditional Breakpoint                  |
+| `Space d L`          | Set Logpoint (log without pausing)          |
+| `Space d x`          | Clear all breakpoints                       |
+| `Space d e`          | Eval expression under cursor / Visual selection (press again to focus float) |
+| `Space d w`          | Add word under cursor to Watches            |
 | `Space d r`          | Toggle DAP/LLDB REPL (run `bt`, `p`, etc.)  |
 | `Space d u`          | Toggle DAP UI                               |
 | `Space d l`          | Run Last debug configuration                |
@@ -262,6 +290,20 @@ Supports Python (`pytest`/`unittest`), Rust (`rustaceanvim`), C++ (`gtest`), and
 | `Space t O`   | Toggle test output panel           |
 | `Space t S`   | Stop running test                  |
 
+### SQL / Database: `vim-dadbod-ui` (`plugins/db.lua`)
+
+Supports SQLite files with **any arbitrary extension** (plus Postgres, MySQL, etc.). SQL buffers automatically use `vim-dadbod-completion` via `blink.cmp` for table and column names.
+
+Inside the DBUI drawer: `Enter`/`o` expand or open a table/query, `R` refresh tables, `q` close drawer. Inside a query buffer: `:w` executes the query and shows results.
+
+| Key / Command                | Action                                                      |
+| :--------------------------- | :---------------------------------------------------------- |
+| `Space s u`                  | Toggle Database UI (`:DBUIToggle`)                          |
+| `Space s o` / `:DBOpenSQLite [path]` | Open any SQLite DB file regardless of extension (auto-detects current buffer if it's a SQLite file, otherwise prompts with file completion) |
+| `Space s a`                  | Add connection interactively (`:DBUIAddConnection`, e.g. `sqlite:/path/to/file.ext`) |
+| `Space s f`                  | Link current SQL buffer to a connection (`:DBUIFindBuffer`) |
+| `:DB sqlite:/path/to/file.ext <SQL>` | Run a one-off query without opening the UI          |
+
 ---
 
 ## Language-Specific Shortcuts
@@ -276,6 +318,7 @@ Supports Python (`pytest`/`unittest`), Rust (`rustaceanvim`), C++ (`gtest`), and
 | `Space c b`                  | `:CMakeBuild`                                  |
 | `Space c x`                  | `:CMakeRun`                                    |
 | `Space c d`                  | `:CMakeDebug` (builds & launches `codelldb`)   |
+| `Space c s`                  | Stop running CMake build/target (`:CMakeStopRunner` / `:CMakeStopExecutor`) |
 | `Space c T`                  | `:CMakeSelectBuildTarget`                      |
 | `:CMakeSelectCwd [dir]`      | Point CMake to subfolder containing `CMakeLists.txt` |
 | `:CMakeSelectBuildDir [dir]` | Set custom build directory                     |
@@ -322,6 +365,8 @@ Configured for local `llama-server` (`http://127.0.0.1:8088`).
 | `Space a c`   | Normal/Visual | Toggle AI Chat                       |
 | `Space a i`   | Normal/Visual | AI Inline prompt                     |
 | `Space a d`   | Visual        | Add selection to active AI Chat      |
+| `Ctrl+y`      | Insert        | Accept `vim-tabby` inline suggestion |
+| `Ctrl+\`      | Insert        | Trigger / dismiss `vim-tabby` inline suggestion |
 
 ---
 

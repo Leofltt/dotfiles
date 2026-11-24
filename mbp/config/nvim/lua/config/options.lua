@@ -47,6 +47,15 @@ opt.wrap = true
 opt.splitright = true
 opt.splitbelow = true
 
+-- Code folding (upgraded to Treesitter / LSP expr folding in autocmds.lua)
+opt.foldenable = true
+opt.foldmethod = "indent"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldcolumn = "0"
+opt.foldtext = ""
+opt.fillchars:append({ fold = " " })
+
 -- Persistent undo
 opt.undofile = true
 local undo_dir = vim.fn.stdpath("data") .. "/undodir"

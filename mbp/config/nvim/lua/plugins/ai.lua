@@ -97,5 +97,9 @@ return {
 
   {
     "TabbyML/vim-tabby",
+    init = function()
+      vim.g.tabby_keybinding_accept = "<C-y>"
+      vim.g.tabby_keybinding_trigger_or_dismiss = "<C-\\>"
+    end,
   },
 }
