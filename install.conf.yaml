@@ -9,6 +9,7 @@
     # Ghostty config file
     ~/.config/ghostty/config:
       path: mbp/config/ghostty/config # Source path relative to repo root
+      force: true
       if: '[ "$(uname)" = "Darwin" ] ' # Link on macOS 
 
     # Continue config file
@@ -55,6 +56,7 @@
     # Aerospace
     ~/.aerospace.toml:
       path: mbp/aerospace.toml
+      force: true
       if:  '[ "$(uname)" = "Darwin" ] '
 
     # Sketchybar
@@ -90,7 +92,6 @@
       if: '[ "$(uname)" = "Darwin" ]'
 
 
-# You can add other tasks below if needed, like 'shell' commands, 'clean', etc.
-# - shell:
-#     - command: echo "Linking done!"
-#       description: Final message
+- shell:
+    - command: '[ "$(uname)" = "Darwin" ] && command -v aerospace >/dev/null 2>&1 && aerospace reload-config || true'
+      description: Reload AeroSpace config (if running)

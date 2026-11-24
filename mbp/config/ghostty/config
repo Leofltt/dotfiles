@@ -5,9 +5,10 @@ term = "xterm-256color"
 shell-integration = zsh
 shell-integration-features = cursor
 
-# Initial window size (columns × lines)
-window-width = 88                                
-window-height = 28                               
+# Initial window size (left unset so new macOS native tabs match the current window size instead of spawning small)
+# window-width = 88
+# window-height = 28
+# window-save-state = always
 
 # Padding (px)
 window-padding-x = 5                             
