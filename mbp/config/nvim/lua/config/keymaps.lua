@@ -20,7 +20,8 @@ map("n", "<leader>cc", "<Plug>NormalModeSendToTmux", vim.tbl_extend("force", gop
 map("n", "<leader>cr", "<Plug>SetTmuxVars", vim.tbl_extend("force", gopts, { desc = "Set tmux target" }))
 
 -- Diagnostics & formatting toggle
-map("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line diagnostics" })
+map("n", "<leader>dd", vim.diagnostic.open_float, { desc = "Line diagnostics" })
+map("n", "gl", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Diagnostic loclist" })
 map("n", "<leader>uf", function()
   vim.g.disable_autoformat = not vim.g.disable_autoformat

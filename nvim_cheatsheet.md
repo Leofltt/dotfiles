@@ -21,6 +21,8 @@
 | `%`       | Jump to matching parenthesis `()` `{}` `[]` |
 | `Ctrl+o`  | Jump back in jump list (e.g., after `gd`)   |
 | `Ctrl+i`  | Jump forward in jump list                   |
+| `Ctrl+6` / `Ctrl+^` | Toggle back and forth between current & alternate file (`:b #` / `:e #`) |
+| `Ctrl+t`  | Pop LSP tag stack (jump straight back to where you pressed `gd`, ignoring in-between jumps) |
 | `Ctrl+f`  | Page Down                                   |
 | `Ctrl+b`  | Page Up                                     |
 | `Ctrl+d`  | Scroll Down half page                       |
@@ -174,6 +176,8 @@ Signature help popup opens automatically while typing arguments.
 
 ### LSP, Diagnostics & Formatting (`config/autocmds.lua`, `plugins/lsp.lua`)
 
+After `gd`: use `Ctrl+6` / `Ctrl+^` to toggle between the two files, `Ctrl+o` / `Ctrl+i` to step back/forward in the jump list, or `Ctrl+t` to pop back out of the tag stack.
+
 | Key               | Mode          | Action                                     |
 | :---------------- | :------------ | :----------------------------------------- |
 | `gd`              | Normal        | Go to Definition                           |
@@ -190,7 +194,7 @@ Signature help popup opens automatically while typing arguments.
 | `Space f`         | Normal/Visual | Format buffer (`conform.nvim` / LSP)       |
 | `Space u f`       | Normal        | Toggle format-on-save                      |
 | `Space u h`       | Normal        | Toggle LSP inlay hints (per buffer)        |
-| `Space d`         | Normal        | Open line diagnostics float                |
+| `Space d d` / `gl` / `Ctrl+w d` | Normal | Open line diagnostics float (press again to focus float) |
 | `Space q`         | Normal        | Open diagnostics in loclist                |
 | `[d` / `]d`       | Normal        | Previous / Next diagnostic                 |
 | `Space w a/r/l`   | Normal        | Add / Remove / List workspace folders      |
@@ -208,6 +212,8 @@ Signature help popup opens automatically while typing arguments.
 
 ### Git: `gitsigns.nvim` & `vim-fugitive` (`plugins/ui.lua`)
 
+`:G` / `:Git` forwards any subcommand directly to `git` with Tab completion for subcommands, branches, and remotes.
+
 | Key / Command   | Mode          | Action                                 |
 | :-------------- | :------------ | :------------------------------------- |
 | `]c` / `[c`     | Normal        | Next / Previous git hunk               |
@@ -219,6 +225,13 @@ Signature help popup opens automatically while typing arguments.
 | `:Git` / `:G`   | Command       | Open Fugitive Git status (`-`/`s`/`u`/`cc`/`P`/`F`) |
 | `:Gdiffsplit` / `:Gvdiffsplit` | Command | Horizontal / vertical Git diff split |
 | `:Gwrite` / `:Gread` | Command  | Stage (`git add %`) / Revert (`git checkout %`) |
+| `:G fetch` / `:G fetch --all --prune` | Command | Fetch from remotes |
+| `:G switch <branch>` | Command | Switch to an existing branch |
+| `:G switch -c <new-branch>` | Command | Create and switch to a new branch |
+| `:G checkout <branch>` / `:G checkout -b <new>` | Command | Checkout / create branch |
+| `:G checkout -- %` *(or `:Gread`)* | Command | Discard unstaged changes in current file |
+| `:G pull` / `:G push` | Command | Pull / push current branch |
+| `:G branch` / `:G stash` / `:G rebase ...` | Command | Any other Git subcommand |
 
 ### Debugging / LLDB (`plugins/dap.lua`: `codelldb`, Apple `lldb-dap`, `debugpy`)
 
