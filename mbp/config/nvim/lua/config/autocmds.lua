@@ -75,6 +75,20 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Auto-close cmake-tools settings popup when it loses focus so it cannot get stranded
+vim.api.nvim_create_autocmd("WinLeave", {
+  group = vim.api.nvim_create_augroup("UserCmakeWindowClose", { clear = true }),
+  pattern = "*cmake-tools.env-config",
+  callback = function()
+    vim.schedule(function()
+      local ok, win = pcall(require, "cmake-tools.window")
+      if ok and win.is_open() and vim.api.nvim_get_current_win() ~= win.win_id then
+        win.close_menu()
+      end
+    end)
+  end,
+})
+
 -- Equalize splits when terminal window resizes
 vim.api.nvim_create_autocmd("VimResized", {
   group = vim.api.nvim_create_augroup("UserResizeSplits", { clear = true }),
