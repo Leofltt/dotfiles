@@ -40,10 +40,13 @@ local function open_agent(name)
     return true
   end
 
-  local width = math.max(60, math.floor(vim.o.columns * 0.42))
+  local default_w = math.max(45, math.min(math.floor(vim.o.columns * 0.40), vim.o.columns - 45))
+  local width = (s.width and s.width >= 30 and s.width <= vim.o.columns - 30) and s.width or default_w
   vim.cmd("botright vsplit")
   local win = vim.api.nvim_get_current_win()
   vim.api.nvim_win_set_width(win, width)
+  s.width = width
+  vim.w[win].ai_term_width = width
 
   if s.buf and vim.api.nvim_buf_is_valid(s.buf) and is_alive(s) then
     vim.api.nvim_win_set_buf(win, s.buf)
@@ -159,4 +162,20 @@ vim.keymap.set({ "n", "v" }, "<leader>as", send_context, {
   noremap = true,
   silent = true,
   desc = "Send file/selection to active AI CLI",
+})
+
+vim.api.nvim_create_autocmd("WinResized", {
+  group = vim.api.nvim_create_augroup("UserAiTermResize", { clear = true }),
+  callback = function()
+    local cur = vim.api.nvim_get_current_win()
+    for _, s in pairs(state) do
+      if s.win and s.win == cur and vim.api.nvim_win_is_valid(s.win) then
+        local w = vim.api.nvim_win_get_width(s.win)
+        if w >= 30 then
+          s.width = w
+          vim.w[s.win].ai_term_width = w
+        end
+      end
+    end
+  end,
 })

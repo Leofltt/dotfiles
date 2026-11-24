@@ -13,6 +13,36 @@ local function is_sqlite_file(filepath)
   return header == "SQLite format 3\0"
 end
 
+local function normalize_path(raw)
+  local p = vim.trim(raw or "")
+  if p == "" then
+    return ""
+  end
+  if (#p >= 2) and ((p:sub(1, 1) == '"' and p:sub(-1) == '"') or (p:sub(1, 1) == "'" and p:sub(-1) == "'")) then
+    p = p:sub(2, -2)
+  end
+  p = p:gsub("\\ ", " ")
+  if p:match("^~") or p:match("^%%") then
+    p = vim.fn.expand(p)
+  end
+  return vim.fn.fnamemodify(p, ":p")
+end
+
+local function path_under_nvimtree()
+  if vim.bo.filetype ~= "NvimTree" then
+    return nil
+  end
+  local ok, api = pcall(require, "nvim-tree.api")
+  if not ok then
+    return nil
+  end
+  local node = api.tree.get_node_under_cursor()
+  if node and node.type == "file" and node.absolute_path and vim.fn.filereadable(node.absolute_path) == 1 then
+    return node.absolute_path
+  end
+  return nil
+end
+
 return {
   {
     "kristijanhusak/vim-dadbod-ui",
@@ -46,8 +76,11 @@ return {
         local from_current_buf = false
 
         if path == "" then
+          local tree_path = path_under_nvimtree()
           local cur = vim.api.nvim_buf_get_name(0)
-          if is_sqlite_file(cur) then
+          if tree_path then
+            path = tree_path
+          elseif is_sqlite_file(cur) then
             path = cur
             from_current_buf = true
           else
@@ -55,11 +88,11 @@ return {
           end
         end
 
-        if path == "" then
+        local abs_path = normalize_path(path)
+        if abs_path == "" then
           return
         end
 
-        local abs_path = vim.fn.fnamemodify(path, ":p")
         if vim.fn.filereadable(abs_path) ~= 1 then
           vim.notify("File not readable: " .. abs_path, vim.log.levels.ERROR)
           return
@@ -69,17 +102,21 @@ return {
           vim.notify("Warning: file does not have a SQLite 3 header: " .. abs_path, vim.log.levels.WARN)
         end
 
+        local ok_enc, encoded = pcall(vim.fn["db#url#path_encode"], abs_path)
+        local url = "sqlite:" .. (ok_enc and encoded or abs_path)
+
         local dbs = vim.g.dbs or {}
         local name = vim.fn.fnamemodify(abs_path, ":t")
-        dbs[name] = "sqlite:" .. abs_path
+        dbs[name] = url
         vim.g.dbs = dbs
 
         if from_current_buf then
           vim.cmd("enew")
         end
-        vim.b.db = "sqlite:" .. abs_path
+        vim.b.db = url
 
         pcall(vim.cmd, "DBUIClose")
+        pcall(vim.fn["db_ui#reset_state"])
         vim.cmd("DBUI")
       end, { nargs = "?", complete = "file", desc = "Open any SQLite DB file in Dadbod UI" })
     end,

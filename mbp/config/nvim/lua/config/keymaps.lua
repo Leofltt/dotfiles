@@ -41,3 +41,7 @@ map("n", "<leader>uf", function()
   vim.g.disable_autoformat = not vim.g.disable_autoformat
   vim.notify("Format on save: " .. (vim.g.disable_autoformat and "OFF" or "ON"))
 end, { desc = "Toggle format on save" })
+map("n", "<leader>ua", function()
+  vim.g.disable_autosave = not vim.g.disable_autosave
+  vim.notify("Auto-save: " .. (vim.g.disable_autosave and "OFF" or "ON"))
+end, { desc = "Toggle auto-save" })

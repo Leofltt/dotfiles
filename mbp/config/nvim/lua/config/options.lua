@@ -66,6 +66,7 @@ end
 
 -- Responsiveness & completion
 opt.autoread = true
+opt.confirm = true
 opt.updatetime = 300
 opt.timeoutlen = 300
 opt.completeopt = { "menu", "menuone", "noselect" }

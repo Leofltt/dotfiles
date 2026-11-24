@@ -63,9 +63,78 @@ return {
         },
         filters = { dotfiles = false, custom = { ".git", "node_modules", ".cache", "__pycache__" } },
         git = { enable = true, ignore = false, timeout = 400 },
-        actions = { open_file = { quit_on_open = false, resize_window = true } },
-        hijack_directories = { enable = true, auto_open = true },
+        actions = {
+          open_file = {
+            quit_on_open = false,
+            resize_window = false,
+            window_picker = {
+              exclude = {
+                filetype = {
+                  "notify",
+                  "packer",
+                  "qf",
+                  "diff",
+                  "fugitive",
+                  "fugitiveblame",
+                  "codecompanion",
+                  "dbui",
+                  "dbout",
+                  "trouble",
+                  "dapui_scopes",
+                  "dapui_stacks",
+                  "dapui_breakpoints",
+                  "dapui_watches",
+                  "dapui_console",
+                  "dap-repl",
+                },
+                buftype = { "nofile", "terminal", "help" },
+              },
+            },
+          },
+        },
+        hijack_directories = { enable = false, auto_open = false },
         update_focused_file = { enable = true, update_root = false },
+      })
+
+      -- On `nvim .`, keep an empty editor window beside NvimTree so opening files never overwrites or squashes splits
+      vim.api.nvim_create_autocmd("VimEnter", {
+        group = vim.api.nvim_create_augroup("UserNvimTreeDir", { clear = true }),
+        callback = function(data)
+          if vim.fn.isdirectory(data.file) ~= 1 then
+            return
+          end
+          vim.cmd.cd(data.file)
+          vim.cmd("enew")
+          pcall(vim.cmd, "bwipeout! " .. data.buf)
+          require("nvim-tree.api").tree.open()
+        end,
+      })
+
+      -- If all code splits were closed (:q) so NvimTree expanded, restore tree + AI split widths on next file open
+      local tree_width = 35
+      vim.api.nvim_create_autocmd("BufWinEnter", {
+        group = vim.api.nvim_create_augroup("UserNvimTreeRestoreWidth", { clear = true }),
+        callback = function(ev)
+          if vim.bo[ev.buf].buftype ~= "" or vim.bo[ev.buf].filetype == "NvimTree" then
+            return
+          end
+          vim.schedule(function()
+            local tree_win = require("nvim-tree.view").get_winnr()
+            if not tree_win or not vim.api.nvim_win_is_valid(tree_win) then
+              return
+            end
+            if vim.api.nvim_win_get_width(tree_win) <= tree_width then
+              return
+            end
+            vim.api.nvim_win_set_width(tree_win, tree_width)
+            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+              local saved = vim.w[win].ai_term_width
+              if saved and vim.api.nvim_win_is_valid(win) then
+                vim.api.nvim_win_set_width(win, saved)
+              end
+            end
+          end)
+        end,
       })
 
       local map = vim.keymap.set

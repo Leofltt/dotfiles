@@ -18,6 +18,29 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "TermLeav
   end,
 })
 
+-- Auto-save normal modified files on buffer/focus leave so external AI agents see latest edits
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
+  group = vim.api.nvim_create_augroup("UserAutoSave", { clear = true }),
+  callback = function(ev)
+    if vim.g.disable_autosave or vim.fn.mode():match("^i") then
+      return
+    end
+    local buf = ev.buf
+    if
+      vim.api.nvim_buf_is_valid(buf)
+      and vim.bo[buf].buftype == ""
+      and vim.bo[buf].modifiable
+      and not vim.bo[buf].readonly
+      and vim.bo[buf].modified
+      and vim.api.nvim_buf_get_name(buf) ~= ""
+    then
+      vim.api.nvim_buf_call(buf, function()
+        vim.cmd("silent! update")
+      end)
+    end
+  end,
+})
+
 -- Equalize splits when terminal window resizes
 vim.api.nvim_create_autocmd("VimResized", {
   group = vim.api.nvim_create_augroup("UserResizeSplits", { clear = true }),

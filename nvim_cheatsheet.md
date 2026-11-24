@@ -213,6 +213,7 @@ After `gd`: use `Ctrl+6` / `Ctrl+^` to toggle between the two files, `Ctrl+o` / 
 | `Space c a`       | Normal/Visual | Code Actions                               |
 | `Space c f`       | Normal/Visual | Format buffer / selection (`conform.nvim` / LSP) |
 | `Space u f`       | Normal        | Toggle format-on-save                      |
+| `Space u a`       | Normal        | Toggle auto-save on buffer / focus leave   |
 | `Space u h`       | Normal        | Toggle LSP inlay hints (per buffer)        |
 | `Space d d` / `gl` / `Ctrl+w d` | Normal | Open line diagnostics float (press again to focus float) |
 | `Space q`         | Normal        | Open diagnostics in loclist                |
@@ -355,13 +356,14 @@ Inside the DBUI drawer: `Enter`/`o` expand or open a table/query, `R` refresh ta
 | :-------------- | :-------------------------------------- |
 | `Space c v`     | `:VenvSelect` (pick `.venv`/uv/conda)   |
 
-### Markdown (`plugins/markdown.lua`: `render-markdown.nvim`)
+### Markdown (`plugins/markdown.lua`: `render-markdown.nvim`, `image.nvim` + `diagram.nvim`, `live-preview.nvim`)
 
-Automatically renders headings, tables, code blocks, checkboxes, and callouts inline in `.md` files and `codecompanion` chat buffers (reveals raw syntax on the cursor line).
+`render-markdown.nvim` renders headings, tables, code blocks, checkboxes, and callouts inline. In Ghostty, `image.nvim` + `diagram.nvim` render images and Mermaid diagrams directly in-place inside `.md` buffers (requires `mmdc` via `npm install -g @mermaid-js/mermaid-cli`, and `tmux` passthrough enabled in `tmux.conf`). Use `live-preview.nvim` (`Space u p`) as an optional browser fallback.
 
 | Key / Command   | Action                                  |
 | :-------------- | :-------------------------------------- |
 | `Space u m`     | Toggle in-buffer Markdown rendering (`:RenderMarkdown toggle`) |
+| `Space u p`     | Toggle browser live preview with Mermaid/KaTeX (`:LivePreview start` / `close`) |
 
 ### AI: CLI Agents, `codecompanion.nvim` & `vim-tabby` (`config/ai_terms.lua`, `plugins/ai.lua`)
 
