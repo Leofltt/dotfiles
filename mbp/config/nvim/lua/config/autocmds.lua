@@ -41,6 +41,40 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
   end,
 })
 
+-- Highlight CMake / Ninja / compiler errors, warnings, notes, and progress in quickfix output
+local qf_group = vim.api.nvim_create_augroup("UserQfHighlight", { clear = true })
+
+local function apply_qf_syntax(buf)
+  vim.api.nvim_buf_call(buf, function()
+    vim.cmd([=[
+      syntax match qfError /\c\<\%(fatal\s\+\)\?error\>:\?\|\<CMake Error\>\|\<FAILED:\|\<ninja: build stopped\>/ containedin=qfText
+      syntax match qfWarning /\c\<warning\>:\?\|\<CMake Warning\>\|\[-W[^]]\+\]/ containedin=qfText
+      syntax match qfNote /\c\<note\>:/ containedin=qfText
+      syntax match qfInfo /\[\d\+\/\d\+\]/ containedin=qfText
+    ]=])
+  end)
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = qf_group,
+  pattern = "qf",
+  callback = function(ev)
+    if vim.b[ev.buf].current_syntax == "qf" then
+      apply_qf_syntax(ev.buf)
+    end
+    vim.api.nvim_clear_autocmds({ group = qf_group, event = "Syntax", buffer = ev.buf })
+    vim.api.nvim_create_autocmd("Syntax", {
+      group = qf_group,
+      buffer = ev.buf,
+      callback = function()
+        if vim.bo[ev.buf].syntax == "qf" then
+          apply_qf_syntax(ev.buf)
+        end
+      end,
+    })
+  end,
+})
+
 -- Equalize splits when terminal window resizes
 vim.api.nvim_create_autocmd("VimResized", {
   group = vim.api.nvim_create_augroup("UserResizeSplits", { clear = true }),

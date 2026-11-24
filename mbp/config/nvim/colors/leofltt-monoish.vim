@@ -240,7 +240,15 @@ hi! link @diff.plus  Added
 hi! link @diff.minus Removed
 hi! link @diff.delta Changed
 
-call s:HL("QuickFixLine", s:smoky_amethyst, s:dark_gray1, "BOLD")
+call s:HL("QuickFixLine", "NONE",           s:cursorline_bg, "BOLD")
+call s:HL("qfFileName",   s:lilac,          "NONE")
+call s:HL("qfLineNr",     s:med_gray2,      "NONE")
+call s:HL("qfSeparator1", s:dim_silver,     "NONE")
+call s:HL("qfSeparator2", s:dim_silver,     "NONE")
+call s:HL("qfError",      s:red,            "NONE", "BOLD")
+call s:HL("qfWarning",    s:yellow,         "NONE", "BOLD")
+call s:HL("qfNote",       s:muted_blue,     "NONE", "ITALIC")
+call s:HL("qfInfo",       s:smoky_amethyst, "NONE")
 
 call s:HL("GitSignsAdd",    s:muted_green,    "NONE")
 call s:HL("GitSignsChange", s:smoky_amethyst, "NONE")
