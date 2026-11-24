@@ -65,6 +65,7 @@ if vim.fn.isdirectory(undo_dir) == 0 then
 end
 
 -- Responsiveness & completion
+opt.autoread = true
 opt.updatetime = 300
 opt.timeoutlen = 300
 opt.completeopt = { "menu", "menuone", "noselect" }

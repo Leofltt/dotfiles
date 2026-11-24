@@ -355,12 +355,27 @@ Inside the DBUI drawer: `Enter`/`o` expand or open a table/query, `R` refresh ta
 | :-------------- | :-------------------------------------- |
 | `Space c v`     | `:VenvSelect` (pick `.venv`/uv/conda)   |
 
-### AI: `codecompanion.nvim` & `vim-tabby` (`plugins/ai.lua`)
+### Markdown (`plugins/markdown.lua`: `render-markdown.nvim`)
 
-Configured for local `llama-server` (`http://127.0.0.1:8088`).
+Automatically renders headings, tables, code blocks, checkboxes, and callouts inline in `.md` files and `codecompanion` chat buffers (reveals raw syntax on the cursor line).
+
+| Key / Command   | Action                                  |
+| :-------------- | :-------------------------------------- |
+| `Space u m`     | Toggle in-buffer Markdown rendering (`:RenderMarkdown toggle`) |
+
+### AI: CLI Agents, `codecompanion.nvim` & `vim-tabby` (`config/ai_terms.lua`, `plugins/ai.lua`)
+
+CLI agents (`agy`, `pi`, `opencode`, `hermes`) open in a persistent right-hand terminal split and auto-reload modified buffers via `autoread`. Inside an agent terminal, press `Ctrl+h` (or `Ctrl+\ Ctrl+n`) to jump back to your code split while keeping `Esc` free for the agent TUI.
+
+`codecompanion.nvim` is configured for local `llama-server` (`http://127.0.0.1:8088`).
 
 | Key           | Mode          | Action                               |
 | :------------ | :------------ | :----------------------------------- |
+| `Space a g`   | Normal        | Toggle Antigravity (`agy`) side split |
+| `Space a p`   | Normal        | Toggle `pi` agent side split         |
+| `Space a o`   | Normal        | Toggle `opencode` side split         |
+| `Space a h`   | Normal        | Toggle `hermes` agent side split     |
+| `Space a s`   | Normal/Visual | Send file path (or `file:L1-L2`) to active AI CLI |
 | `Space a a`   | Normal/Visual | AI Actions palette                   |
 | `Space a c`   | Normal/Visual | Toggle AI Chat                       |
 | `Space a i`   | Normal/Visual | AI Inline prompt                     |

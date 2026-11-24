@@ -21,6 +21,9 @@ let s:black       = { "gui": "#000000", "cterm": "black", "ctermN": 0 }
 let s:float_bg    = { "gui": "#18181C", "cterm": "234",   "ctermN": 234 } " Floating window bg
 let s:dark_gray1  = { "gui": "#222222", "cterm": "235",   "ctermN": 235 } " Subtle bg
 let s:dark_gray2  = { "gui": "#333333", "cterm": "236",   "ctermN": 236 } " Borders / Pmenu bg
+let s:cursorline_bg  = { "gui": "#1F1B27", "cterm": "235", "ctermN": 235 } " Subtle smoky-plum cursorline bg
+let s:amethyst_bg    = { "gui": "#2D2638", "cterm": "236", "ctermN": 236 } " Subtle plum highlight bg
+let s:amethyst_bg_hi = { "gui": "#45385A", "cterm": "60",  "ctermN": 60 }  " Active amethyst highlight bg
 let s:med_gray1   = { "gui": "#555555", "cterm": "240",   "ctermN": 240 } " Medium gray
 let s:subtle_gray = { "gui": "#686C78", "cterm": "242",   "ctermN": 242 } " Inlay hints / ghost text
 let s:comment     = { "gui": "#7C808C", "cterm": "grey",  "ctermN": 244 } " Cool muted comments
@@ -245,17 +248,23 @@ call s:HL("GitSignsDelete", s:red,            "NONE")
 
 " Interface Elements {{{1
 call s:HL("Cursor",       "NONE",        "NONE", "reverse", "reverse")
-call s:HL("CursorLine",   s:light_gray2, s:dark_gray1, "NONE")
+call s:HL("CursorLine",   "NONE",        s:cursorline_bg, "NONE")
+call s:HL("CursorLineNr", s:lilac,       "NONE",          "BOLD")
 hi! link CursorColumn CursorLine
 call s:HL("Visual",       "NONE",        "NONE", "reverse", "reverse")
 hi! link VisualNOS Visual
 
-call s:HL("IncSearch",    "NONE",        "NONE", "reverse", "reverse")
-call s:HL("Search",       "NONE",        "NONE", "reverse", "reverse")
-call s:HL("MatchParen",   "NONE",        "NONE", "reverse", "reverse")
+call s:HL("Search",            s:lilac,        s:amethyst_bg,    "BOLD")
+call s:HL("CurSearch",         s:white,        s:amethyst_bg_hi, "BOLD")
+call s:HL("IncSearch",         s:white,        s:amethyst_bg_hi, "BOLD")
+hi! link Substitute IncSearch
+call s:HL("MatchParen",        s:muted_lilac3, s:amethyst_bg,    "BOLD")
+call s:HL("LspReferenceText",  "NONE",         s:amethyst_bg,    "NONE")
+call s:HL("LspReferenceRead",  "NONE",         s:amethyst_bg,    "NONE")
+call s:HL("LspReferenceWrite", "NONE",         s:amethyst_bg,    "UNDERLINE")
 
 call s:HL("Pmenu",        s:light_gray2, s:dark_gray2)
-call s:HL("PmenuSel",     "NONE",        "NONE", "reverse", "reverse")
+call s:HL("PmenuSel",     s:white,       s:amethyst_bg_hi, "BOLD")
 call s:HL("PmenuSbar",    s:med_gray1,   s:dark_gray1)
 call s:HL("PmenuThumb",   s:comment,     s:med_gray1)
 
@@ -284,7 +293,9 @@ call s:HL("TelescopeBorder",       s:med_gray1,      "NONE")
 call s:HL("TelescopePromptTitle",  s:smoky_amethyst, "NONE", "BOLD")
 call s:HL("TelescopeResultsTitle", s:smoky_amethyst, "NONE", "BOLD")
 call s:HL("TelescopePreviewTitle", s:smoky_amethyst, "NONE", "BOLD")
-call s:HL("TelescopeMatching",     s:lilac,          "NONE", "BOLD")
+call s:HL("TelescopeMatching",       s:lilac,          "NONE",        "BOLD")
+call s:HL("TelescopeSelection",      s:white,          s:amethyst_bg, "BOLD")
+call s:HL("TelescopeSelectionCaret", s:lilac,          s:amethyst_bg, "BOLD")
 
 call s:HL("BlinkCmpMenu",                s:light_gray2, s:float_bg)
 call s:HL("BlinkCmpMenuBorder",          s:med_gray1,   "NONE")
@@ -303,6 +314,26 @@ call s:HL("NeotestPassed",  s:muted_green, "NONE")
 call s:HL("NeotestFailed",  s:red,         "NONE")
 call s:HL("NeotestRunning", s:yellow,      "NONE")
 call s:HL("NeotestSkipped", s:muted_blue,  "NONE")
+
+call s:HL("RenderMarkdownH1",         s:white,           "NONE",           "BOLD")
+call s:HL("RenderMarkdownH1Bg",       s:white,           s:amethyst_bg_hi, "BOLD")
+call s:HL("RenderMarkdownH2",         s:lilac,           "NONE",           "BOLD")
+call s:HL("RenderMarkdownH2Bg",       s:lilac,           s:amethyst_bg,    "BOLD")
+call s:HL("RenderMarkdownH3",         s:smoky_amethyst,  "NONE",           "BOLD")
+call s:HL("RenderMarkdownH3Bg",       s:smoky_amethyst,  s:float_bg,       "BOLD")
+call s:HL("RenderMarkdownH4",         s:wisteria_orchid, "NONE",           "BOLD")
+call s:HL("RenderMarkdownH4Bg",       s:wisteria_orchid, s:float_bg)
+call s:HL("RenderMarkdownH5",         s:muted_wisteria,  "NONE")
+call s:HL("RenderMarkdownH5Bg",       s:muted_wisteria,  s:float_bg)
+call s:HL("RenderMarkdownH6",         s:heather_mist,    "NONE")
+call s:HL("RenderMarkdownH6Bg",       s:heather_mist,    s:float_bg)
+call s:HL("RenderMarkdownCode",       "NONE",            s:float_bg)
+call s:HL("RenderMarkdownCodeInline", s:lilac,           s:amethyst_bg)
+call s:HL("RenderMarkdownBullet",     s:smoky_amethyst,  "NONE")
+call s:HL("RenderMarkdownTableHead",  s:smoky_amethyst,  "NONE",           "BOLD")
+call s:HL("RenderMarkdownTableRow",   s:dim_silver,      "NONE")
+call s:HL("RenderMarkdownDash",       s:dark_gray2,      "NONE")
+call s:HL("RenderMarkdownQuote",      s:comment,         "NONE",           "ITALIC")
 
 " Embedded Terminal Palette (Ghostty match) {{{1
 let g:terminal_color_0  = "#282828"

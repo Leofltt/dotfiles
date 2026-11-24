@@ -8,6 +8,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+-- Auto-reload buffers edited externally (e.g. by AI CLI agents in Neovim splits or tmux)
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "TermLeave" }, {
+  group = vim.api.nvim_create_augroup("UserAutoRead", { clear = true }),
+  callback = function()
+    if vim.fn.mode() ~= "c" then
+      pcall(vim.cmd, "checktime")
+    end
+  end,
+})
+
 -- Equalize splits when terminal window resizes
 vim.api.nvim_create_autocmd("VimResized", {
   group = vim.api.nvim_create_augroup("UserResizeSplits", { clear = true }),

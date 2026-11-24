@@ -6,6 +6,7 @@ vim.g.maplocalleader = " "
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
+require("config.ai_terms")
 require("config.lazy")
 
 local ok, _ = pcall(vim.cmd.colorscheme, "leofltt-monoish")
