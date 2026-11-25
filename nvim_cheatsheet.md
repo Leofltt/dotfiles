@@ -157,11 +157,25 @@ Treesitter folding is used when available (falling back to LSP `foldingRange`, t
 | `Space w w`   | Normal        | Write/Save buffer (`:w`)                   |
 | `Space w q`   | Normal        | Quit window (`:q`)                         |
 | `Space Space` | Normal        | Clear search highlight (`:nohlsearch`)     |
+| `gb` / `gB`   | Normal        | Go back / forward in jump list (`Ctrl+o` / `Ctrl+i`) |
 | `Cmd+a`       | Normal        | Select all (`ggVG`) *(GUI / extended keys)*|
 | `Cmd+c`       | Visual        | Copy to system clipboard (`"+y`)           |
 | `Cmd+/`       | Normal/Visual | Toggle comment (`gcc` / `gc`)              |
 | `Space c c`   | Normal/Visual | Send line or selection to Tmux (`tslime`)  |
 | `Space c r`   | Normal        | Configure `tslime` Tmux target             |
+
+### Buffer Tabs: `bufferline.nvim` (`plugins/ui.lua`, `config/keymaps.lua`)
+
+Switches buffers inside the focused window while keeping `NvimTree`, AI sidebars, and split layouts intact.
+
+| Key / Command   | Mode     | Action                                              |
+| :-------------- | :------- | :-------------------------------------------------- |
+| `Shift+h` / `Shift+l` | Normal | Previous / next buffer tab (`<S-h>` / `<S-l>`)  |
+| `Space b d`     | Normal   | Delete current buffer (keep split layout)           |
+| `Space b p`     | Normal   | Pin / unpin buffer tab                              |
+| `Space b o`     | Normal   | Close other buffer tabs                             |
+| `:qo` / `:qo!`  | Command  | Close other buffers (`:quitother` / `:QuitOther[!]`) |
+| `:wqo`          | Command  | Save modified other buffers, then close them (`:wquitother`) |
 
 ### Telescope & NvimTree (`plugins/editor.lua`)
 
@@ -196,7 +210,7 @@ Signature help popup opens automatically while typing arguments.
 
 ### LSP, Diagnostics & Formatting (`config/autocmds.lua`, `plugins/lsp.lua`)
 
-After `gd`: use `Ctrl+6` / `Ctrl+^` to toggle between the two files, `Ctrl+o` / `Ctrl+i` to step back/forward in the jump list, or `Ctrl+t` to pop back out of the tag stack.
+After `gd`: use `gb` / `gB` (or `Ctrl+o` / `Ctrl+i`) to step back/forward in the jump list, `Ctrl+6` / `Ctrl+^` to toggle between the two files, or `Ctrl+t` to pop back out of the tag stack.
 
 | Key               | Mode          | Action                                     |
 | :---------------- | :------------ | :----------------------------------------- |
@@ -214,7 +228,7 @@ After `gd`: use `Ctrl+6` / `Ctrl+^` to toggle between the two files, `Ctrl+o` / 
 | `Space c f`       | Normal/Visual | Format buffer / selection (`conform.nvim` / LSP) |
 | `Space u f`       | Normal        | Toggle format-on-save                      |
 | `Space u a`       | Normal        | Toggle auto-save on buffer / focus leave   |
-| `Space u h`       | Normal        | Toggle LSP inlay hints (per buffer)        |
+| `Space u h`       | Normal        | Toggle LSP inlay hints (global, on by default) |
 | `Space d d` / `gl` / `Ctrl+w d` | Normal | Open line diagnostics float (press again to focus float) |
 | `Space q`         | Normal        | Open diagnostics in loclist                |
 | `[d` / `]d`       | Normal        | Previous / Next diagnostic                 |
@@ -254,6 +268,23 @@ After `gd`: use `Ctrl+6` / `Ctrl+^` to toggle between the two files, `Ctrl+o` / 
 | `:G pull` / `:G push` | Command | Pull / push current branch |
 | `:G branch` / `:G stash` / `:G rebase ...` | Command | Any other Git subcommand |
 
+**Fugitive Command Shortcuts (`config/keymaps.lua`):**
+
+| Shortcut | Expands To |
+| :------- | :--------- |
+| `:gstat` | `:G` (Fugitive status) |
+| `:gfetch` | `:G fetch` |
+| `:gpull` | `:G pull` |
+| `:gp` | `:G push` |
+| `:gpwl` | `:G push --force-with-lease` |
+| `:gad <files>` | `:G add <files>` |
+| `:gcom "<msg>"` | `:G commit -m "<msg>"` |
+| `:gcheck <args>` | `:G checkout <args>` |
+| `:gsw <branch>` | `:G switch -c <branch>` |
+| `:grmain` | `:G rebase main` |
+| `:grest <args>` | `:G restore <args>` |
+| `:grestH` | `:G reset --hard @{u}` |
+
 ### Debugging / LLDB (`plugins/dap.lua`: `codelldb`, Apple `lldb-dap`, `debugpy`)
 
 Inside `dapui` panels: `Enter` jumps to stack frame/breakpoint, `o` expands, `e` edits value/watch, `d` deletes watch/breakpoint, `t` toggles breakpoint. The UI stays open on exit so you can read Console/REPL output — close with `Space d u`.
@@ -275,6 +306,7 @@ Inside `dapui` panels: `Enter` jumps to stack frame/breakpoint, `o` expands, `e`
 | `Space d r`          | Toggle DAP/LLDB REPL (run `bt`, `p`, etc.)  |
 | `Space d u`          | Toggle DAP UI                               |
 | `Space d l`          | Run Last debug configuration                |
+| `Space d n`          | New debug session (`:DapNew` — includes `"Attach to application (codelldb)"` filtered to `/Applications`) |
 | `Space d t`          | Terminate debug session                     |
 
 ### Testing: `neotest` (`plugins/test.lua`)

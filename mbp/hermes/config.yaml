@@ -2282,6 +2282,7 @@ telemetry:
 # =============================================================================
 # Login Policy (credentials themselves live in auth.json / .env)
 # =============================================================================
+    offer_version: 2
 auth:
   # Borrow and refresh the Codex CLI (~/.codex/auth.json) and Claude Code logins when Hermes has
   # no usable login of its own. Their refresh tokens are single-use, so two programs on one login
@@ -2480,7 +2481,7 @@ providers:
         context_length: 65536
       qwen3.8-heretic:
         context_length: 65536
-      inkling-2-mini: 
+      inkling-2-mini:
         context_length: 65536
 
 model:
@@ -2492,7 +2493,7 @@ model_aliases:
     model: qwen3.8-stock
     provider: llama-server
   heretic:
-    model: qwen3.8-heretic 
+    model: qwen3.8-heretic
     provider: llama-server
   inkling:
     model: inkling-2-mini

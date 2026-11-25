@@ -37,6 +37,48 @@ return {
   },
 
   {
+    "akinsho/bufferline.nvim",
+    version = "*",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      { "echasnovski/mini.bufremove", version = "*" },
+    },
+    keys = {
+      { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+      { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+      {
+        "<leader>bd",
+        function()
+          require("mini.bufremove").delete(0, false)
+        end,
+        desc = "Delete buffer (keep layout)",
+      },
+      { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "Pin buffer" },
+      { "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", desc = "Close other buffers" },
+    },
+    opts = {
+      options = {
+        diagnostics = "nvim_lsp",
+        close_command = function(n)
+          require("mini.bufremove").delete(n, false)
+        end,
+        right_mouse_command = function(n)
+          require("mini.bufremove").delete(n, false)
+        end,
+        offsets = {
+          {
+            filetype = "NvimTree",
+            text = "File Explorer",
+            highlight = "Directory",
+            separator = true,
+          },
+        },
+      },
+    },
+  },
+
+  {
     "j-hui/fidget.nvim",
     event = "LspAttach",
     opts = {
@@ -57,6 +99,7 @@ return {
       },
       spec = {
         { "<leader>a", group = "AI" },
+        { "<leader>b", group = "Buffers" },
         { "<leader>c", group = "Code / CMake" },
         { "<leader>d", group = "Debug / Diagnostics" },
         { "<leader>f", group = "Find" },

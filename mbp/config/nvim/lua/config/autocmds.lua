@@ -117,6 +117,8 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Buffer-local LSP keymaps & folding fallback on attach
+vim.lsp.inlay_hint.enable(true)
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
   callback = function(ev)
@@ -160,8 +162,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, bopts("Goto references"))
 
     map("n", "<leader>uh", function()
-      local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf })
-      vim.lsp.inlay_hint.enable(not enabled, { bufnr = ev.buf })
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end, bopts("Toggle inlay hints"))
 
     map("n", "<leader>ds", function()
