@@ -177,6 +177,7 @@ return {
 				end,
 				desc = "Logpoint",
 			},
+			{ "<leader>dn", "<Cmd>DapNew<CR>", desc = "New Debug Session" },
 		},
 		config = function()
 			local dap = require("dap")
@@ -266,6 +267,19 @@ return {
 					request = "attach",
 					pid = function()
 						return require("dap.utils").pick_process()
+					end,
+					cwd = "${workspaceFolder}",
+				},
+				{
+					name = "Attach to application (codelldb)",
+					type = "codelldb",
+					request = "attach",
+					pid = function()
+						return require("dap.utils").pick_process({
+							filter = function(proc)
+								return vim.startswith(proc.name, "/Applications")
+							end,
+						})
 					end,
 					cwd = "${workspaceFolder}",
 				},
