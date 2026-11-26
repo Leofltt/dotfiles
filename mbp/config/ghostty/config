@@ -21,6 +21,7 @@ macos-titlebar-style = tabs
 
 # Visual appearance
 background-opacity = 0.88                        
+background-blur = 24 
 scrollback-limit = 10000000                      
 
 # Font
