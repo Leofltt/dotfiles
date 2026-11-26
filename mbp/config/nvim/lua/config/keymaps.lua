@@ -106,3 +106,6 @@ for lhs, rhs in pairs({
     )
   )
 end
+
+-- CMake / CTest command shortcut
+vim.cmd([[cnoreabbrev <expr> ctest getcmdtype() == ":" && getcmdline() == "ctest" ? "CMakeRunTest --output-on-failure" : "ctest"]])

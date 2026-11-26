@@ -357,7 +357,7 @@ Inside the DBUI drawer: `Enter`/`o` expand or open a table/query, `R` refresh ta
 | `:CMakeSelectBuildDir [dir]` | Set custom build directory                     |
 | `:CMakeSelectBuildType`      | Switch `Debug` / `Release`                     |
 | `:CMakeSelectLaunchTarget`   | Choose executable to run/debug                 |
-| `:CMakeRunTest`              | Run CTest                                      |
+| `:CMakeRunTest` / `:ctest`   | Run CTest (`:ctest` adds `--output-on-failure`) |
 | `:CMakeClean` / `:CMakeSettings` | Clean build / Configure launch args & env  |
 
 ### Rust (`plugins/lang-rust.lua`: `rustaceanvim` + `crates.nvim`)

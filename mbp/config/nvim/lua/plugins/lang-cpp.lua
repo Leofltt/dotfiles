@@ -14,6 +14,7 @@ return {
   {
     "Civitasv/cmake-tools.nvim",
     ft = { "c", "cpp", "cmake" },
+    cmd = { "CMakeRunTest" },
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
       cmake_generate_options = { "-DCMAKE_EXPORT_COMPILE_COMMANDS=1", "-G", "Ninja" },
