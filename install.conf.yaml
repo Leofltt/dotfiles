@@ -81,9 +81,9 @@
       path: mbp/pi/agent/models.json
       if: '[ "$(uname)" = "Darwin" ]'
 
-    # Hermes config
-    ~/.hermes/config.yaml:
-      path: mbp/hermes/config.yaml
+    # Pi agent settings config
+    ~/.pi/agent/settings.json:
+      path: mbp/pi/agent/settings.json
       if: '[ "$(uname)" = "Darwin" ]'
 
     # llama-server LaunchAgent plist

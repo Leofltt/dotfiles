@@ -12,7 +12,6 @@ autoload -U promptinit && promptinit
 # %{%f%} : Reset foreground color to the default
 PROMPT='%{%F{#c0c0c0}%}%n@%m:%~%# %{%f%}'
 
-
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # AUTOJUMP
@@ -120,7 +119,6 @@ echo -e '\e[?12l'
 
 # Added by Antigravity
 export PATH="/Users/leofltt/.antigravity/antigravity/bin:$PATH"
-
 
 # Added by Antigravity CLI installer
 export PATH="/Users/leofltt/.local/bin:$PATH"

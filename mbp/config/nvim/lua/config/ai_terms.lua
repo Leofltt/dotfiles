@@ -1,10 +1,9 @@
--- Persistent zero-plugin CLI agent side splits (Antigravity, Pi, OpenCode, Hermes)
+-- Persistent zero-plugin CLI agent side splits (Antigravity, Pi, OpenCode)
 
 local agents = {
-  agy = { lhs = "<leader>ag", cmd = "agy", desc = "Toggle Antigravity (agy)" },
-  pi = { lhs = "<leader>ap", cmd = "pi", desc = "Toggle Pi agent" },
-  opencode = { lhs = "<leader>ao", cmd = "opencode", desc = "Toggle OpenCode" },
-  hermes = { lhs = "<leader>ah", cmd = "hermes", desc = "Toggle Hermes agent" },
+  agy = { lhs = "<leader>ag", cmd = "agy", desc = "Toggle Antigravity (agy)", mention_prefix = "@" },
+  pi = { lhs = "<leader>ap", cmd = "pi", desc = "Toggle Pi agent", mention_prefix = "@" },
+  opencode = { lhs = "<leader>ao", cmd = "opencode", desc = "Toggle OpenCode", mention_prefix = "@" },
 }
 
 local state = {}
@@ -125,7 +124,7 @@ end
 local function send_context()
   local target = pick_target_agent()
   if not target then
-    vim.notify("No active AI CLI terminal. Open one with Space a g / p / o / h.", vim.log.levels.WARN)
+    vim.notify("No active AI CLI terminal. Open one with Space a g / p / o.", vim.log.levels.WARN)
     return
   end
 
@@ -135,16 +134,17 @@ local function send_context()
     return
   end
 
+  local prefix = agents[target].mention_prefix or ""
   local mode = vim.fn.mode()
   local payload
   if mode == "v" or mode == "V" or mode == "\22" then
     local l1 = vim.fn.line("v")
     local l2 = vim.fn.line(".")
     local s_line, e_line = math.min(l1, l2), math.max(l1, l2)
-    payload = string.format("%s:%d-%d ", rel, s_line, e_line)
+    payload = string.format("%s%s:%d-%d ", prefix, rel, s_line, e_line)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "nx", false)
   else
-    payload = rel .. " "
+    payload = prefix .. rel .. " "
   end
 
   if open_agent(target) then
