@@ -229,6 +229,8 @@ After `gd`: use `gb` / `gB` (or `Ctrl+o` / `Ctrl+i`) to step back/forward in the
 | `Space u f`       | Normal        | Toggle format-on-save                      |
 | `Space u a`       | Normal        | Toggle auto-save on buffer / focus leave   |
 | `Space u h`       | Normal        | Toggle LSP inlay hints (global, on by default) |
+| `Space u c`       | Normal        | Toggle sticky context (`nvim-treesitter-context`) |
+| `Space u b`       | Normal        | Toggle winbar breadcrumbs (`dropbar.nvim`) |
 | `Space d d` / `gl` / `Ctrl+w d` | Normal | Open line diagnostics float (press again to focus float) |
 | `Space q`         | Normal        | Open diagnostics in loclist                |
 | `[d` / `]d`       | Normal        | Previous / Next diagnostic                 |
@@ -276,11 +278,12 @@ After `gd`: use `gb` / `gB` (or `Ctrl+o` / `Ctrl+i`) to step back/forward in the
 | `:gfetch` | `:G fetch` |
 | `:gpull` | `:G pull` |
 | `:gp` | `:G push` |
+| `:gpup` | `:G push --set-upstream origin HEAD` |
 | `:gpwl` | `:G push --force-with-lease` |
 | `:gad <files>` | `:G add <files>` |
 | `:gcom "<msg>"` | `:G commit -m "<msg>"` |
 | `:gcheck <args>` | `:G checkout <args>` |
-| `:gsw <branch>` | `:G switch -c <branch>` |
+| `:gsw <branch>` / `:gswitch <branch>` | `:G switch -c <branch>` |
 | `:grmain` | `:G rebase main` |
 | `:grest <args>` | `:G restore <args>` |
 | `:grestH` | `:G reset --hard @{u}` |

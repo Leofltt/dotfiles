@@ -79,6 +79,64 @@ return {
   },
 
   {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = { "BufReadPre", "BufNewFile" },
+    keys = {
+      { "<leader>uc", "<cmd>TSContext toggle<cr>", desc = "Toggle sticky context" },
+    },
+    opts = {
+      enable = true,
+      max_lines = 4,
+      trim_scope = "outer",
+    },
+  },
+
+  {
+    "Bekaboo/dropbar.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    keys = {
+      {
+        "<leader>ub",
+        function()
+          vim.g.dropbar_disabled = not vim.g.dropbar_disabled
+          if vim.g.dropbar_disabled then
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+              if vim.api.nvim_win_is_valid(win) then
+                local buf = vim.api.nvim_win_get_buf(win)
+                if vim.bo[buf].buftype == "" then
+                  vim.wo[win].winbar = ""
+                end
+              end
+            end
+          else
+            vim.cmd("doautocmd BufWinEnter")
+          end
+          vim.notify("Breadcrumbs (dropbar): " .. (vim.g.dropbar_disabled and "OFF" or "ON"))
+        end,
+        desc = "Toggle breadcrumbs (dropbar)",
+      },
+    },
+    opts = {
+      bar = {
+        enable = function(buf, win, _)
+          if vim.g.dropbar_disabled then
+            return false
+          end
+          if not vim.api.nvim_buf_is_valid(buf) or not vim.api.nvim_win_is_valid(win) then
+            return false
+          end
+          if vim.bo[buf].buftype ~= "" or vim.wo[win].diff then
+            return false
+          end
+          return vim.bo[buf].ft == "markdown"
+            or pcall(vim.treesitter.get_parser, buf)
+            or not vim.tbl_isempty(vim.lsp.get_clients({ bufnr = buf }))
+        end,
+      },
+    },
+  },
+
+  {
     "j-hui/fidget.nvim",
     event = "LspAttach",
     opts = {
