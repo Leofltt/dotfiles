@@ -90,7 +90,7 @@ vim.cmd([[cnoreabbrev <expr> wqo getcmdtype() == ":" && getcmdline() == "wqo" ? 
 
 -- Fugitive git command shortcuts
 for lhs, rhs in pairs({
-	gfetch = "G fetch",
+	gftch = "G fetch",
 	gcheck = "G checkout",
 	gpwl = "G push --force-with-lease",
 	grmain = "G rebase main",
@@ -98,10 +98,9 @@ for lhs, rhs in pairs({
 	gpup = "G push --set-upstream origin HEAD",
 	gcom = "G commit -m",
 	gsw = "G switch -c",
-	gswitch = "G switch -c",
 	gad = "G add",
 	gstat = "G",
-	gpull = "G pull",
+	gpl = "G pull",
 	grest = "G restore",
 	grestH = "G reset --hard @{u}",
 	gamen = "G commit --amend",
